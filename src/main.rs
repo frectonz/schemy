@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use indexmap::IndexMap;
 use serde::Deserialize;
 
@@ -15,7 +17,7 @@ pub struct SchemaOrgDefinition {
 #[derive(Deserialize, Debug)]
 pub struct ItemId {
     #[serde(rename = "@id")]
-    pub item_id: String,
+    pub item_id: Str,
 }
 
 #[derive(Deserialize, Debug)]
@@ -30,6 +32,15 @@ pub enum ItemRef {
 pub enum ItemType {
     Single(Str),
     List(List<Str>),
+}
+
+impl ItemType {
+    pub fn includes(&self, type_id: &str) -> bool {
+        match self {
+            ItemType::Single(s) => s.as_ref() == type_id,
+            ItemType::List(list) => list.iter().any(|s| s.as_ref() == type_id),
+        }
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -94,10 +105,45 @@ pub struct Item {
     pub equivalent_property: Option<ItemId>,
 }
 
+mod constants {
+    pub const RDF_CLASS: &str = "rdfs:Class";
+    pub const RDF_PROPERTY: &str = "rdf:Property";
+}
+
 fn main() -> color_eyre::Result<()> {
     let file = std::fs::read_to_string("schema/schemaorg-current-https.jsonld")?;
     let schema: SchemaOrgDefinition = serde_json::from_str(&file)?;
-    dbg!(schema);
+
+    let mut types = IndexMap::new();
+    let mut properties = IndexMap::new();
+    let mut enumerations = IndexMap::new();
+
+    for item in schema.graph {
+        if item.item_type.includes(constants::RDF_CLASS) {
+            types.insert(item.id.item_id.clone(), item);
+        } else if item.item_type.includes(constants::RDF_PROPERTY) {
+            properties.insert(item.id.item_id.clone(), item);
+        } else {
+            let item = Arc::new(item);
+            match &item.item_type {
+                ItemType::Single(typ) => {
+                    enumerations
+                        .entry(typ.clone())
+                        .and_modify(|x| Vec::push(x, item.clone()))
+                        .or_insert_with(|| vec![item.clone()]);
+                }
+                ItemType::List(typs) => {
+                    let typs = typs.clone();
+                    for typ in typs {
+                        enumerations
+                            .entry(typ)
+                            .and_modify(|x| Vec::push(x, item.clone()))
+                            .or_insert_with(|| vec![item.clone()]);
+                    }
+                }
+            }
+        }
+    }
 
     Ok(())
 }
