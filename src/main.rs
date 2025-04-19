@@ -465,7 +465,7 @@ impl SchemaDefinitions {
 
                                 quote! {
                                     #variant_comment
-                                    #variant_name(#variant_name)
+                                    #variant_name(Box<#variant_name>)
                                 }
                             });
 
@@ -498,12 +498,8 @@ impl SchemaDefinitions {
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
-        let variant_defs = self.types.iter().map(|(typ, variants)| {
-            let enum_type = self.types.get(typ).unwrap();
-
-            let enum_name = enum_type.enum_ident();
-
-            let variant_name = if self.enumerations.get(typ).is_some() {
+        let variant_defs = self.types.values().map(|enum_type| {
+            let variant_name = if self.enumerations.get(&enum_type.id.item_id).is_some() {
                 enum_type.enum_ident()
             } else {
                 enum_type.ident()
