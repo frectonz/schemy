@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use indexmap::IndexMap;
+use quote::quote;
 use serde::Deserialize;
 
 type Str = Box<str>;
@@ -48,6 +49,15 @@ impl ItemType {
 pub enum Text {
     Simple(Str),
     Tagged(LanguageText),
+}
+
+impl Text {
+    pub fn value(&self) -> &str {
+        match self {
+            Text::Simple(val) => val,
+            Text::Tagged(val) => &val.value,
+        }
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -110,6 +120,28 @@ mod constants {
     pub const RDF_PROPERTY: &str = "rdf:Property";
 }
 
+fn doc_attrs(comment: &str) -> proc_macro2::TokenStream {
+    let comments: Vec<_> = comment
+        .lines()
+        .map(|line| {
+            if line.starts_with(' ') {
+                quote! {
+                    #[doc = #line]
+                }
+            } else {
+                let padded = format!(" {}", line);
+                quote! {
+                    #[doc = #padded]
+                }
+            }
+        })
+        .collect();
+
+    quote! {
+        #(#comments)*
+    }
+}
+
 fn main() -> color_eyre::Result<()> {
     let file = std::fs::read_to_string("schema/schemaorg-current-https.jsonld")?;
     let schema: SchemaOrgDefinition = serde_json::from_str(&file)?;
@@ -144,6 +176,39 @@ fn main() -> color_eyre::Result<()> {
             }
         }
     }
+
+    let enumeration_types = enumerations.iter().map(|(typ, variants)| {
+        let enum_type = types.get(typ).unwrap();
+        let enum_name = enum_type.label.value();
+        let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
+        let enum_comment = doc_attrs(enum_type.comment.value());
+
+        let variant_defs = variants.iter().map(|item| {
+            let variant_name = item.label.value();
+            let variant_name = syn::Ident::new(variant_name, proc_macro2::Span::call_site());
+            let variant_comment = doc_attrs(item.comment.value());
+            quote! {
+                #variant_comment
+                #variant_name
+            }
+        });
+
+        quote! {
+            #enum_comment
+            pub enum #enum_name {
+                #(#variant_defs),*
+            }
+        }
+    });
+
+    let enumerations_module = quote! {
+        #(#enumeration_types)*
+    };
+
+    let syntax_tree: syn::File = syn::parse2(enumerations_module).expect("Failed to parse tokens");
+    let out = prettyplease::unparse(&syntax_tree);
+
+    println!("{out}");
 
     Ok(())
 }
