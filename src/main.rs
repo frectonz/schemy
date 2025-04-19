@@ -470,7 +470,7 @@ impl SchemaDefinitions {
                 quote! {
                     #property_comment
                     #property_rename
-                    pub #property_name: SingleOrList<Box<#property_type>>
+                    pub #property_name: SchemaValue<#property_type>
                 }
             });
 
@@ -586,8 +586,8 @@ fn main() -> color_eyre::Result<()> {
 
         #[derive(Deserialize, Debug)]
         #[serde(untagged)]
-        pub enum SingleOrList<T> {
-            Single(T),
+        pub enum SchemaValue<T> {
+            Single(Option<Box<T>>),
             List(Box<[T]>),
         }
 
