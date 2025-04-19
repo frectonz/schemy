@@ -1,6 +1,7 @@
 use std::{collections::HashSet, sync::Arc};
 
 use color_eyre::Result;
+use heck::ToSnakeCase;
 use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
@@ -177,6 +178,18 @@ impl Item {
     fn ident(&self) -> proc_macro2::TokenStream {
         let name = self.label.value();
         let name = replace_leading_digit_with_word(name);
+        let name = escape_if_keyword(&name);
+        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
+
+        quote! {
+            #name
+        }
+    }
+
+    fn snake_case_ident(&self) -> proc_macro2::TokenStream {
+        let name = self.label.value();
+        let name = replace_leading_digit_with_word(name);
+        let name = name.to_snake_case();
         let name = escape_if_keyword(&name);
         let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
 
@@ -420,8 +433,13 @@ impl SchemaDefinitions {
             let field_defs = class.properties.iter().map(|item| {
                 let property = self.properties.get(item.first()).unwrap();
 
-                let property_name = property.ident();
+                let property_name = property.snake_case_ident();
                 let property_comment = property.doc_comment();
+
+                let property_rename = property.label.value();
+                let property_rename = quote! {
+                    #[serde(rename = #property_rename)]
+                };
 
                 let range_includes = property.range_includes.as_ref().unwrap();
 
@@ -451,6 +469,7 @@ impl SchemaDefinitions {
 
                 quote! {
                     #property_comment
+                    #property_rename
                     pub #property_name: SingleOrList<Box<#property_type>>
                 }
             });
@@ -517,7 +536,7 @@ impl SchemaDefinitions {
                 #[derive(Deserialize, Debug)]
                 pub struct #class_name {
                     #[serde(rename = "@context")]
-                    context: Box<str>,
+                    pub context: Box<str>,
                     #(#field_defs),*
                 }
             })
@@ -563,7 +582,6 @@ fn main() -> color_eyre::Result<()> {
     let all_types = definitions.all_types();
 
     let file = quote! {
-        #![allow(non_snake_case)]
         use serde::Deserialize;
 
         #[derive(Deserialize, Debug)]

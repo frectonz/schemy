@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 color-eyre = "0.6.3"
+heck = "0.5.0"
 indexmap = { version = "2.9.0", features = ["serde"] }
 prettyplease = "0.2.32"
 proc-macro2 = "1.0.95"
