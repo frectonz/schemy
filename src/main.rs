@@ -388,9 +388,22 @@ impl SchemaDefinitions {
                 let property_name = property.ident();
                 let property_comment = property.doc_comment();
 
+                let range_includes = property.range_includes.as_ref().unwrap();
+
+                let property_type = match range_includes {
+                    ItemRef::Single(item_id) => {
+                        let class_name =
+                            self.types.get(&item_id.item_id).map(|class| class.ident());
+
+                        class_name
+                    }
+                    ItemRef::List(item_ids) => None,
+                }
+                .unwrap_or(quote! { usize });
+
                 quote! {
                     #property_comment
-                    #property_name: SingleOrList<usize>
+                    #property_name: SingleOrList<#property_type>
                 }
             });
 
