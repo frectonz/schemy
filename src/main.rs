@@ -177,6 +177,18 @@ impl Item {
         }
     }
 
+    fn enum_ident(&self) -> proc_macro2::TokenStream {
+        let name = self.label.value();
+        let name = replace_leading_digit_with_word(name);
+        let name = escape_if_keyword(&name);
+        let name = format!("{name}Enum");
+        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
+
+        quote! {
+            #name
+        }
+    }
+
     fn doc_comment(&self) -> proc_macro2::TokenStream {
         let comment = self.comment.value();
 
@@ -225,7 +237,7 @@ enum ResolvedPropertyType {
 impl ResolvedPropertyType {
     fn first(&self) -> &str {
         match self {
-            ResolvedPropertyType::Single(field) => &field,
+            ResolvedPropertyType::Single(field) => field,
             ResolvedPropertyType::Aliased(items) => items.first().unwrap(),
         }
     }
@@ -336,7 +348,7 @@ impl SchemaDefinitions {
         let enumeration_types = self.enumerations.iter().map(|(typ, variants)| {
             let enum_type = self.types.get(typ).unwrap();
 
-            let enum_name = enum_type.ident();
+            let enum_name = enum_type.enum_ident();
             let enum_comment = enum_type.doc_comment();
 
             let variant_defs = variants.iter().map(|item| {
@@ -378,7 +390,7 @@ impl SchemaDefinitions {
 
                 quote! {
                     #property_comment
-                    #property_name: usize
+                    #property_name: SingleOrList<usize>
                 }
             });
 
@@ -403,6 +415,11 @@ fn main() -> color_eyre::Result<()> {
     let types = definitions.types_module();
 
     let file = quote! {
+        enum SingleOrList<T> {
+            Single(T),
+            List(Box<[T]>),
+        }
+
         #enumerations
         #types
     };
