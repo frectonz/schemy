@@ -126,32 +126,80 @@ pub struct Item {
     pub equivalent_property: Option<ItemId>,
 }
 
-mod constants {
-    pub const RDF_CLASS: &str = "rdfs:Class";
-    pub const RDF_PROPERTY: &str = "rdf:Property";
+fn replace_leading_digit_with_word(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(c) if c.is_ascii_digit() => {
+            let word = match c {
+                '0' => "Zero",
+                '1' => "One",
+                '2' => "Two",
+                '3' => "Three",
+                '4' => "Four",
+                '5' => "Five",
+                '6' => "Six",
+                '7' => "Seven",
+                '8' => "Eight",
+                '9' => "Nine",
+                _ => unreachable!(),
+            };
+            format!("{}{}", word, chars.collect::<String>())
+        }
+        _ => s.to_string(),
+    }
 }
 
-fn doc_attrs(comment: &str) -> proc_macro2::TokenStream {
-    let comments: Vec<_> = comment
-        .trim()
-        .lines()
-        .map(|line| {
-            if line.starts_with(' ') {
-                quote! {
-                    #[doc = #line]
-                }
-            } else {
-                let padded = format!(" {}", line);
+fn escape_if_keyword(s: &str) -> String {
+    const KEYWORDS: &[&str] = &[
+        "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
+        "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
+        "return", "self", "Self", "static", "struct", "super", "trait", "true", "type", "unsafe",
+        "use", "where", "while", "async", "await", "dyn", "abstract", "become", "box", "do",
+        "final", "macro", "override", "priv", "try", "typeof", "unsized", "virtual", "yield",
+    ];
+
+    if KEYWORDS.contains(&s) {
+        format!("_{}", s)
+    } else {
+        s.to_string()
+    }
+}
+
+impl Item {
+    fn ident(&self) -> proc_macro2::TokenStream {
+        let name = self.label.value();
+        let name = replace_leading_digit_with_word(name);
+        let name = escape_if_keyword(&name);
+        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
+
+        quote! {
+            #name
+        }
+    }
+
+    fn doc_comment(&self) -> proc_macro2::TokenStream {
+        let comment = self.comment.value();
+
+        let comments: Vec<_> = comment
+            .trim()
+            .lines()
+            .map(|line| {
+                let padded = format!(" {}", line.trim());
                 quote! {
                     #[doc = #padded]
                 }
-            }
-        })
-        .collect();
+            })
+            .collect();
 
-    quote! {
-        #(#comments)*
+        quote! {
+            #(#comments)*
+        }
     }
+}
+
+mod constants {
+    pub const RDF_CLASS: &str = "rdfs:Class";
+    pub const RDF_PROPERTY: &str = "rdf:Property";
 }
 
 struct SchemaDefinitions {
@@ -287,14 +335,14 @@ impl SchemaDefinitions {
     fn enumerations_module(&self) -> proc_macro2::TokenStream {
         let enumeration_types = self.enumerations.iter().map(|(typ, variants)| {
             let enum_type = self.types.get(typ).unwrap();
-            let enum_name = enum_type.label.value();
-            let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
-            let enum_comment = doc_attrs(enum_type.comment.value());
+
+            let enum_name = enum_type.ident();
+            let enum_comment = enum_type.doc_comment();
 
             let variant_defs = variants.iter().map(|item| {
-                let variant_name = item.label.value();
-                let variant_name = syn::Ident::new(variant_name, proc_macro2::Span::call_site());
-                let variant_comment = doc_attrs(item.comment.value());
+                let variant_name = item.ident();
+                let variant_comment = item.doc_comment();
+
                 quote! {
                     #variant_comment
                     #variant_name
@@ -319,19 +367,15 @@ impl SchemaDefinitions {
         let enumeration_types = resolved.into_iter().map(|class| {
             let class_item = self.types.get(&class.type_id).unwrap();
 
-            let class_name = class_item.label.value();
-            let class_name = replace_leading_digit_with_word(class_name);
-            let class_name = syn::Ident::new(&class_name, proc_macro2::Span::call_site());
-            let class_comments = doc_attrs(class_item.comment.value());
+            let class_name = class_item.ident();
+            let class_comments = class_item.doc_comment();
 
             let field_defs = class.properties.iter().map(|item| {
                 let property = self.properties.get(item.first()).unwrap();
 
-                let property_name = property.label.value();
-                let property_name = escape_if_keyword(property_name);
-                let property_name = syn::Ident::new(&property_name, proc_macro2::Span::call_site());
+                let property_name = property.ident();
+                let property_comment = property.doc_comment();
 
-                let property_comment = doc_attrs(property.comment.value());
                 quote! {
                     #property_comment
                     #property_name: usize
@@ -349,45 +393,6 @@ impl SchemaDefinitions {
         quote! {
             #(#enumeration_types)*
         }
-    }
-}
-
-fn replace_leading_digit_with_word(s: &str) -> String {
-    let mut chars = s.chars();
-    match chars.next() {
-        Some(c) if c.is_ascii_digit() => {
-            let word = match c {
-                '0' => "Zero",
-                '1' => "One",
-                '2' => "Two",
-                '3' => "Three",
-                '4' => "Four",
-                '5' => "Five",
-                '6' => "Six",
-                '7' => "Seven",
-                '8' => "Eight",
-                '9' => "Nine",
-                _ => unreachable!(),
-            };
-            format!("{}{}", word, chars.collect::<String>())
-        }
-        _ => s.to_string(),
-    }
-}
-
-fn escape_if_keyword(s: &str) -> String {
-    const KEYWORDS: &[&str] = &[
-        "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
-        "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
-        "return", "self", "Self", "static", "struct", "super", "trait", "true", "type", "unsafe",
-        "use", "where", "while", "async", "await", "dyn", "abstract", "become", "box", "do",
-        "final", "macro", "override", "priv", "try", "typeof", "unsized", "virtual", "yield",
-    ];
-
-    if KEYWORDS.contains(&s) {
-        format!("_{}", s)
-    } else {
-        s.to_string()
     }
 }
 
