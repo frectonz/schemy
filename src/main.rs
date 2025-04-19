@@ -392,8 +392,13 @@ impl SchemaDefinitions {
 
                 let property_type = match range_includes {
                     ItemRef::Single(item_id) => {
-                        let class_name =
-                            self.types.get(&item_id.item_id).map(|class| class.ident());
+                        let class_name = self.types.get(&item_id.item_id).map(|class| {
+                            if self.enumerations.get(&class.id.item_id).is_some() {
+                                class.enum_ident()
+                            } else {
+                                class.ident()
+                            }
+                        });
 
                         class_name
                     }
