@@ -220,6 +220,26 @@ impl Item {
 mod constants {
     pub const RDF_CLASS: &str = "rdfs:Class";
     pub const RDF_PROPERTY: &str = "rdf:Property";
+
+    pub fn basic_type_to_rust(basic: &str) -> Option<proc_macro2::TokenStream> {
+        use quote::quote;
+
+        match basic {
+            "schema:DataType" => Some(quote! { Box<str> }),
+            "schema:Boolean" => Some(quote! { Box<str> }),
+            "schema:Date" => Some(quote! { Box<str> }),
+            "schema:DateTime" => Some(quote! { Box<str> }),
+            "schema:Number" => Some(quote! { f32}),
+            "schema:Float" => Some(quote! { f32 }),
+            "schema:Integer" => Some(quote! { i32 }),
+            "schema:Text" => Some(quote! { Box<str> }),
+            "schema:CssSelectorType" => Some(quote! { Box<str> }),
+            "schema:XPathType" => Some(quote! { Box<str> }),
+            "schema:URL" => Some(quote! { Box<str> }),
+            "schema:Time" => Some(quote! { Box<str> }),
+            _ => None,
+        }
+    }
 }
 
 struct SchemaDefinitions {
@@ -385,7 +405,11 @@ impl SchemaDefinitions {
     fn types_module(&self) -> proc_macro2::TokenStream {
         let resolved = self.resolve_properties();
 
-        let types = resolved.into_iter().map(|class| {
+        let types = resolved.into_iter().filter_map(|class| {
+            if constants::basic_type_to_rust(&class.type_id).is_some() {
+                return None;
+            }
+
             let class_item = self.types.get(&class.type_id).unwrap();
 
             let class_name = class_item.ident();
@@ -401,19 +425,16 @@ impl SchemaDefinitions {
 
                 let property_type = match range_includes {
                     ItemRef::Single(item_id) => {
-                        let class_name = self
-                            .types
-                            .get(&item_id.item_id)
-                            .map(|class| {
-                                if self.enumerations.get(&class.id.item_id).is_some() {
-                                    class.enum_ident()
-                                } else {
-                                    class.ident()
-                                }
-                            })
-                            .unwrap();
+                        let basic_type = constants::basic_type_to_rust(&item_id.item_id);
+                        let class_name = self.types.get(&item_id.item_id).map(|class| {
+                            if self.enumerations.get(&class.id.item_id).is_some() {
+                                class.enum_ident()
+                            } else {
+                                class.ident()
+                            }
+                        });
 
-                        class_name
+                        basic_type.or(class_name).unwrap()
                     }
                     ItemRef::List(_) => {
                         let type_name = class_name.to_string();
@@ -454,18 +475,21 @@ impl SchemaDefinitions {
                             let variant_defs = item_ids.into_iter().map(|item| {
                                 let item = self.types.get(&item.item_id).unwrap();
 
-                                let variant_name =
-                                    if self.enumerations.get(&item.id.item_id).is_some() {
-                                        item.enum_ident()
-                                    } else {
-                                        item.ident()
-                                    };
+                                let (variant_name, variant_type) = if let Some(basic_type) =
+                                    constants::basic_type_to_rust(&item.id.item_id)
+                                {
+                                    (item.ident(), basic_type)
+                                } else if self.enumerations.get(&item.id.item_id).is_some() {
+                                    (item.enum_ident(), item.enum_ident())
+                                } else {
+                                    (item.ident(), item.ident())
+                                };
 
                                 let variant_comment = item.doc_comment();
 
                                 quote! {
                                     #variant_comment
-                                    #variant_name(Box<#variant_name>)
+                                    #variant_name(Box<#variant_type>)
                                 }
                             });
 
@@ -482,14 +506,14 @@ impl SchemaDefinitions {
                 })
                 .collect();
 
-            quote! {
+            Some(quote! {
                 #(#range_enums)*
 
                 #class_comments
                 pub struct #class_name {
                     #(#field_defs),*
                 }
-            }
+            })
         });
 
         quote! {
@@ -499,14 +523,17 @@ impl SchemaDefinitions {
 
     fn all_types(&self) -> proc_macro2::TokenStream {
         let variant_defs = self.types.values().map(|enum_type| {
-            let variant_name = if self.enumerations.get(&enum_type.id.item_id).is_some() {
-                enum_type.enum_ident()
-            } else {
-                enum_type.ident()
-            };
+            let (variant_name, variant_type) =
+                if let Some(basic_type) = constants::basic_type_to_rust(&enum_type.id.item_id) {
+                    (enum_type.ident(), basic_type)
+                } else if self.enumerations.get(&enum_type.id.item_id).is_some() {
+                    (enum_type.enum_ident(), enum_type.enum_ident())
+                } else {
+                    (enum_type.ident(), enum_type.ident())
+                };
 
             quote! {
-                #variant_name(Box<#variant_name>)
+                #variant_name(Box<#variant_type>)
             }
         });
 
