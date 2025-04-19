@@ -496,6 +496,31 @@ impl SchemaDefinitions {
             #(#types)*
         }
     }
+
+    fn all_types(&self) -> proc_macro2::TokenStream {
+        let variant_defs = self.types.iter().map(|(typ, variants)| {
+            let enum_type = self.types.get(typ).unwrap();
+
+            let enum_name = enum_type.enum_ident();
+
+            let variant_name = if self.enumerations.get(typ).is_some() {
+                enum_type.enum_ident()
+            } else {
+                enum_type.ident()
+            };
+
+            quote! {
+                #variant_name(Box<#variant_name>)
+            }
+        });
+
+        quote! {
+            /// All schema.org types
+            pub enum SchemaOrg {
+                #(#variant_defs),*
+            }
+        }
+    }
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -503,6 +528,7 @@ fn main() -> color_eyre::Result<()> {
 
     let enumerations = definitions.enumerations_module();
     let types = definitions.types_module();
+    let all_types = definitions.all_types();
 
     let file = quote! {
         #![allow(non_snake_case)]
@@ -514,6 +540,7 @@ fn main() -> color_eyre::Result<()> {
 
         #enumerations
         #types
+        #all_types
     };
 
     let syntax_tree: syn::File = syn::parse2(file).expect("Failed to parse tokens");
