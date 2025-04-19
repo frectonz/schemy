@@ -133,6 +133,7 @@ mod constants {
 
 fn doc_attrs(comment: &str) -> proc_macro2::TokenStream {
     let comments: Vec<_> = comment
+        .trim()
         .lines()
         .map(|line| {
             if line.starts_with(' ') {
@@ -159,54 +160,12 @@ struct SchemaDefinitions {
     enumerations: IndexMap<Str, Vec<Arc<Item>>>,
 }
 
-fn read_definitions() -> color_eyre::Result<SchemaDefinitions> {
-    let file = std::fs::read_to_string("schema/schemaorg-current-https.jsonld")?;
-    let schema: SchemaOrgDefinition = serde_json::from_str(&file)?;
-
-    let mut types = IndexMap::new();
-    let mut properties = IndexMap::new();
-    let mut enumerations = IndexMap::new();
-
-    for item in schema.graph {
-        if item.item_type.includes(constants::RDF_CLASS) {
-            types.insert(item.id.item_id.clone(), item);
-        } else if item.item_type.includes(constants::RDF_PROPERTY) {
-            properties.insert(item.id.item_id.clone(), item);
-        } else {
-            let item = Arc::new(item);
-            match &item.item_type {
-                ItemType::Single(typ) => {
-                    enumerations
-                        .entry(typ.clone())
-                        .and_modify(|x| Vec::push(x, item.clone()))
-                        .or_insert_with(|| vec![item.clone()]);
-                }
-                ItemType::List(typs) => {
-                    let typs = typs.clone();
-                    for typ in typs {
-                        enumerations
-                            .entry(typ)
-                            .and_modify(|x| Vec::push(x, item.clone()))
-                            .or_insert_with(|| vec![item.clone()]);
-                    }
-                }
-            }
-        }
-    }
-
-    Ok(SchemaDefinitions {
-        types,
-        properties,
-        enumerations,
-    })
-}
-
 type ResolvedTypes = Vec<ResolvedType>;
 
 #[derive(Debug)]
 struct ResolvedType {
     type_id: Str,
-    properties: Vec<ResolvedPropertyType>,
+    properties: HashSet<ResolvedPropertyType>,
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
@@ -215,107 +174,238 @@ enum ResolvedPropertyType {
     Aliased(List<Str>),
 }
 
-fn resolve_properties(definitions: &SchemaDefinitions) -> Result<ResolvedTypes> {
-    let mut resolved_props: IndexMap<Str, Vec<ResolvedPropertyType>> = IndexMap::new();
+impl ResolvedPropertyType {
+    fn first(&self) -> &str {
+        match self {
+            ResolvedPropertyType::Single(field) => &field,
+            ResolvedPropertyType::Aliased(items) => items.first().unwrap(),
+        }
+    }
+}
 
-    for (type_id, _type_item) in &definitions.types {
-        let mut all_props_set = HashSet::new();
-        let mut types_to_visit = vec![type_id.clone()];
-        let mut visited_types = HashSet::new();
+impl SchemaDefinitions {
+    fn read() -> Result<SchemaDefinitions> {
+        let file = std::fs::read_to_string("schema/schemaorg-current-https.jsonld")?;
+        let schema: SchemaOrgDefinition = serde_json::from_str(&file)?;
 
-        while let Some(current_type_id) = types_to_visit.pop() {
-            // Avoid cycles
-            if !visited_types.insert(current_type_id.clone()) {
-                continue;
-            }
+        let mut types = IndexMap::new();
+        let mut properties = IndexMap::new();
+        let mut enumerations = IndexMap::new();
 
-            // Find properties directly associated with the current type
-            for (prop_id, prop_item) in &definitions.properties {
-                if let Some(domain_ref) = &prop_item.domain_includes {
-                    if domain_ref.get_ids().contains(&current_type_id.as_ref()) {
-                        let current_prop = prop_id.clone();
-                        if let Some(item) = &prop_item.superseded_by {
-                            all_props_set.insert(ResolvedPropertyType::Aliased(Box::new([
-                                current_prop,
-                                item.item_id.clone(),
-                            ])));
-                        } else {
-                            all_props_set.insert(ResolvedPropertyType::Single(current_prop));
+        for item in schema.graph {
+            if item.item_type.includes(constants::RDF_CLASS) {
+                types.insert(item.id.item_id.clone(), item);
+            } else if item.item_type.includes(constants::RDF_PROPERTY) {
+                properties.insert(item.id.item_id.clone(), item);
+            } else {
+                let item = Arc::new(item);
+                match &item.item_type {
+                    ItemType::Single(typ) => {
+                        enumerations
+                            .entry(typ.clone())
+                            .and_modify(|x| Vec::push(x, item.clone()))
+                            .or_insert_with(|| vec![item.clone()]);
+                    }
+                    ItemType::List(typs) => {
+                        let typs = typs.clone();
+                        for typ in typs {
+                            enumerations
+                                .entry(typ)
+                                .and_modify(|x| Vec::push(x, item.clone()))
+                                .or_insert_with(|| vec![item.clone()]);
                         }
                     }
                 }
             }
-
-            // Add parents to the visit list
-            if let Some(current_type_item) = definitions.types.get(&current_type_id) {
-                if let Some(parent_ref) = &current_type_item.sub_class_of {
-                    types_to_visit.extend(
-                        parent_ref
-                            .get_ids()
-                            .into_iter()
-                            .map(|id_str| id_str.to_owned().into_boxed_str()),
-                    );
-                }
-            }
         }
 
-        // Convert HashSet to Vec for stable order (optional, could sort later)
-        resolved_props.insert(type_id.clone(), all_props_set.into_iter().collect());
+        Ok(SchemaDefinitions {
+            types,
+            properties,
+            enumerations,
+        })
     }
 
-    let types: Vec<_> = resolved_props
-        .into_iter()
-        .map(|(key, value)| ResolvedType {
-            type_id: key,
-            properties: value,
-        })
-        .collect();
+    fn resolve_properties(&self) -> ResolvedTypes {
+        let mut resolved_props: IndexMap<Str, HashSet<ResolvedPropertyType>> = IndexMap::new();
 
-    Ok(types)
+        for (type_id, _type_item) in &self.types {
+            let mut all_props_set = HashSet::new();
+            let mut types_to_visit = vec![type_id.clone()];
+            let mut visited_types = HashSet::new();
+
+            while let Some(current_type_id) = types_to_visit.pop() {
+                // Avoid cycles
+                if !visited_types.insert(current_type_id.clone()) {
+                    continue;
+                }
+
+                // Find properties directly associated with the current type
+                for (prop_id, prop_item) in &self.properties {
+                    if let Some(domain_ref) = &prop_item.domain_includes {
+                        if domain_ref.get_ids().contains(&current_type_id.as_ref()) {
+                            let current_prop = prop_id.clone();
+                            if let Some(item) = &prop_item.superseded_by {
+                                all_props_set.insert(ResolvedPropertyType::Aliased(Box::new([
+                                    current_prop,
+                                    item.item_id.clone(),
+                                ])));
+                            } else {
+                                all_props_set.insert(ResolvedPropertyType::Single(current_prop));
+                            }
+                        }
+                    }
+                }
+
+                // Add parents to the visit list
+                if let Some(current_type_item) = self.types.get(&current_type_id) {
+                    if let Some(parent_ref) = &current_type_item.sub_class_of {
+                        types_to_visit.extend(
+                            parent_ref
+                                .get_ids()
+                                .into_iter()
+                                .map(|id_str| id_str.to_owned().into_boxed_str()),
+                        );
+                    }
+                }
+            }
+
+            resolved_props.insert(type_id.clone(), all_props_set);
+        }
+
+        let types: Vec<_> = resolved_props
+            .into_iter()
+            .map(|(key, value)| ResolvedType {
+                type_id: key,
+                properties: value,
+            })
+            .collect();
+
+        types
+    }
+
+    fn enumerations_module(&self) -> proc_macro2::TokenStream {
+        let enumeration_types = self.enumerations.iter().map(|(typ, variants)| {
+            let enum_type = self.types.get(typ).unwrap();
+            let enum_name = enum_type.label.value();
+            let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
+            let enum_comment = doc_attrs(enum_type.comment.value());
+
+            let variant_defs = variants.iter().map(|item| {
+                let variant_name = item.label.value();
+                let variant_name = syn::Ident::new(variant_name, proc_macro2::Span::call_site());
+                let variant_comment = doc_attrs(item.comment.value());
+                quote! {
+                    #variant_comment
+                    #variant_name
+                }
+            });
+
+            quote! {
+                #enum_comment
+                pub enum #enum_name {
+                    #(#variant_defs),*
+                }
+            }
+        });
+
+        quote! {
+            #(#enumeration_types)*
+        }
+    }
+
+    fn types_module(&self) -> proc_macro2::TokenStream {
+        let resolved = self.resolve_properties();
+        let enumeration_types = resolved.into_iter().map(|class| {
+            let class_item = self.types.get(&class.type_id).unwrap();
+
+            let class_name = class_item.label.value();
+            let class_name = replace_leading_digit_with_word(class_name);
+            let class_name = syn::Ident::new(&class_name, proc_macro2::Span::call_site());
+            let class_comments = doc_attrs(class_item.comment.value());
+
+            let field_defs = class.properties.iter().map(|item| {
+                let property = self.properties.get(item.first()).unwrap();
+
+                let property_name = property.label.value();
+                let property_name = escape_if_keyword(property_name);
+                let property_name = syn::Ident::new(&property_name, proc_macro2::Span::call_site());
+
+                let property_comment = doc_attrs(property.comment.value());
+                quote! {
+                    #property_comment
+                    #property_name: usize
+                }
+            });
+
+            quote! {
+                #class_comments
+                pub struct #class_name {
+                    #(#field_defs),*
+                }
+            }
+        });
+
+        quote! {
+            #(#enumeration_types)*
+        }
+    }
+}
+
+fn replace_leading_digit_with_word(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(c) if c.is_ascii_digit() => {
+            let word = match c {
+                '0' => "Zero",
+                '1' => "One",
+                '2' => "Two",
+                '3' => "Three",
+                '4' => "Four",
+                '5' => "Five",
+                '6' => "Six",
+                '7' => "Seven",
+                '8' => "Eight",
+                '9' => "Nine",
+                _ => unreachable!(),
+            };
+            format!("{}{}", word, chars.collect::<String>())
+        }
+        _ => s.to_string(),
+    }
+}
+
+fn escape_if_keyword(s: &str) -> String {
+    const KEYWORDS: &[&str] = &[
+        "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
+        "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
+        "return", "self", "Self", "static", "struct", "super", "trait", "true", "type", "unsafe",
+        "use", "where", "while", "async", "await", "dyn", "abstract", "become", "box", "do",
+        "final", "macro", "override", "priv", "try", "typeof", "unsized", "virtual", "yield",
+    ];
+
+    if KEYWORDS.contains(&s) {
+        format!("_{}", s)
+    } else {
+        s.to_string()
+    }
 }
 
 fn main() -> color_eyre::Result<()> {
-    // let SchemaDefinitions {
-    //     types,
-    //     properties,
-    //     enumerations,
-    // } = read_definitions()?;
+    let definitions = SchemaDefinitions::read()?;
 
-    let out = resolve_properties(&read_definitions()?)?;
-    dbg!(out);
+    let enumerations = definitions.enumerations_module();
+    let types = definitions.types_module();
 
-    // let enumeration_types = enumerations.iter().map(|(typ, variants)| {
-    //     let enum_type = types.get(typ).unwrap();
-    //     let enum_name = enum_type.label.value();
-    //     let enum_name = syn::Ident::new(enum_name, proc_macro2::Span::call_site());
-    //     let enum_comment = doc_attrs(enum_type.comment.value());
+    let file = quote! {
+        #enumerations
+        #types
+    };
 
-    //     let variant_defs = variants.iter().map(|item| {
-    //         let variant_name = item.label.value();
-    //         let variant_name = syn::Ident::new(variant_name, proc_macro2::Span::call_site());
-    //         let variant_comment = doc_attrs(item.comment.value());
-    //         quote! {
-    //             #variant_comment
-    //             #variant_name
-    //         }
-    //     });
+    let syntax_tree: syn::File = syn::parse2(file).expect("Failed to parse tokens");
+    let file = prettyplease::unparse(&syntax_tree);
 
-    //     quote! {
-    //         #enum_comment
-    //         pub enum #enum_name {
-    //             #(#variant_defs),*
-    //         }
-    //     }
-    // });
-
-    // let enumerations_module = quote! {
-    //     #(#enumeration_types)*
-    // };
-
-    // let syntax_tree: syn::File = syn::parse2(enumerations_module).expect("Failed to parse tokens");
-    // let out = prettyplease::unparse(&syntax_tree);
-
-    // println!("{out}");
+    println!("{file}");
 
     Ok(())
 }
