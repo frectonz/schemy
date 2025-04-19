@@ -5,6 +5,14 @@ use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
+fn capitalize(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
+    }
+}
+
 type Str = Box<str>;
 type List<T> = Box<[T]>;
 
@@ -376,7 +384,8 @@ impl SchemaDefinitions {
 
     fn types_module(&self) -> proc_macro2::TokenStream {
         let resolved = self.resolve_properties();
-        let enumeration_types = resolved.into_iter().map(|class| {
+
+        let types = resolved.into_iter().map(|class| {
             let class_item = self.types.get(&class.type_id).unwrap();
 
             let class_name = class_item.ident();
@@ -392,27 +401,90 @@ impl SchemaDefinitions {
 
                 let property_type = match range_includes {
                     ItemRef::Single(item_id) => {
-                        let class_name = self.types.get(&item_id.item_id).map(|class| {
-                            if self.enumerations.get(&class.id.item_id).is_some() {
-                                class.enum_ident()
-                            } else {
-                                class.ident()
-                            }
-                        });
+                        let class_name = self
+                            .types
+                            .get(&item_id.item_id)
+                            .map(|class| {
+                                if self.enumerations.get(&class.id.item_id).is_some() {
+                                    class.enum_ident()
+                                } else {
+                                    class.ident()
+                                }
+                            })
+                            .unwrap();
 
                         class_name
                     }
-                    ItemRef::List(item_ids) => None,
-                }
-                .unwrap_or(quote! { usize });
+                    ItemRef::List(_) => {
+                        let type_name = class_name.to_string();
+                        let capitalized_field_name = capitalize(property.label.value());
+
+                        let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
+                        let enum_name = syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
+
+                        quote! { #enum_name }
+                    }
+                };
 
                 quote! {
                     #property_comment
-                    #property_name: SingleOrList<#property_type>
+                    pub #property_name: SingleOrList<Box<#property_type>>
                 }
             });
 
+            let range_enums: Vec<_> = class
+                .properties
+                .iter()
+                .filter_map(|item| {
+                    let property = self.properties.get(item.first()).unwrap();
+
+                    let property_comment = property.doc_comment();
+                    let range_includes = property.range_includes.as_ref().unwrap();
+
+                    match range_includes {
+                        ItemRef::Single(_) => None,
+                        ItemRef::List(item_ids) => {
+                            let type_name = class_name.to_string();
+                            let capitalized_field_name = capitalize(property.label.value());
+
+                            let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
+                            let enum_name =
+                                syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
+
+                            let variant_defs = item_ids.into_iter().map(|item| {
+                                let item = self.types.get(&item.item_id).unwrap();
+
+                                let variant_name =
+                                    if self.enumerations.get(&item.id.item_id).is_some() {
+                                        item.enum_ident()
+                                    } else {
+                                        item.ident()
+                                    };
+
+                                let variant_comment = item.doc_comment();
+
+                                quote! {
+                                    #variant_comment
+                                    #variant_name(#variant_name)
+                                }
+                            });
+
+                            let field_enum = quote! {
+                                #property_comment
+                                pub enum #enum_name {
+                                    #(#variant_defs),*
+                                }
+                            };
+
+                            Some(field_enum)
+                        }
+                    }
+                })
+                .collect();
+
             quote! {
+                #(#range_enums)*
+
                 #class_comments
                 pub struct #class_name {
                     #(#field_defs),*
@@ -421,7 +493,7 @@ impl SchemaDefinitions {
         });
 
         quote! {
-            #(#enumeration_types)*
+            #(#types)*
         }
     }
 }
@@ -433,7 +505,9 @@ fn main() -> color_eyre::Result<()> {
     let types = definitions.types_module();
 
     let file = quote! {
-        enum SingleOrList<T> {
+        #![allow(non_snake_case)]
+
+        pub enum SingleOrList<T> {
             Single(T),
             List(Box<[T]>),
         }
