@@ -391,6 +391,8 @@ impl SchemaDefinitions {
 
             quote! {
                 #enum_comment
+                #[derive(Deserialize, Debug)]
+                #[serde(untagged)]
                 pub enum #enum_name {
                     #(#variant_defs),*
                 }
@@ -495,6 +497,8 @@ impl SchemaDefinitions {
 
                             let field_enum = quote! {
                                 #property_comment
+                                #[derive(Deserialize, Debug)]
+                                #[serde(untagged)]
                                 pub enum #enum_name {
                                     #(#variant_defs),*
                                 }
@@ -510,7 +514,10 @@ impl SchemaDefinitions {
                 #(#range_enums)*
 
                 #class_comments
+                #[derive(Deserialize, Debug)]
                 pub struct #class_name {
+                    #[serde(rename = "@context")]
+                    context: Box<str>,
                     #(#field_defs),*
                 }
             })
@@ -539,6 +546,8 @@ impl SchemaDefinitions {
 
         quote! {
             /// All schema.org types
+            #[derive(Deserialize, Debug)]
+            #[serde(tag = "@type")]
             pub enum SchemaOrg {
                 #(#variant_defs),*
             }
@@ -555,7 +564,10 @@ fn main() -> color_eyre::Result<()> {
 
     let file = quote! {
         #![allow(non_snake_case)]
+        use serde::Deserialize;
 
+        #[derive(Deserialize, Debug)]
+        #[serde(untagged)]
         pub enum SingleOrList<T> {
             Single(T),
             List(Box<[T]>),
