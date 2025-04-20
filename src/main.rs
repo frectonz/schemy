@@ -3,9 +3,10 @@ use std::{borrow::Cow, collections::HashSet, sync::Arc};
 use color_eyre::Result;
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
-use proc_macro2::TokenStream;
+use proc_macro2::{Span, TokenStream};
 use quote::{format_ident, quote};
 use serde::Deserialize;
+use syn::Ident;
 
 type Str = Box<str>;
 type List<T> = Box<[T]>;
@@ -225,33 +226,33 @@ mod string_helpers {
 use string_helpers::*;
 
 impl Item {
-    fn ident(&self) -> proc_macro2::TokenStream {
+    fn ident(&self) -> TokenStream {
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
         let name = escape_if_keyword(name);
-        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
+        let name = Ident::new(&name, Span::call_site());
 
         quote! {
             #name
         }
     }
 
-    fn enum_ident(&self) -> proc_macro2::TokenStream {
+    fn enum_ident(&self) -> TokenStream {
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
         let name = escape_if_keyword(name);
         let name = format!("{name}Enum");
         let name = Cow::Owned(name);
-        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
+        let name = Ident::new(&name, Span::call_site());
 
         quote! {
             #name
         }
     }
 
-    fn snake_case_ident(&self) -> syn::Ident {
+    fn snake_case_ident(&self) -> Ident {
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
@@ -259,10 +260,10 @@ impl Item {
         let name = Cow::Owned(name);
         let name = escape_if_keyword(name);
 
-        syn::Ident::new(&name, proc_macro2::Span::call_site())
+        Ident::new(&name, Span::call_site())
     }
 
-    fn doc_comment(&self) -> proc_macro2::TokenStream {
+    fn doc_comment(&self) -> TokenStream {
         let comment = self.comment.value();
 
         let comments = comment.trim().lines().map(|line| line.trim()).map(|line| {
@@ -283,9 +284,7 @@ mod constants {
     pub const RDF_PROPERTY: &str = "rdf:Property";
 }
 
-fn basic_type_to_rust(basic: &str) -> Option<proc_macro2::TokenStream> {
-    use quote::quote;
-
+fn basic_type_to_rust(basic: &str) -> Option<TokenStream> {
     match basic {
         "schema:DataType" => Some(quote! { Box<str> }),
         "schema:Boolean" => Some(quote! { Box<str> }),
@@ -303,10 +302,10 @@ fn basic_type_to_rust(basic: &str) -> Option<proc_macro2::TokenStream> {
     }
 }
 
-fn field_enum_name(type_name: String, property_name: &str) -> syn::Ident {
+fn field_enum_name(type_name: String, property_name: &str) -> Ident {
     let capitalized_field_name = capitalize(Cow::Borrowed(property_name));
     let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
-    syn::Ident::new(&enum_name, proc_macro2::Span::call_site())
+    Ident::new(&enum_name, Span::call_site())
 }
 
 struct SchemaDefinitions {
@@ -489,7 +488,7 @@ impl SchemaDefinitions {
         class_name
     }
 
-    fn types_module(&self) -> impl Iterator<Item = (syn::Ident, proc_macro2::TokenStream)> {
+    fn types_module(&self) -> impl Iterator<Item = (Ident, TokenStream)> {
         let resolved = self.resolve_properties();
 
         resolved.into_iter().filter_map(|class| {
@@ -642,81 +641,78 @@ impl SchemaDefinitions {
     }
 }
 
-fn main() -> color_eyre::Result<()> {
+fn write_to_file(path: &str, tokens: TokenStream) -> Result<()> {
+    let file: syn::File = syn::parse2(tokens).expect("Failed to parse tokens");
+    let file = prettyplease::unparse(&file);
+
+    std::fs::write(path, file)?;
+
+    Ok(())
+}
+
+fn main() -> Result<()> {
     let definitions = SchemaDefinitions::read()?;
 
-    let schema_module = quote! {
-        #[derive(Debug, serde::Deserialize, uniffi::Enum)]
-        pub enum SchemaValue<T> {
-            Single(Option<Box<T>>),
-            List(Box<[T]>),
-        }
-    };
-    let schema_module: syn::File = syn::parse2(schema_module).expect("Failed to parse tokens");
-    let schema_module = prettyplease::unparse(&schema_module);
-
-    std::fs::write("schemy-test/src/value.rs", schema_module)?;
+    write_to_file(
+        "schemy-test/src/value.rs",
+        quote! {
+            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+            pub enum SchemaValue<T> {
+                Single(Option<Box<T>>),
+                List(Box<[T]>),
+            }
+        },
+    )?;
 
     let enumerations = definitions.enumerations_module();
-    let enumerations_module = quote! {
-        #enumerations
-    };
-    let enumerations_module: syn::File =
-        syn::parse2(enumerations_module).expect("Failed to parse tokens");
-    let enumerations_module = prettyplease::unparse(&enumerations_module);
-
-    std::fs::write("schemy-test/src/enums.rs", enumerations_module)?;
+    write_to_file("schemy-test/src/enums.rs", enumerations)?;
 
     let types = definitions.types_module();
 
     let mut type_module = Vec::new();
 
     for (typ_name, typ) in types {
-        let types_module = quote! {
-            use crate::*;
+        let filename = format!("schemy-test/src/{typ_name}.rs");
+        write_to_file(
+            &filename,
+            quote! {
+                use crate::*;
 
-            #typ
-        };
-        let types_module: syn::File = syn::parse2(types_module).expect("Failed to parse tokens");
-        let types_module = prettyplease::unparse(&types_module);
+                #typ
+            },
+        )?;
 
         type_module.push(quote! {
             mod #typ_name;
             pub use #typ_name::*;
         });
-
-        let filename = format!("schemy-test/src/{typ_name}.rs");
-        std::fs::write(filename, types_module)?;
     }
 
     let all_types = definitions.all_types();
-    let all_types_module = quote! {
-        use crate::*;
+    write_to_file(
+        "schemy-test/src/all.rs",
+        quote! {
+            use crate::*;
 
-        #all_types
-    };
-    let all_types_module: syn::File =
-        syn::parse2(all_types_module).expect("Failed to parse tokens");
-    let all_types_module = prettyplease::unparse(&all_types_module);
+            #all_types
+        },
+    )?;
 
-    std::fs::write("schemy-test/src/all.rs", all_types_module)?;
+    write_to_file(
+        "schemy-test/src/lib.rs",
+        quote! {
+            mod value;
+            pub use value::*;
 
-    let lib_rs = quote! {
-        mod value;
-        pub use value::*;
+            mod enums;
+            pub use enums::*;
 
-        mod enums;
-        pub use enums::*;
+            mod all;
+            pub use all::*;
 
-        mod all;
-        pub use all::*;
-
-        #(#type_module)*
-    };
-    let lib_rs: syn::File = syn::parse2(lib_rs).expect("Failed to parse tokens");
-    let lib_rs = prettyplease::unparse(&lib_rs);
-
-    std::fs::write("schemy-test/src/lib.rs", lib_rs)?;
+            #(#type_module)*
+        },
+    )?;
 
     Ok(())
 }
