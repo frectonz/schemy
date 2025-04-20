@@ -1,18 +1,11 @@
-use std::{collections::HashSet, sync::Arc};
+use std::{borrow::Cow, collections::HashSet, sync::Arc};
 
 use color_eyre::Result;
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
+use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use serde::Deserialize;
-
-fn capitalize(s: &str) -> String {
-    let mut chars = s.chars();
-    match chars.next() {
-        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
-        None => String::new(),
-    }
-}
 
 type Str = Box<str>;
 type List<T> = Box<[T]>;
@@ -39,11 +32,17 @@ pub enum ItemRef {
 }
 
 impl ItemRef {
-    /// Helper to get just the ID strings from an ItemRef
-    pub fn get_ids(&self) -> Vec<&str> {
+    pub fn get_ids(&self) -> Box<dyn Iterator<Item = Str> + '_> {
         match self {
-            ItemRef::Single(item) => vec![&item.item_id],
-            ItemRef::List(items) => items.iter().map(|item| item.item_id.as_ref()).collect(),
+            ItemRef::Single(item) => Box::new(std::iter::once(item.item_id.clone())),
+            ItemRef::List(items) => Box::new(items.iter().map(|item| item.item_id.clone())),
+        }
+    }
+
+    pub fn includes(&self, item_ref: &str) -> bool {
+        match self {
+            ItemRef::Single(item) => item.item_id.as_ref() == item_ref,
+            ItemRef::List(items) => items.iter().any(|item| item.item_id.as_ref() == item_ref),
         }
     }
 }
@@ -135,62 +134,102 @@ pub struct Item {
     pub equivalent_property: Option<ItemId>,
 }
 
-fn replace_leading_digit_with_word(s: &str) -> String {
-    let mut chars = s.chars();
-    match chars.next() {
-        Some(c) if c.is_ascii_digit() => {
-            let word = match c {
-                '0' => "Zero",
-                '1' => "One",
-                '2' => "Two",
-                '3' => "Three",
-                '4' => "Four",
-                '5' => "Five",
-                '6' => "Six",
-                '7' => "Seven",
-                '8' => "Eight",
-                '9' => "Nine",
-                _ => unreachable!(),
-            };
-            format!("{}{}", word, chars.collect::<String>())
+mod string_helpers {
+    use std::{borrow::Cow, collections::HashSet, sync::LazyLock};
+
+    pub fn capitalize(s: Cow<'_, str>) -> Cow<'_, str> {
+        let mut chars = s.chars();
+
+        match chars.next() {
+            None => Cow::Borrowed(""),
+
+            Some(first) => {
+                let mut upper_iter = first.to_uppercase();
+                let first_upper_char = upper_iter.next();
+
+                if let Some(first_upper_char) = first_upper_char {
+                    // Check if there's a second char (like in 'ß' -> "SS")
+                    if upper_iter.next().is_none() && first_upper_char == first {
+                        return s;
+                    }
+                }
+
+                let remainder = chars.as_str();
+
+                // Estimate capacity (allow a bit extra for potential expansion like 'ß'->'SS')
+                let mut result = String::with_capacity(s.len() + 3);
+
+                result.extend(first_upper_char);
+                result.push_str(remainder);
+
+                Cow::Owned(result)
+            }
         }
-        _ => s.to_string(),
+    }
+
+    pub fn replace_leading_digit_with_word(s: Cow<'_, str>) -> Cow<'_, str> {
+        if s.bytes().next().is_none_or(|b| !b.is_ascii_digit()) {
+            s
+        } else {
+            let mut chars = s.chars();
+            let first_char = chars.next();
+
+            let word = match first_char {
+                Some('0') => "Zero",
+                Some('1') => "One",
+                Some('2') => "Two",
+                Some('3') => "Three",
+                Some('4') => "Four",
+                Some('5') => "Five",
+                Some('6') => "Six",
+                Some('7') => "Seven",
+                Some('8') => "Eight",
+                Some('9') => "Nine",
+                _ => return s,
+            };
+
+            let remainder = chars.as_str();
+
+            let capacity = word.len() + remainder.len();
+            let mut result = String::with_capacity(capacity);
+            result.push_str(word);
+            result.push_str(remainder);
+
+            Cow::Owned(result)
+        }
+    }
+
+    static KEYWORD_SET: LazyLock<HashSet<&'static str>> = LazyLock::new(|| {
+        [
+            "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
+            "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
+            "return", "self", "Self", "static", "struct", "super", "trait", "true", "type",
+            "unsafe", "use", "where", "while", "async", "await", "dyn", "abstract", "become",
+            "box", "do", "final", "macro", "override", "priv", "try", "typeof", "unsized",
+            "virtual", "yield",
+        ]
+        .into_iter()
+        .collect()
+    });
+
+    pub fn escape_if_keyword(s: Cow<'_, str>) -> Cow<'_, str> {
+        if KEYWORD_SET.contains(s.as_ref()) {
+            let escaped_string = format!("_{}", s);
+            Cow::Owned(escaped_string)
+        } else {
+            s
+        }
     }
 }
 
-fn escape_if_keyword(s: &str) -> String {
-    const KEYWORDS: &[&str] = &[
-        "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
-        "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
-        "return", "self", "Self", "static", "struct", "super", "trait", "true", "type", "unsafe",
-        "use", "where", "while", "async", "await", "dyn", "abstract", "become", "box", "do",
-        "final", "macro", "override", "priv", "try", "typeof", "unsized", "virtual", "yield",
-    ];
-
-    if KEYWORDS.contains(&s) {
-        format!("_{}", s)
-    } else {
-        s.to_string()
-    }
-}
+use string_helpers::*;
 
 impl Item {
     fn ident(&self) -> proc_macro2::TokenStream {
         let name = self.label.value();
+        let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
-        let name = escape_if_keyword(&name);
-        let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
-
-        quote! {
-            #name
-        }
-    }
-
-    fn snake_case_ident(&self) -> proc_macro2::TokenStream {
-        let name = self.label.value();
-        let name = replace_leading_digit_with_word(name);
-        let name = name.to_snake_case();
-        let name = escape_if_keyword(&name);
+        let name = escape_if_keyword(name);
         let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
 
         quote! {
@@ -200,9 +239,11 @@ impl Item {
 
     fn enum_ident(&self) -> proc_macro2::TokenStream {
         let name = self.label.value();
+        let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
-        let name = escape_if_keyword(&name);
+        let name = escape_if_keyword(name);
         let name = format!("{name}Enum");
+        let name = Cow::Owned(name);
         let name = syn::Ident::new(&name, proc_macro2::Span::call_site());
 
         quote! {
@@ -210,19 +251,26 @@ impl Item {
         }
     }
 
+    fn snake_case_ident(&self) -> syn::Ident {
+        let name = self.label.value();
+        let name = Cow::Borrowed(name);
+        let name = replace_leading_digit_with_word(name);
+        let name = name.to_snake_case();
+        let name = Cow::Owned(name);
+        let name = escape_if_keyword(name);
+
+        syn::Ident::new(&name, proc_macro2::Span::call_site())
+    }
+
     fn doc_comment(&self) -> proc_macro2::TokenStream {
         let comment = self.comment.value();
 
-        let comments: Vec<_> = comment
-            .trim()
-            .lines()
-            .map(|line| {
-                let padded = format!(" {}", line.trim());
-                quote! {
-                    #[doc = #padded]
-                }
-            })
-            .collect();
+        let comments = comment.trim().lines().map(|line| line.trim()).map(|line| {
+            let padded = format!(" {line}");
+            quote! {
+                #[doc = #padded]
+            }
+        });
 
         quote! {
             #(#comments)*
@@ -233,26 +281,32 @@ impl Item {
 mod constants {
     pub const RDF_CLASS: &str = "rdfs:Class";
     pub const RDF_PROPERTY: &str = "rdf:Property";
+}
 
-    pub fn basic_type_to_rust(basic: &str) -> Option<proc_macro2::TokenStream> {
-        use quote::quote;
+fn basic_type_to_rust(basic: &str) -> Option<proc_macro2::TokenStream> {
+    use quote::quote;
 
-        match basic {
-            "schema:DataType" => Some(quote! { Box<str> }),
-            "schema:Boolean" => Some(quote! { Box<str> }),
-            "schema:Date" => Some(quote! { Box<str> }),
-            "schema:DateTime" => Some(quote! { Box<str> }),
-            "schema:Number" => Some(quote! { f32}),
-            "schema:Float" => Some(quote! { f32 }),
-            "schema:Integer" => Some(quote! { i32 }),
-            "schema:Text" => Some(quote! { Box<str> }),
-            "schema:CssSelectorType" => Some(quote! { Box<str> }),
-            "schema:XPathType" => Some(quote! { Box<str> }),
-            "schema:URL" => Some(quote! { Box<str> }),
-            "schema:Time" => Some(quote! { Box<str> }),
-            _ => None,
-        }
+    match basic {
+        "schema:DataType" => Some(quote! { Box<str> }),
+        "schema:Boolean" => Some(quote! { Box<str> }),
+        "schema:Date" => Some(quote! { Box<str> }),
+        "schema:DateTime" => Some(quote! { Box<str> }),
+        "schema:Number" => Some(quote! { f32}),
+        "schema:Float" => Some(quote! { f32 }),
+        "schema:Integer" => Some(quote! { i32 }),
+        "schema:Text" => Some(quote! { Box<str> }),
+        "schema:CssSelectorType" => Some(quote! { Box<str> }),
+        "schema:XPathType" => Some(quote! { Box<str> }),
+        "schema:URL" => Some(quote! { Box<str> }),
+        "schema:Time" => Some(quote! { Box<str> }),
+        _ => None,
     }
+}
+
+fn field_enum_name(type_name: String, property_name: &str) -> syn::Ident {
+    let capitalized_field_name = capitalize(Cow::Borrowed(property_name));
+    let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
+    syn::Ident::new(&enum_name, proc_macro2::Span::call_site())
 }
 
 struct SchemaDefinitions {
@@ -260,8 +314,6 @@ struct SchemaDefinitions {
     properties: IndexMap<Str, Item>,
     enumerations: IndexMap<Str, Vec<Arc<Item>>>,
 }
-
-type ResolvedTypes = Vec<ResolvedType>;
 
 #[derive(Debug)]
 struct ResolvedType {
@@ -327,7 +379,7 @@ impl SchemaDefinitions {
         })
     }
 
-    fn resolve_properties(&self) -> ResolvedTypes {
+    fn resolve_properties(&self) -> impl Iterator<Item = ResolvedType> {
         let mut resolved_props: IndexMap<Str, HashSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
@@ -344,45 +396,40 @@ impl SchemaDefinitions {
                 // Find properties directly associated with the current type
                 for (prop_id, prop_item) in &self.properties {
                     if let Some(domain_ref) = &prop_item.domain_includes {
-                        if domain_ref.get_ids().contains(&current_type_id.as_ref()) {
+                        if domain_ref.includes(current_type_id.as_ref()) {
                             let current_prop = prop_id.clone();
-                            if let Some(item) = &prop_item.superseded_by {
-                                all_props_set.insert(ResolvedPropertyType::Aliased(Box::new([
-                                    current_prop,
-                                    item.item_id.clone(),
-                                ])));
-                            } else {
-                                all_props_set.insert(ResolvedPropertyType::Single(current_prop));
-                            }
+
+                            match &prop_item.superseded_by {
+                                Some(item) => {
+                                    let aliased = Box::new([current_prop, item.item_id.clone()]);
+                                    all_props_set.insert(ResolvedPropertyType::Aliased(aliased));
+                                }
+                                None => {
+                                    all_props_set
+                                        .insert(ResolvedPropertyType::Single(current_prop));
+                                }
+                            };
                         }
                     }
                 }
 
                 // Add parents to the visit list
-                if let Some(current_type_item) = self.types.get(&current_type_id) {
-                    if let Some(parent_ref) = &current_type_item.sub_class_of {
-                        types_to_visit.extend(
-                            parent_ref
-                                .get_ids()
-                                .into_iter()
-                                .map(|id_str| id_str.to_owned().into_boxed_str()),
-                        );
-                    }
+                let sub_class_of = self
+                    .types
+                    .get(&current_type_id)
+                    .and_then(|typ| typ.sub_class_of.as_ref());
+                if let Some(parent_ref) = sub_class_of {
+                    types_to_visit.extend(parent_ref.get_ids());
                 }
             }
 
             resolved_props.insert(type_id.clone(), all_props_set);
         }
 
-        let types: Vec<_> = resolved_props
-            .into_iter()
-            .map(|(key, value)| ResolvedType {
-                type_id: key,
-                properties: value,
-            })
-            .collect();
-
-        types
+        resolved_props.into_iter().map(|(key, value)| ResolvedType {
+            type_id: key,
+            properties: value,
+        })
     }
 
     fn enumerations_module(&self) -> proc_macro2::TokenStream {
@@ -417,141 +464,131 @@ impl SchemaDefinitions {
         }
     }
 
-    fn types_module(&self) -> Vec<(syn::Ident, proc_macro2::TokenStream)> {
+    fn type_ident(&self, item_id: &ItemId) -> Option<TokenStream> {
+        let basic_type = basic_type_to_rust(&item_id.item_id);
+        let class_name = self.types.get(&item_id.item_id).map(|class| {
+            if self.enumerations.get(&class.id.item_id).is_some() {
+                class.enum_ident()
+            } else {
+                class.ident()
+            }
+        });
+
+        basic_type.or(class_name)
+    }
+
+    fn name_ident(&self, item_id: &ItemId) -> Option<TokenStream> {
+        let class_name = self.types.get(&item_id.item_id).map(|class| {
+            if self.enumerations.get(&class.id.item_id).is_some() {
+                class.enum_ident()
+            } else {
+                class.ident()
+            }
+        });
+
+        class_name
+    }
+
+    fn types_module(&self) -> impl Iterator<Item = (syn::Ident, proc_macro2::TokenStream)> {
         let resolved = self.resolve_properties();
 
-        resolved
-            .into_iter()
-            .filter_map(|class| {
-                if constants::basic_type_to_rust(&class.type_id).is_some() {
-                    return None;
-                }
+        resolved.into_iter().filter_map(|class| {
+            if basic_type_to_rust(&class.type_id).is_some() {
+                return None;
+            }
 
-                let class_item = self.types.get(&class.type_id).unwrap();
+            let class_item = self.types.get(&class.type_id).unwrap();
 
-                let class_name = class_item.ident();
-                let class_comments = class_item.doc_comment();
+            let class_name = class_item.ident();
+            let class_comments = class_item.doc_comment();
+            let class_module_name = class_item.snake_case_ident();
 
-                let module_name = class_name.to_string().to_snake_case();
-                let module_name = syn::Ident::new(&module_name, proc_macro2::Span::call_site());
+            let field_defs = class.properties.iter().map(|item| {
+                let property = self.properties.get(item.first()).unwrap();
 
-                let field_defs = class.properties.iter().map(|item| {
-                    let property = self.properties.get(item.first()).unwrap();
+                let property_name = property.snake_case_ident();
+                let property_comment = property.doc_comment();
 
-                    let property_name = property.snake_case_ident();
-                    let property_comment = property.doc_comment();
+                let property_rename = property.label.value();
+                let property_rename = quote! {
+                    #[serde(rename = #property_rename)]
+                };
 
-                    let property_rename = property.label.value();
-                    let property_rename = quote! {
-                        #[serde(rename = #property_rename)]
-                    };
+                let range_includes = property.range_includes.as_ref().unwrap();
 
-                    let range_includes = property.range_includes.as_ref().unwrap();
+                let property_type = match range_includes {
+                    ItemRef::Single(item_id) => self.type_ident(item_id).unwrap(),
+                    ItemRef::List(_) => {
+                        let enum_name =
+                            field_enum_name(class_name.to_string(), property.label.value());
 
-                    let property_type = match range_includes {
-                        ItemRef::Single(item_id) => {
-                            let basic_type = constants::basic_type_to_rust(&item_id.item_id);
-                            let class_name = self.types.get(&item_id.item_id).map(|class| {
-                                if self.enumerations.get(&class.id.item_id).is_some() {
-                                    class.enum_ident()
-                                } else {
-                                    class.ident()
-                                }
-                            });
-
-                            basic_type.or(class_name).unwrap()
-                        }
-                        ItemRef::List(_) => {
-                            let type_name = class_name.to_string();
-                            let capitalized_field_name = capitalize(property.label.value());
-
-                            let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
-                            let enum_name =
-                                syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
-
-                            quote! { #enum_name }
-                        }
-                    };
-
-                    quote! {
-                        #property_comment
-                        #property_rename
-                        pub #property_name: SchemaValue<#property_type>
+                        quote! { #enum_name }
                     }
-                });
+                };
 
-                let range_enums: Vec<_> = class
-                    .properties
-                    .iter()
-                    .filter_map(|item| {
-                        let property = self.properties.get(item.first()).unwrap();
+                quote! {
+                    #property_comment
+                    #property_rename
+                    pub #property_name: SchemaValue<#property_type>
+                }
+            });
 
-                        let property_comment = property.doc_comment();
-                        let range_includes = property.range_includes.as_ref().unwrap();
+            let range_enums = class.properties.iter().filter_map(|item| {
+                let property = self.properties.get(item.first()).unwrap();
 
-                        match range_includes {
-                            ItemRef::Single(_) => None,
-                            ItemRef::List(item_ids) => {
-                                let type_name = class_name.to_string();
-                                let capitalized_field_name = capitalize(property.label.value());
+                let property_comment = property.doc_comment();
+                let range_includes = property.range_includes.as_ref().unwrap();
 
-                                let enum_name =
-                                    format!("{type_name}{capitalized_field_name}FieldEnum");
-                                let enum_name =
-                                    syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
+                match range_includes {
+                    ItemRef::Single(_) => None,
+                    ItemRef::List(item_ids) => {
+                        let enum_name =
+                            field_enum_name(class_name.to_string(), property.label.value());
 
-                                let variant_defs = item_ids.into_iter().map(|item| {
-                                    let item = self.types.get(&item.item_id).unwrap();
+                        let variant_defs = item_ids.into_iter().map(|item| {
+                            let item = self.types.get(&item.item_id).unwrap();
 
-                                    let (variant_name, variant_type) = if let Some(basic_type) =
-                                        constants::basic_type_to_rust(&item.id.item_id)
-                                    {
-                                        (item.ident(), basic_type)
-                                    } else if self.enumerations.get(&item.id.item_id).is_some() {
-                                        (item.enum_ident(), item.enum_ident())
-                                    } else {
-                                        (item.ident(), item.ident())
-                                    };
+                            let variant_name = self.name_ident(&item.id).unwrap();
+                            let variant_type = match basic_type_to_rust(&item.id.item_id) {
+                                Some(basic_type) => basic_type,
+                                None => quote! { Box<#variant_name> },
+                            };
 
-                                    let variant_comment = item.doc_comment();
+                            let variant_comment = item.doc_comment();
 
-                                    quote! {
-                                        #variant_comment
-                                        #variant_name(Box<#variant_type>)
-                                    }
-                                });
-
-                                let field_enum = quote! {
-                                    #property_comment
-                                    #[derive(Debug, serde::Deserialize, uniffi::Enum)]
-                                    #[serde(untagged)]
-                                    pub enum #enum_name {
-                                        #(#variant_defs),*
-                                    }
-                                };
-
-                                Some(field_enum)
+                            quote! {
+                                #variant_comment
+                                #variant_name(#variant_type)
                             }
-                        }
-                    })
-                    .collect();
+                        });
 
-                Some((
-                    module_name,
-                    quote! {
-                        #(#range_enums)*
+                        Some(quote! {
+                            #property_comment
+                            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                            #[serde(untagged)]
+                            pub enum #enum_name {
+                                #(#variant_defs),*
+                            }
+                        })
+                    }
+                }
+            });
 
-                        #class_comments
-                        #[derive(Debug, serde::Deserialize, uniffi::Record)]
-                        pub struct #class_name {
-                            #[serde(rename = "@context")]
-                            pub context: Box<str>,
-                            #(#field_defs),*
-                        }
-                    },
-                ))
-            })
-            .collect()
+            Some((
+                class_module_name,
+                quote! {
+                    #(#range_enums)*
+
+                    #class_comments
+                    #[derive(Debug, serde::Deserialize, uniffi::Record)]
+                    pub struct #class_name {
+                        #[serde(rename = "@context")]
+                        pub context: Box<str>,
+                        #(#field_defs),*
+                    }
+                },
+            ))
+        })
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
@@ -563,14 +600,10 @@ impl SchemaDefinitions {
             let group_name = format_ident!("SchemaOrgGroup{}", i + 1);
 
             let variant_defs = group.into_iter().map(|enum_type| {
-                let (variant_name, variant_type) = if let Some(basic_type) =
-                    constants::basic_type_to_rust(&enum_type.id.item_id)
-                {
-                    (enum_type.ident(), basic_type)
-                } else if self.enumerations.get(&enum_type.id.item_id).is_some() {
-                    (enum_type.enum_ident(), enum_type.enum_ident())
-                } else {
-                    (enum_type.ident(), enum_type.ident())
+                let variant_name = self.name_ident(&enum_type.id).unwrap();
+                let variant_type = match basic_type_to_rust(&enum_type.id.item_id) {
+                    Some(basic_type) => basic_type,
+                    None => quote! { Box<#variant_name> },
                 };
 
                 quote! {
@@ -636,7 +669,7 @@ fn main() -> color_eyre::Result<()> {
 
     let types = definitions.types_module();
 
-    let mut type_module = Vec::with_capacity(types.len());
+    let mut type_module = Vec::new();
 
     for (typ_name, typ) in types {
         let types_module = quote! {
