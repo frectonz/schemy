@@ -3,7 +3,7 @@ use std::{collections::HashSet, sync::Arc};
 use color_eyre::Result;
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
-use quote::quote;
+use quote::{format_ident, quote};
 use serde::Deserialize;
 
 fn capitalize(s: &str) -> String {
@@ -516,7 +516,7 @@ impl SchemaDefinitions {
 
                             let field_enum = quote! {
                                 #property_comment
-                                #[derive(Deserialize, Debug)]
+                                #[derive(Deserialize, Debug, uniffi::Enum)]
                                 #[serde(untagged)]
                                 pub enum #enum_name {
                                     #(#variant_defs),*
@@ -533,7 +533,7 @@ impl SchemaDefinitions {
                 #(#range_enums)*
 
                 #class_comments
-                #[derive(Deserialize, Debug)]
+                #[derive(Deserialize, Debug, uniffi::Record)]
                 pub struct #class_name {
                     #[serde(rename = "@context")]
                     pub context: Box<str>,
@@ -548,9 +548,17 @@ impl SchemaDefinitions {
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
-        let variant_defs = self.types.values().map(|enum_type| {
-            let (variant_name, variant_type) =
-                if let Some(basic_type) = constants::basic_type_to_rust(&enum_type.id.item_id) {
+        use itertools::Itertools;
+
+        let groups = self.types.values().chunks(256);
+
+        let group_variant_defs = groups.into_iter().enumerate().map(|(i, group)| {
+            let group_name = format_ident!("SchemaOrgGroup{}", i + 1);
+
+            let variant_defs = group.into_iter().map(|enum_type| {
+                let (variant_name, variant_type) = if let Some(basic_type) =
+                    constants::basic_type_to_rust(&enum_type.id.item_id)
+                {
                     (enum_type.ident(), basic_type)
                 } else if self.enumerations.get(&enum_type.id.item_id).is_some() {
                     (enum_type.enum_ident(), enum_type.enum_ident())
@@ -558,17 +566,37 @@ impl SchemaDefinitions {
                     (enum_type.ident(), enum_type.ident())
                 };
 
+                quote! {
+                    #variant_name(Box<#variant_type>)
+                }
+            });
+
             quote! {
-                #variant_name(Box<#variant_type>)
+                #[derive(Deserialize, Debug)]
+                #[serde(tag = "@type")]
+                pub enum #group_name {
+                    #(#variant_defs),*
+                }
+            }
+        });
+
+        let groups = self.types.values().chunks(256);
+
+        let group_defs = groups.into_iter().enumerate().map(|(i, _)| {
+            let group_name = format_ident!("SchemaOrgGroup{}", i + 1);
+            quote! {
+                #group_name(#group_name)
             }
         });
 
         quote! {
+            #(#group_variant_defs)*
+
             /// All schema.org types
             #[derive(Deserialize, Debug)]
-            #[serde(tag = "@type")]
+            #[serde(untagged)]
             pub enum SchemaOrg {
-                #(#variant_defs),*
+                #(#group_defs),*
             }
         }
     }
@@ -584,7 +612,7 @@ fn main() -> color_eyre::Result<()> {
     let file = quote! {
         use serde::Deserialize;
 
-        #[derive(Deserialize, Debug)]
+        #[derive(Deserialize, Debug, uniffi::Enum)]
         #[serde(untagged)]
         pub enum SchemaValue<T> {
             Single(Option<Box<T>>),
