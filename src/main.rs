@@ -550,7 +550,7 @@ impl SchemaDefinitions {
     fn all_types(&self) -> proc_macro2::TokenStream {
         use itertools::Itertools;
 
-        let groups = self.types.values().chunks(256);
+        let groups = self.types.values().chunks(255);
 
         let group_variant_defs = groups.into_iter().enumerate().map(|(i, group)| {
             let group_name = format_ident!("SchemaOrgGroup{}", i + 1);
@@ -580,7 +580,7 @@ impl SchemaDefinitions {
             }
         });
 
-        let groups = self.types.values().chunks(256);
+        let groups = self.types.values().chunks(255);
 
         let group_defs = groups.into_iter().enumerate().map(|(i, _)| {
             let group_name = format_ident!("SchemaOrgGroup{}", i + 1);
@@ -605,29 +605,67 @@ impl SchemaDefinitions {
 fn main() -> color_eyre::Result<()> {
     let definitions = SchemaDefinitions::read()?;
 
-    let enumerations = definitions.enumerations_module();
-    let types = definitions.types_module();
-    let all_types = definitions.all_types();
-
-    let file = quote! {
-        use serde::Deserialize;
-
-        #[derive(Deserialize, Debug, uniffi::Enum)]
-        #[serde(untagged)]
+    let schema_module = quote! {
         pub enum SchemaValue<T> {
             Single(Option<Box<T>>),
             List(Box<[T]>),
         }
+    };
+    let schema_module: syn::File = syn::parse2(schema_module).expect("Failed to parse tokens");
+    let schema_module = prettyplease::unparse(&schema_module);
 
+    std::fs::write("schemy-test/src/value.rs", schema_module)?;
+
+    let enumerations = definitions.enumerations_module();
+    let enumerations_module = quote! {
         #enumerations
+    };
+    let enumerations_module: syn::File =
+        syn::parse2(enumerations_module).expect("Failed to parse tokens");
+    let enumerations_module = prettyplease::unparse(&enumerations_module);
+
+    std::fs::write("schemy-test/src/enums.rs", enumerations_module)?;
+
+    let types = definitions.types_module();
+    let types_module = quote! {
+        use crate::*;
+
         #types
+    };
+    let types_module: syn::File = syn::parse2(types_module).expect("Failed to parse tokens");
+    let types_module = prettyplease::unparse(&types_module);
+
+    std::fs::write("schemy-test/src/types.rs", types_module)?;
+
+    let all_types = definitions.all_types();
+    let all_types_module = quote! {
+        use crate::*;
+
         #all_types
     };
+    let all_types_module: syn::File =
+        syn::parse2(all_types_module).expect("Failed to parse tokens");
+    let all_types_module = prettyplease::unparse(&all_types_module);
 
-    let syntax_tree: syn::File = syn::parse2(file).expect("Failed to parse tokens");
-    let file = prettyplease::unparse(&syntax_tree);
+    std::fs::write("schemy-test/src/all.rs", all_types_module)?;
 
-    println!("{file}");
+    let lib_rs = quote! {
+        mod value;
+        use value::*;
+
+        mod enums;
+        use enums::*;
+
+        mod types;
+        use types::*;
+
+        mod all;
+        use all::*;
+    };
+    let lib_rs: syn::File = syn::parse2(lib_rs).expect("Failed to parse tokens");
+    let lib_rs = prettyplease::unparse(&lib_rs);
+
+    std::fs::write("schemy-test/src/lib.rs", lib_rs)?;
 
     Ok(())
 }
