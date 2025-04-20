@@ -404,7 +404,7 @@ impl SchemaDefinitions {
 
             quote! {
                 #enum_comment
-                #[derive(Deserialize, Debug)]
+                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
                 #[serde(untagged)]
                 pub enum #enum_name {
                     #(#variant_defs),*
@@ -417,75 +417,51 @@ impl SchemaDefinitions {
         }
     }
 
-    fn types_module(&self) -> proc_macro2::TokenStream {
+    fn types_module(&self) -> Vec<(syn::Ident, proc_macro2::TokenStream)> {
         let resolved = self.resolve_properties();
 
-        let types = resolved.into_iter().filter_map(|class| {
-            if constants::basic_type_to_rust(&class.type_id).is_some() {
-                return None;
-            }
-
-            let class_item = self.types.get(&class.type_id).unwrap();
-
-            let class_name = class_item.ident();
-            let class_comments = class_item.doc_comment();
-
-            let field_defs = class.properties.iter().map(|item| {
-                let property = self.properties.get(item.first()).unwrap();
-
-                let property_name = property.snake_case_ident();
-                let property_comment = property.doc_comment();
-
-                let property_rename = property.label.value();
-                let property_rename = quote! {
-                    #[serde(rename = #property_rename)]
-                };
-
-                let range_includes = property.range_includes.as_ref().unwrap();
-
-                let property_type = match range_includes {
-                    ItemRef::Single(item_id) => {
-                        let basic_type = constants::basic_type_to_rust(&item_id.item_id);
-                        let class_name = self.types.get(&item_id.item_id).map(|class| {
-                            if self.enumerations.get(&class.id.item_id).is_some() {
-                                class.enum_ident()
-                            } else {
-                                class.ident()
-                            }
-                        });
-
-                        basic_type.or(class_name).unwrap()
-                    }
-                    ItemRef::List(_) => {
-                        let type_name = class_name.to_string();
-                        let capitalized_field_name = capitalize(property.label.value());
-
-                        let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
-                        let enum_name = syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
-
-                        quote! { #enum_name }
-                    }
-                };
-
-                quote! {
-                    #property_comment
-                    #property_rename
-                    pub #property_name: SchemaValue<#property_type>
+        resolved
+            .into_iter()
+            .filter_map(|class| {
+                if constants::basic_type_to_rust(&class.type_id).is_some() {
+                    return None;
                 }
-            });
 
-            let range_enums: Vec<_> = class
-                .properties
-                .iter()
-                .filter_map(|item| {
+                let class_item = self.types.get(&class.type_id).unwrap();
+
+                let class_name = class_item.ident();
+                let class_comments = class_item.doc_comment();
+
+                let module_name = class_name.to_string().to_snake_case();
+                let module_name = syn::Ident::new(&module_name, proc_macro2::Span::call_site());
+
+                let field_defs = class.properties.iter().map(|item| {
                     let property = self.properties.get(item.first()).unwrap();
 
+                    let property_name = property.snake_case_ident();
                     let property_comment = property.doc_comment();
+
+                    let property_rename = property.label.value();
+                    let property_rename = quote! {
+                        #[serde(rename = #property_rename)]
+                    };
+
                     let range_includes = property.range_includes.as_ref().unwrap();
 
-                    match range_includes {
-                        ItemRef::Single(_) => None,
-                        ItemRef::List(item_ids) => {
+                    let property_type = match range_includes {
+                        ItemRef::Single(item_id) => {
+                            let basic_type = constants::basic_type_to_rust(&item_id.item_id);
+                            let class_name = self.types.get(&item_id.item_id).map(|class| {
+                                if self.enumerations.get(&class.id.item_id).is_some() {
+                                    class.enum_ident()
+                                } else {
+                                    class.ident()
+                                }
+                            });
+
+                            basic_type.or(class_name).unwrap()
+                        }
+                        ItemRef::List(_) => {
                             let type_name = class_name.to_string();
                             let capitalized_field_name = capitalize(property.label.value());
 
@@ -493,58 +469,89 @@ impl SchemaDefinitions {
                             let enum_name =
                                 syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
 
-                            let variant_defs = item_ids.into_iter().map(|item| {
-                                let item = self.types.get(&item.item_id).unwrap();
+                            quote! { #enum_name }
+                        }
+                    };
 
-                                let (variant_name, variant_type) = if let Some(basic_type) =
-                                    constants::basic_type_to_rust(&item.id.item_id)
-                                {
-                                    (item.ident(), basic_type)
-                                } else if self.enumerations.get(&item.id.item_id).is_some() {
-                                    (item.enum_ident(), item.enum_ident())
-                                } else {
-                                    (item.ident(), item.ident())
+                    quote! {
+                        #property_comment
+                        #property_rename
+                        pub #property_name: SchemaValue<#property_type>
+                    }
+                });
+
+                let range_enums: Vec<_> = class
+                    .properties
+                    .iter()
+                    .filter_map(|item| {
+                        let property = self.properties.get(item.first()).unwrap();
+
+                        let property_comment = property.doc_comment();
+                        let range_includes = property.range_includes.as_ref().unwrap();
+
+                        match range_includes {
+                            ItemRef::Single(_) => None,
+                            ItemRef::List(item_ids) => {
+                                let type_name = class_name.to_string();
+                                let capitalized_field_name = capitalize(property.label.value());
+
+                                let enum_name =
+                                    format!("{type_name}{capitalized_field_name}FieldEnum");
+                                let enum_name =
+                                    syn::Ident::new(&enum_name, proc_macro2::Span::call_site());
+
+                                let variant_defs = item_ids.into_iter().map(|item| {
+                                    let item = self.types.get(&item.item_id).unwrap();
+
+                                    let (variant_name, variant_type) = if let Some(basic_type) =
+                                        constants::basic_type_to_rust(&item.id.item_id)
+                                    {
+                                        (item.ident(), basic_type)
+                                    } else if self.enumerations.get(&item.id.item_id).is_some() {
+                                        (item.enum_ident(), item.enum_ident())
+                                    } else {
+                                        (item.ident(), item.ident())
+                                    };
+
+                                    let variant_comment = item.doc_comment();
+
+                                    quote! {
+                                        #variant_comment
+                                        #variant_name(Box<#variant_type>)
+                                    }
+                                });
+
+                                let field_enum = quote! {
+                                    #property_comment
+                                    #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                                    #[serde(untagged)]
+                                    pub enum #enum_name {
+                                        #(#variant_defs),*
+                                    }
                                 };
 
-                                let variant_comment = item.doc_comment();
-
-                                quote! {
-                                    #variant_comment
-                                    #variant_name(Box<#variant_type>)
-                                }
-                            });
-
-                            let field_enum = quote! {
-                                #property_comment
-                                #[derive(Deserialize, Debug, uniffi::Enum)]
-                                #[serde(untagged)]
-                                pub enum #enum_name {
-                                    #(#variant_defs),*
-                                }
-                            };
-
-                            Some(field_enum)
+                                Some(field_enum)
+                            }
                         }
-                    }
-                })
-                .collect();
+                    })
+                    .collect();
 
-            Some(quote! {
-                #(#range_enums)*
+                Some((
+                    module_name,
+                    quote! {
+                        #(#range_enums)*
 
-                #class_comments
-                #[derive(Deserialize, Debug, uniffi::Record)]
-                pub struct #class_name {
-                    #[serde(rename = "@context")]
-                    pub context: Box<str>,
-                    #(#field_defs),*
-                }
+                        #class_comments
+                        #[derive(Debug, serde::Deserialize, uniffi::Record)]
+                        pub struct #class_name {
+                            #[serde(rename = "@context")]
+                            pub context: Box<str>,
+                            #(#field_defs),*
+                        }
+                    },
+                ))
             })
-        });
-
-        quote! {
-            #(#types)*
-        }
+            .collect()
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
@@ -572,7 +579,7 @@ impl SchemaDefinitions {
             });
 
             quote! {
-                #[derive(Deserialize, Debug)]
+                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
                 #[serde(tag = "@type")]
                 pub enum #group_name {
                     #(#variant_defs),*
@@ -593,7 +600,7 @@ impl SchemaDefinitions {
             #(#group_variant_defs)*
 
             /// All schema.org types
-            #[derive(Deserialize, Debug)]
+            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
             #[serde(untagged)]
             pub enum SchemaOrg {
                 #(#group_defs),*
@@ -606,6 +613,7 @@ fn main() -> color_eyre::Result<()> {
     let definitions = SchemaDefinitions::read()?;
 
     let schema_module = quote! {
+        #[derive(Debug, serde::Deserialize, uniffi::Enum)]
         pub enum SchemaValue<T> {
             Single(Option<Box<T>>),
             List(Box<[T]>),
@@ -627,15 +635,26 @@ fn main() -> color_eyre::Result<()> {
     std::fs::write("schemy-test/src/enums.rs", enumerations_module)?;
 
     let types = definitions.types_module();
-    let types_module = quote! {
-        use crate::*;
 
-        #types
-    };
-    let types_module: syn::File = syn::parse2(types_module).expect("Failed to parse tokens");
-    let types_module = prettyplease::unparse(&types_module);
+    let mut type_module = Vec::with_capacity(types.len());
 
-    std::fs::write("schemy-test/src/types.rs", types_module)?;
+    for (typ_name, typ) in types {
+        let types_module = quote! {
+            use crate::*;
+
+            #typ
+        };
+        let types_module: syn::File = syn::parse2(types_module).expect("Failed to parse tokens");
+        let types_module = prettyplease::unparse(&types_module);
+
+        type_module.push(quote! {
+            mod #typ_name;
+            pub use #typ_name::*;
+        });
+
+        let filename = format!("schemy-test/src/{typ_name}.rs");
+        std::fs::write(filename, types_module)?;
+    }
 
     let all_types = definitions.all_types();
     let all_types_module = quote! {
@@ -651,16 +670,15 @@ fn main() -> color_eyre::Result<()> {
 
     let lib_rs = quote! {
         mod value;
-        use value::*;
+        pub use value::*;
 
         mod enums;
-        use enums::*;
-
-        mod types;
-        use types::*;
+        pub use enums::*;
 
         mod all;
-        use all::*;
+        pub use all::*;
+
+        #(#type_module)*
     };
     let lib_rs: syn::File = syn::parse2(lib_rs).expect("Failed to parse tokens");
     let lib_rs = prettyplease::unparse(&lib_rs);
