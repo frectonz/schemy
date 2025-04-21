@@ -1,9 +1,10 @@
 use std::{borrow::Cow, collections::HashSet, sync::Arc};
 
-use color_eyre::Result;
+use color_eyre::{Result, eyre::Context};
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
 use itertools::Itertools;
+use log::{info, trace};
 use proc_macro2::{Span, TokenStream};
 use quote::{format_ident, quote};
 use serde::Deserialize;
@@ -42,6 +43,7 @@ impl ItemRef {
     }
 
     pub fn includes(&self, item_ref: &str) -> bool {
+        trace!("Checking if ItemRef {self:?} includes {item_ref}");
         match self {
             ItemRef::Single(item) => item.item_id.as_ref() == item_ref,
             ItemRef::List(items) => items.iter().any(|item| item.item_id.as_ref() == item_ref),
@@ -58,6 +60,7 @@ pub enum ItemType {
 
 impl ItemType {
     pub fn includes(&self, type_id: &str) -> bool {
+        trace!("Checking if ItemType {self:?} includes {type_id}");
         match self {
             ItemType::Single(s) => s.as_ref() == type_id,
             ItemType::List(list) => list.iter().any(|s| s.as_ref() == type_id),
@@ -139,7 +142,11 @@ pub struct Item {
 mod string_helpers {
     use std::{borrow::Cow, collections::HashSet, sync::LazyLock};
 
+    use log::{info, trace};
+
     pub fn capitalize(s: Cow<'_, str>) -> Cow<'_, str> {
+        trace!("Capitalizing {s}");
+
         let mut chars = s.chars();
 
         match chars.next() {
@@ -170,6 +177,8 @@ mod string_helpers {
     }
 
     pub fn replace_leading_digit_with_word(s: Cow<'_, str>) -> Cow<'_, str> {
+        trace!("Replacing leading digit in {s}");
+
         if s.bytes().next().is_none_or(|b| !b.is_ascii_digit()) {
             s
         } else {
@@ -202,6 +211,7 @@ mod string_helpers {
     }
 
     static KEYWORD_SET: LazyLock<HashSet<&'static str>> = LazyLock::new(|| {
+        info!("Initializing KEYWORD_SET");
         [
             "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
             "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
@@ -215,6 +225,7 @@ mod string_helpers {
     });
 
     pub fn escape_if_keyword(s: Cow<'_, str>) -> Cow<'_, str> {
+        trace!("Checking if {s} is a keyword");
         if KEYWORD_SET.contains(s.as_ref()) {
             let escaped_string = format!("_{}", s);
             Cow::Owned(escaped_string)
@@ -228,6 +239,8 @@ use string_helpers::*;
 
 impl Item {
     fn ident(&self) -> TokenStream {
+        trace!("Getting ident of {:?}", self.id);
+
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
@@ -240,6 +253,8 @@ impl Item {
     }
 
     fn enum_ident(&self) -> TokenStream {
+        trace!("Getting enum ident of {:?}", self.id);
+
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
@@ -254,6 +269,8 @@ impl Item {
     }
 
     fn snake_case_ident(&self) -> Ident {
+        trace!("Getting snake case ident of {:?}", self.id);
+
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
@@ -265,6 +282,8 @@ impl Item {
     }
 
     fn doc_comment(&self) -> TokenStream {
+        trace!("Getting doc comment of {:?}", self.id);
+
         let comment = self.label.value();
         let comment = format!("https://schema.org/{comment}");
         quote! {
@@ -279,6 +298,8 @@ mod constants {
 }
 
 fn basic_type_to_rust(basic: &str) -> Option<TokenStream> {
+    trace!("Checking basic type mapping for: {basic:?}");
+
     match basic {
         "schema:DataType" => Some(quote! { String }),
         "schema:Boolean" => Some(quote! { String }),
@@ -297,6 +318,7 @@ fn basic_type_to_rust(basic: &str) -> Option<TokenStream> {
 }
 
 fn field_enum_name(type_name: String, property_name: &str) -> Ident {
+    trace!("Generating field enum name from {type_name:?} and {property_name:?}");
     let capitalized_field_name = capitalize(Cow::Borrowed(property_name));
     let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
     Ident::new(&enum_name, Span::call_site())
@@ -342,9 +364,12 @@ impl ResolvedPropertyType {
 }
 
 impl SchemaDefinitions {
-    fn read() -> Result<SchemaDefinitions> {
-        let file = std::fs::read_to_string("schema/schemaorg-current-https.jsonld")?;
+    fn read(path: &str) -> Result<SchemaDefinitions> {
+        info!("Reading schema definitions from {path:?}");
+
+        let file = std::fs::read_to_string(path)?;
         let schema: SchemaOrgDefinition = serde_json::from_str(&file)?;
+        info!("Parsed schema with {} items", schema.graph.len());
 
         let mut types = IndexMap::new();
         let mut properties = IndexMap::new();
@@ -377,6 +402,10 @@ impl SchemaDefinitions {
             }
         }
 
+        info!("Read {} types", types.len());
+        info!("Read {} properties", properties.len());
+        info!("Read {} enumerations", enumerations.len());
+
         Ok(SchemaDefinitions {
             types,
             properties,
@@ -385,6 +414,8 @@ impl SchemaDefinitions {
     }
 
     fn resolve_properties(&self) -> Vec<ResolvedType> {
+        info!("Resolving properties for all types by traversing hierarchy...");
+
         let mut resolved_props: IndexMap<Str, HashSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
@@ -428,8 +459,18 @@ impl SchemaDefinitions {
                 }
             }
 
+            info!(
+                "Finished resolving for type {type_id}. Found {} unique properties",
+                all_props_set.len()
+            );
+
             resolved_props.insert(type_id.clone(), all_props_set);
         }
+
+        info!(
+            "Finished resolving properties for {} types.",
+            resolved_props.len()
+        );
 
         resolved_props
             .into_iter()
@@ -753,10 +794,21 @@ fn write_to_file(path: &str, tokens: TokenStream) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let definitions = SchemaDefinitions::read()?;
+    let mut logger = pretty_env_logger::formatted_timed_builder();
+
+    if let Ok(s) = ::std::env::var("RUST_LOG") {
+        logger.parse_filters(&s);
+    } else {
+        logger.filter_level(log::LevelFilter::Info);
+    }
+
+    logger.init();
+
+    let definitions = SchemaDefinitions::read("schema/schemaorg-current-https.jsonld")?;
 
     let enumerations = definitions.enumerations_module();
-    write_to_file("schemy-test/src/enums.rs", enumerations)?;
+    write_to_file("schemy-test/src/enums.rs", enumerations)
+        .wrap_err("Failed to write enumerations module")?;
 
     let (types, field_enums) = definitions.types_module();
 
@@ -767,7 +819,8 @@ fn main() -> Result<()> {
 
             #field_enums
         },
-    )?;
+    )
+    .wrap_err("Failed to write field enums module")?;
 
     let mut type_module = Vec::new();
 
@@ -781,7 +834,8 @@ fn main() -> Result<()> {
 
                 #typ
             },
-        )?;
+        )
+        .wrap_err_with(|| format!("Failed to write {typ_name} module"))?;
 
         type_module.push(quote! {
             mod #typ_name;
@@ -797,7 +851,8 @@ fn main() -> Result<()> {
 
             #all_types
         },
-    )?;
+    )
+    .wrap_err("Failed to write all types enum module")?;
 
     write_to_file(
         "schemy-test/src/lib.rs",
@@ -815,7 +870,10 @@ fn main() -> Result<()> {
 
             #(#type_module)*
         },
-    )?;
+    )
+    .wrap_err("Failed to write library module")?;
+
+    println!("Finished generating files");
 
     Ok(())
 }
