@@ -308,6 +308,18 @@ fn field_enum_name(type_name: String, property_name: &str) -> Ident {
     Ident::new(&enum_name, Span::call_site())
 }
 
+fn all_equal<T, I>(mut iter: I) -> bool
+where
+    T: PartialEq,
+    I: Iterator<Item = T>,
+{
+    if let Some(first) = iter.next() {
+        iter.all(|x| x == first)
+    } else {
+        true
+    }
+}
+
 struct SchemaDefinitions {
     types: IndexMap<Str, Item>,
     properties: IndexMap<Str, Item>,
@@ -545,31 +557,57 @@ impl SchemaDefinitions {
                         let enum_name =
                             field_enum_name(class_name.to_string(), property.label.value());
 
-                        let variant_defs = item_ids.into_iter().map(|item| {
-                            let item = self.types.get(&item.item_id).unwrap();
+                        let variant_defs: Vec<_> = item_ids
+                            .into_iter()
+                            .map(|item| {
+                                let item = self.types.get(&item.item_id).unwrap();
 
-                            let variant_name = self.name_ident(&item.id).unwrap();
-                            let variant_type = match basic_type_to_rust(&item.id.item_id) {
-                                Some(basic_type) => basic_type,
-                                None => quote! { #variant_name },
-                            };
+                                let variant_name = self.name_ident(&item.id).unwrap();
+                                let variant_type = match basic_type_to_rust(&item.id.item_id) {
+                                    Some(basic_type) => basic_type,
+                                    None => quote! { #variant_name },
+                                };
 
-                            let variant_comment = item.doc_comment();
+                                let variant_comment = item.doc_comment();
 
-                            quote! {
-                                #variant_comment
-                                #variant_name(#variant_type)
-                            }
-                        });
+                                (variant_comment, variant_name, variant_type)
+                            })
+                            .collect();
 
-                        Some(quote! {
-                            #property_comment
-                            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
-                            #[serde(untagged)]
-                            pub enum #enum_name {
-                                #(#variant_defs),*
-                            }
-                        })
+                        let all_the_same =
+                            all_equal(variant_defs.iter().map(|(_, _, typ)| typ.to_string()));
+
+                        if all_the_same {
+                            let (_, _, variant_type) = variant_defs.first().unwrap().clone();
+
+                            let variant_comments = variant_defs
+                                .into_iter()
+                                .map(|(variant_comment, _, _)| variant_comment);
+
+                            Some(quote! {
+                                #property_comment
+                                #(#variant_comments)*
+                                pub type #enum_name = #variant_type;
+                            })
+                        } else {
+                            let variant_defs = variant_defs.into_iter().map(
+                                |(variant_comment, variant_name, variant_type)| {
+                                    quote! {
+                                        #variant_comment
+                                        #variant_name(#variant_type)
+                                    }
+                                },
+                            );
+
+                            Some(quote! {
+                                #property_comment
+                                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                                #[serde(untagged)]
+                                pub enum #enum_name {
+                                    #(#variant_defs),*
+                                }
+                            })
+                        }
                     }
                 }
             });
