@@ -265,17 +265,10 @@ impl Item {
     }
 
     fn doc_comment(&self) -> TokenStream {
-        let comment = self.comment.value();
-
-        let comments = comment.trim().lines().map(|line| line.trim()).map(|line| {
-            let padded = format!(" {line}");
-            quote! {
-                #[doc = #padded]
-            }
-        });
-
+        let comment = self.label.value();
+        let comment = format!("https://schema.org/{comment}");
         quote! {
-            #(#comments)*
+            #[doc = #comment]
         }
     }
 }
@@ -549,7 +542,7 @@ impl SchemaDefinitions {
                 quote! {
                     #property_comment
                     #property_rename
-                    #[serde_as(as = "OneOrMany<_, PreferOne>")]
+                    #[serde_as(as = "OneOrMany<_>")]
                     pub #property_name: Vec<#property_type>
                 }
             });
@@ -784,7 +777,7 @@ fn main() -> Result<()> {
             &filename,
             quote! {
                 use crate::*;
-                use serde_with::serde_as;
+                use serde_with::{serde_as, OneOrMany};
 
                 #typ
             },
