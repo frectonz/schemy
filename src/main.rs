@@ -590,14 +590,39 @@ impl SchemaDefinitions {
                                 pub type #enum_name = #variant_type;
                             })
                         } else {
-                            let variant_defs = variant_defs.into_iter().map(
-                                |(variant_comment, variant_name, variant_type)| {
-                                    quote! {
-                                        #variant_comment
-                                        #variant_name(#variant_type)
-                                    }
-                                },
-                            );
+                            let mut type_to_names: IndexMap<
+                                String,
+                                Vec<(TokenStream, TokenStream, TokenStream)>,
+                            > = IndexMap::new();
+
+                            for (comment, name, ty) in variant_defs {
+                                let typ = ty.to_string();
+                                if let Some(vec) = type_to_names.get_mut(&typ) {
+                                    vec.push((comment, name, ty));
+                                } else {
+                                    type_to_names.insert(typ, vec![(comment, name, ty)]);
+                                }
+                            }
+
+                            let variant_defs = type_to_names.into_iter().map(|(_, variants)| {
+                                let comments = variants.iter().map(|(c, _, _)| c);
+
+                                let combined_name_str = variants
+                                    .iter()
+                                    .map(|(_, name, _)| name.to_string())
+                                    .collect::<Vec<_>>()
+                                    .join("Or");
+
+                                let combined_name =
+                                    Ident::new(&combined_name_str, Span::call_site());
+
+                                let (_, _, ty) = variants.first().unwrap();
+
+                                quote! {
+                                    #(#comments)*
+                                    #combined_name(#ty)
+                                }
+                            });
 
                             Some(quote! {
                                 #property_comment
