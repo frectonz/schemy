@@ -3,6 +3,7 @@ use std::{borrow::Cow, collections::HashSet, sync::Arc};
 use color_eyre::Result;
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
+use itertools::Itertools;
 use proc_macro2::{Span, TokenStream};
 use quote::{format_ident, quote};
 use serde::Deserialize;
@@ -390,7 +391,7 @@ impl SchemaDefinitions {
         })
     }
 
-    fn resolve_properties(&self) -> impl Iterator<Item = ResolvedType> {
+    fn resolve_properties(&self) -> Vec<ResolvedType> {
         let mut resolved_props: IndexMap<Str, HashSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
@@ -437,10 +438,13 @@ impl SchemaDefinitions {
             resolved_props.insert(type_id.clone(), all_props_set);
         }
 
-        resolved_props.into_iter().map(|(key, value)| ResolvedType {
-            type_id: key,
-            properties: value,
-        })
+        resolved_props
+            .into_iter()
+            .map(|(key, value)| ResolvedType {
+                type_id: key,
+                properties: value,
+            })
+            .collect()
     }
 
     fn enumerations_module(&self) -> proc_macro2::TokenStream {
@@ -500,12 +504,17 @@ impl SchemaDefinitions {
         class_name
     }
 
-    fn types_module(&self) -> impl Iterator<Item = (Ident, TokenStream)> {
+    fn types_module(&self) -> (Vec<(Ident, TokenStream)>, TokenStream) {
         let resolved = self.resolve_properties();
 
-        resolved.into_iter().filter_map(|class| {
+        let mut all_field_enums: IndexMap<String, Vec<(TokenStream, Ident, Vec<TokenStream>)>> =
+            IndexMap::new();
+
+        let mut types = Vec::new();
+
+        for class in resolved {
             if basic_type_to_rust(&class.type_id).is_some() {
-                return None;
+                continue;
             }
 
             let class_item = self.types.get(&class.type_id).unwrap();
@@ -559,6 +568,7 @@ impl SchemaDefinitions {
 
                         let variant_defs: Vec<_> = item_ids
                             .into_iter()
+                            .sorted_by_key(|item| item.item_id.clone())
                             .map(|item| {
                                 let item = self.types.get(&item.item_id).unwrap();
 
@@ -604,40 +614,45 @@ impl SchemaDefinitions {
                                 }
                             }
 
-                            let variant_defs = type_to_names.into_iter().map(|(_, variants)| {
-                                let comments = variants.iter().map(|(c, _, _)| c);
+                            let variant_defs = type_to_names
+                                .into_iter()
+                                .map(|(_, variants)| {
+                                    let comments = variants.iter().map(|(c, _, _)| c);
 
-                                let combined_name_str = variants
-                                    .iter()
-                                    .map(|(_, name, _)| name.to_string())
-                                    .collect::<Vec<_>>()
-                                    .join("Or");
+                                    let combined_name_str = variants
+                                        .iter()
+                                        .map(|(_, name, _)| name.to_string())
+                                        .collect::<Vec<_>>()
+                                        .join("Or");
 
-                                let combined_name =
-                                    Ident::new(&combined_name_str, Span::call_site());
+                                    let combined_name =
+                                        Ident::new(&combined_name_str, Span::call_site());
 
-                                let (_, _, ty) = variants.first().unwrap();
+                                    let (_, _, ty) = variants.first().unwrap();
 
-                                quote! {
-                                    #(#comments)*
-                                    #combined_name(#ty)
-                                }
-                            });
+                                    quote! {
+                                        #(#comments)*
+                                        #combined_name(#ty)
+                                    }
+                                })
+                                .collect::<Vec<_>>();
 
-                            Some(quote! {
-                                #property_comment
-                                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
-                                #[serde(untagged)]
-                                pub enum #enum_name {
-                                    #(#variant_defs),*
-                                }
-                            })
+                            let key = variant_defs.iter().map(|x| x.to_string()).join(",");
+                            let value = (property_comment, enum_name, variant_defs);
+
+                            if let Some(enums) = all_field_enums.get_mut(&key) {
+                                enums.push(value);
+                            } else {
+                                all_field_enums.insert(key, vec![value]);
+                            }
+
+                            None
                         }
                     }
                 }
             });
 
-            Some((
+            types.push((
                 class_module_name,
                 quote! {
                     #(#range_enums)*
@@ -652,7 +667,36 @@ impl SchemaDefinitions {
                     }
                 },
             ))
-        })
+        }
+
+        let all_field_enums = all_field_enums.into_values().enumerate().map(|(i, enums)| {
+            let combined_name = format_ident!("FieldEnum{i}");
+
+            let (_, _, variants) = enums.first().unwrap();
+
+            let enum_types = enums.iter().map(|(comment, name, _)| {
+                quote! {
+                    #comment
+                    pub type #name = #combined_name;
+                }
+            });
+
+            quote! {
+                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                #[serde(untagged)]
+                pub enum #combined_name {
+                    #(#variants),*
+                }
+
+                #(#enum_types)*
+            }
+        });
+
+        let all_field_enums = quote! {
+            #(#all_field_enums)*
+        };
+
+        (types, all_field_enums)
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
@@ -721,7 +765,16 @@ fn main() -> Result<()> {
     let enumerations = definitions.enumerations_module();
     write_to_file("schemy-test/src/enums.rs", enumerations)?;
 
-    let types = definitions.types_module();
+    let (types, field_enums) = definitions.types_module();
+
+    write_to_file(
+        "schemy-test/src/field.rs",
+        quote! {
+            use crate::*;
+
+            #field_enums
+        },
+    )?;
 
     let mut type_module = Vec::new();
 
@@ -757,6 +810,9 @@ fn main() -> Result<()> {
         "schemy-test/src/lib.rs",
         quote! {
             uniffi::setup_scaffolding!();
+
+            mod field;
+            pub use field::*;
 
             mod enums;
             pub use enums::*;
