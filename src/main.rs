@@ -286,18 +286,18 @@ mod constants {
 
 fn basic_type_to_rust(basic: &str) -> Option<TokenStream> {
     match basic {
-        "schema:DataType" => Some(quote! { Box<str> }),
-        "schema:Boolean" => Some(quote! { Box<str> }),
-        "schema:Date" => Some(quote! { Box<str> }),
-        "schema:DateTime" => Some(quote! { Box<str> }),
+        "schema:DataType" => Some(quote! { String }),
+        "schema:Boolean" => Some(quote! { String }),
+        "schema:Date" => Some(quote! { String }),
+        "schema:DateTime" => Some(quote! { String }),
         "schema:Number" => Some(quote! { f32}),
         "schema:Float" => Some(quote! { f32 }),
         "schema:Integer" => Some(quote! { i32 }),
-        "schema:Text" => Some(quote! { Box<str> }),
-        "schema:CssSelectorType" => Some(quote! { Box<str> }),
-        "schema:XPathType" => Some(quote! { Box<str> }),
-        "schema:URL" => Some(quote! { Box<str> }),
-        "schema:Time" => Some(quote! { Box<str> }),
+        "schema:Text" => Some(quote! { String }),
+        "schema:CssSelectorType" => Some(quote! { String }),
+        "schema:XPathType" => Some(quote! { String }),
+        "schema:URL" => Some(quote! { String }),
+        "schema:Time" => Some(quote! { String }),
         _ => None,
     }
 }
@@ -528,7 +528,8 @@ impl SchemaDefinitions {
                 quote! {
                     #property_comment
                     #property_rename
-                    pub #property_name: SchemaValue<#property_type>
+                    #[serde_as(as = "OneOrMany<_, PreferOne>")]
+                    pub #property_name: Vec<#property_type>
                 }
             });
 
@@ -550,7 +551,7 @@ impl SchemaDefinitions {
                             let variant_name = self.name_ident(&item.id).unwrap();
                             let variant_type = match basic_type_to_rust(&item.id.item_id) {
                                 Some(basic_type) => basic_type,
-                                None => quote! { Box<#variant_name> },
+                                None => quote! { #variant_name },
                             };
 
                             let variant_comment = item.doc_comment();
@@ -579,10 +580,11 @@ impl SchemaDefinitions {
                     #(#range_enums)*
 
                     #class_comments
+                    #[serde_as]
                     #[derive(Debug, serde::Deserialize, uniffi::Record)]
                     pub struct #class_name {
                         #[serde(rename = "@context")]
-                        pub context: Box<str>,
+                        pub context: String,
                         #(#field_defs),*
                     }
                 },
@@ -602,11 +604,11 @@ impl SchemaDefinitions {
                 let variant_name = self.name_ident(&enum_type.id).unwrap();
                 let variant_type = match basic_type_to_rust(&enum_type.id.item_id) {
                     Some(basic_type) => basic_type,
-                    None => quote! { Box<#variant_name> },
+                    None => quote! { #variant_name },
                 };
 
                 quote! {
-                    #variant_name(Box<#variant_type>)
+                    #variant_name(#variant_type)
                 }
             });
 
@@ -653,17 +655,6 @@ fn write_to_file(path: &str, tokens: TokenStream) -> Result<()> {
 fn main() -> Result<()> {
     let definitions = SchemaDefinitions::read()?;
 
-    write_to_file(
-        "schemy-test/src/value.rs",
-        quote! {
-            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
-            pub enum SchemaValue<T> {
-                Single(Option<Box<T>>),
-                List(Box<[T]>),
-            }
-        },
-    )?;
-
     let enumerations = definitions.enumerations_module();
     write_to_file("schemy-test/src/enums.rs", enumerations)?;
 
@@ -677,6 +668,7 @@ fn main() -> Result<()> {
             &filename,
             quote! {
                 use crate::*;
+                use serde_with::serde_as;
 
                 #typ
             },
@@ -701,8 +693,7 @@ fn main() -> Result<()> {
     write_to_file(
         "schemy-test/src/lib.rs",
         quote! {
-            mod value;
-            pub use value::*;
+            uniffi::setup_scaffolding!();
 
             mod enums;
             pub use enums::*;
