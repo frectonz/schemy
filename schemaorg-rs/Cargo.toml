@@ -2,6 +2,9 @@
 name = "schemaorg-rs"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "Generated Rust types from Schema.org JSON-LD vocabulary."
+repository = "https://github.com/frectonz/schemy/tree/main/schemaorg-rs"
 
 [dependencies]
 serde = { version = "1.0.219", features = ["derive"] }
