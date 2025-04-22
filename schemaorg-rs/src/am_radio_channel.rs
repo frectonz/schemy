@@ -1,90 +1,90 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///https://schema.org/genre
-///https://schema.org/Text
-///https://schema.org/URL
-pub type AMRadioChannelGenreFieldEnum = String;
-///https://schema.org/additionalType
-///https://schema.org/Text
-///https://schema.org/URL
+///<https://schema.org/additionalType>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
 pub type AMRadioChannelAdditionalTypeFieldEnum = String;
-///https://schema.org/AMRadioChannel
+///<https://schema.org/genre>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type AMRadioChannelGenreFieldEnum = String;
+///<https://schema.org/AMRadioChannel>
 #[serde_as]
 #[derive(Debug, serde::Deserialize)]
 #[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
 pub struct AMRadioChannel {
     #[serde(rename = "@context")]
     pub context: String,
-    ///https://schema.org/providesBroadcastService
-    #[serde(rename = "providesBroadcastService")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provides_broadcast_service: Vec<BroadcastService>,
-    ///https://schema.org/name
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///https://schema.org/disambiguatingDescription
+    ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
-    ///https://schema.org/subjectOf
-    #[serde(rename = "subjectOf")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<AMRadioChannelSubjectOfFieldEnum>,
-    ///https://schema.org/alternateName
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///https://schema.org/identifier
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<AMRadioChannelIdentifierFieldEnum>,
-    ///https://schema.org/broadcastChannelId
-    #[serde(rename = "broadcastChannelId")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub broadcast_channel_id: Vec<String>,
-    ///https://schema.org/broadcastServiceTier
-    #[serde(rename = "broadcastServiceTier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub broadcast_service_tier: Vec<String>,
-    ///https://schema.org/genre
-    #[serde(rename = "genre")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub genre: Vec<AMRadioChannelGenreFieldEnum>,
-    ///https://schema.org/mainEntityOfPage
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<AMRadioChannelMainEntityOfPageFieldEnum>,
-    ///https://schema.org/image
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<AMRadioChannelImageFieldEnum>,
-    ///https://schema.org/description
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<AMRadioChannelDescriptionFieldEnum>,
-    ///https://schema.org/additionalType
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<AMRadioChannelAdditionalTypeFieldEnum>,
-    ///https://schema.org/broadcastFrequency
-    #[serde(rename = "broadcastFrequency")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub broadcast_frequency: Vec<AMRadioChannelBroadcastFrequencyFieldEnum>,
-    ///https://schema.org/url
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///https://schema.org/inBroadcastLineup
-    #[serde(rename = "inBroadcastLineup")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub in_broadcast_lineup: Vec<CableOrSatelliteService>,
-    ///https://schema.org/potentialAction
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///https://schema.org/sameAs
+    pub name: Vec<String>,
+    ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<AMRadioChannelSubjectOfFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<AMRadioChannelAdditionalTypeFieldEnum>,
+    ///<https://schema.org/broadcastFrequency>
+    #[serde(rename = "broadcastFrequency")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broadcast_frequency: Vec<AMRadioChannelBroadcastFrequencyFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<AMRadioChannelDescriptionFieldEnum>,
+    ///<https://schema.org/genre>
+    #[serde(rename = "genre")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub genre: Vec<AMRadioChannelGenreFieldEnum>,
+    ///<https://schema.org/broadcastChannelId>
+    #[serde(rename = "broadcastChannelId")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broadcast_channel_id: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<AMRadioChannelImageFieldEnum>,
+    ///<https://schema.org/broadcastServiceTier>
+    #[serde(rename = "broadcastServiceTier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broadcast_service_tier: Vec<String>,
+    ///<https://schema.org/inBroadcastLineup>
+    #[serde(rename = "inBroadcastLineup")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub in_broadcast_lineup: Vec<CableOrSatelliteService>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<AMRadioChannelMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/providesBroadcastService>
+    #[serde(rename = "providesBroadcastService")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provides_broadcast_service: Vec<BroadcastService>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<AMRadioChannelIdentifierFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
 }

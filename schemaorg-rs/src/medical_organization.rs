@@ -1,370 +1,370 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///https://schema.org/additionalType
-///https://schema.org/Text
-///https://schema.org/URL
+///<https://schema.org/additionalType>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
 pub type MedicalOrganizationAdditionalTypeFieldEnum = String;
-///https://schema.org/MedicalOrganization
+///<https://schema.org/MedicalOrganization>
 #[serde_as]
 #[derive(Debug, serde::Deserialize)]
 #[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
 pub struct MedicalOrganization {
     #[serde(rename = "@context")]
     pub context: String,
-    ///https://schema.org/identifier
-    #[serde(rename = "identifier")]
+    ///<https://schema.org/telephone>
+    #[serde(rename = "telephone")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<MedicalOrganizationIdentifierFieldEnum>,
-    ///https://schema.org/seeks
-    #[serde(rename = "seeks")]
+    pub telephone: Vec<String>,
+    ///<https://schema.org/faxNumber>
+    #[serde(rename = "faxNumber")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub seeks: Vec<Demand>,
-    ///https://schema.org/hasPOS
-    #[serde(rename = "hasPOS")]
+    pub fax_number: Vec<String>,
+    ///<https://schema.org/alumni>
+    #[serde(rename = "alumni")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_pos: Vec<Place>,
-    ///https://schema.org/aggregateRating
+    pub alumni: Vec<Person>,
+    ///<https://schema.org/email>
+    #[serde(rename = "email")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub email: Vec<String>,
+    ///<https://schema.org/aggregateRating>
     #[serde(rename = "aggregateRating")]
     #[serde_as(as = "OneOrMany<_>")]
     pub aggregate_rating: Vec<AggregateRating>,
-    ///https://schema.org/leiCode
-    #[serde(rename = "leiCode")]
+    ///<https://schema.org/areaServed>
+    #[serde(rename = "areaServed")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub lei_code: Vec<String>,
-    ///https://schema.org/agentInteractionStatistic
-    #[serde(rename = "agentInteractionStatistic")]
+    pub area_served: Vec<MedicalOrganizationAreaServedFieldEnum>,
+    ///<https://schema.org/isAcceptingNewPatients>
+    #[serde(rename = "isAcceptingNewPatients")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub agent_interaction_statistic: Vec<InteractionCounter>,
-    ///https://schema.org/healthPlanNetworkId
-    #[serde(rename = "healthPlanNetworkId")]
+    pub is_accepting_new_patients: Vec<String>,
+    ///<https://schema.org/events>
+    #[serde(rename = "events")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub health_plan_network_id: Vec<String>,
-    ///https://schema.org/url
-    #[serde(rename = "url")]
+    pub events: Vec<Event>,
+    ///<https://schema.org/founders>
+    #[serde(rename = "founders")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///https://schema.org/ownershipFundingInfo
+    pub founders: Vec<Person>,
+    ///<https://schema.org/ownershipFundingInfo>
     #[serde(rename = "ownershipFundingInfo")]
     #[serde_as(as = "OneOrMany<_>")]
     pub ownership_funding_info: Vec<MedicalOrganizationOwnershipFundingInfoFieldEnum>,
-    ///https://schema.org/parentOrganization
-    #[serde(rename = "parentOrganization")]
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub parent_organization: Vec<Organization>,
-    ///https://schema.org/hasCredential
-    #[serde(rename = "hasCredential")]
+    pub main_entity_of_page: Vec<MedicalOrganizationMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/healthPlanNetworkId>
+    #[serde(rename = "healthPlanNetworkId")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_credential: Vec<EducationalOccupationalCredential>,
-    ///https://schema.org/owns
-    #[serde(rename = "owns")]
+    pub health_plan_network_id: Vec<String>,
+    ///<https://schema.org/foundingDate>
+    #[serde(rename = "foundingDate")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub owns: Vec<MedicalOrganizationOwnsFieldEnum>,
-    ///https://schema.org/awards
-    #[serde(rename = "awards")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub awards: Vec<String>,
-    ///https://schema.org/slogan
-    #[serde(rename = "slogan")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub slogan: Vec<String>,
-    ///https://schema.org/alternateName
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///https://schema.org/dissolutionDate
-    #[serde(rename = "dissolutionDate")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub dissolution_date: Vec<String>,
-    ///https://schema.org/hasMemberProgram
-    #[serde(rename = "hasMemberProgram")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_member_program: Vec<MemberProgram>,
-    ///https://schema.org/funder
+    pub founding_date: Vec<String>,
+    ///<https://schema.org/funder>
     #[serde(rename = "funder")]
     #[serde_as(as = "OneOrMany<_>")]
     pub funder: Vec<MedicalOrganizationFunderFieldEnum>,
-    ///https://schema.org/actionableFeedbackPolicy
+    ///<https://schema.org/isicV4>
+    #[serde(rename = "isicV4")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub isic_v4: Vec<String>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/hasShippingService>
+    #[serde(rename = "hasShippingService")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_shipping_service: Vec<ShippingService>,
+    ///<https://schema.org/employee>
+    #[serde(rename = "employee")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub employee: Vec<Person>,
+    ///<https://schema.org/unnamedSourcesPolicy>
+    #[serde(rename = "unnamedSourcesPolicy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub unnamed_sources_policy: Vec<MedicalOrganizationUnnamedSourcesPolicyFieldEnum>,
+    ///<https://schema.org/hasMemberProgram>
+    #[serde(rename = "hasMemberProgram")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_member_program: Vec<MemberProgram>,
+    ///<https://schema.org/location>
+    #[serde(rename = "location")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub location: Vec<MedicalOrganizationLocationFieldEnum>,
+    ///<https://schema.org/vatID>
+    #[serde(rename = "vatID")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub vat_id: Vec<String>,
+    ///<https://schema.org/ethicsPolicy>
+    #[serde(rename = "ethicsPolicy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub ethics_policy: Vec<MedicalOrganizationEthicsPolicyFieldEnum>,
+    ///<https://schema.org/actionableFeedbackPolicy>
     #[serde(rename = "actionableFeedbackPolicy")]
     #[serde_as(as = "OneOrMany<_>")]
     pub actionable_feedback_policy: Vec<
         MedicalOrganizationActionableFeedbackPolicyFieldEnum,
     >,
-    ///https://schema.org/faxNumber
-    #[serde(rename = "faxNumber")]
+    ///<https://schema.org/makesOffer>
+    #[serde(rename = "makesOffer")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub fax_number: Vec<String>,
-    ///https://schema.org/mainEntityOfPage
-    #[serde(rename = "mainEntityOfPage")]
+    pub makes_offer: Vec<Offer>,
+    ///<https://schema.org/members>
+    #[serde(rename = "members")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<MedicalOrganizationMainEntityOfPageFieldEnum>,
-    ///https://schema.org/contactPoints
-    #[serde(rename = "contactPoints")]
+    pub members: Vec<MedicalOrganizationMembersFieldEnum>,
+    ///<https://schema.org/nonprofitStatus>
+    #[serde(rename = "nonprofitStatus")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub contact_points: Vec<ContactPoint>,
-    ///https://schema.org/foundingLocation
-    #[serde(rename = "foundingLocation")]
+    pub nonprofit_status: Vec<NonprofitType>,
+    ///<https://schema.org/knowsAbout>
+    #[serde(rename = "knowsAbout")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub founding_location: Vec<Place>,
-    ///https://schema.org/hasCertification
-    #[serde(rename = "hasCertification")]
+    pub knows_about: Vec<MedicalOrganizationKnowsAboutFieldEnum>,
+    ///<https://schema.org/hasCredential>
+    #[serde(rename = "hasCredential")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_certification: Vec<Certification>,
-    ///https://schema.org/employees
-    #[serde(rename = "employees")]
+    pub has_credential: Vec<EducationalOccupationalCredential>,
+    ///<https://schema.org/hasPOS>
+    #[serde(rename = "hasPOS")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub employees: Vec<Person>,
-    ///https://schema.org/unnamedSourcesPolicy
-    #[serde(rename = "unnamedSourcesPolicy")]
+    pub has_pos: Vec<Place>,
+    ///<https://schema.org/numberOfEmployees>
+    #[serde(rename = "numberOfEmployees")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub unnamed_sources_policy: Vec<MedicalOrganizationUnnamedSourcesPolicyFieldEnum>,
-    ///https://schema.org/legalName
+    pub number_of_employees: Vec<QuantitativeValue>,
+    ///<https://schema.org/review>
+    #[serde(rename = "review")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub review: Vec<Review>,
+    ///<https://schema.org/agentInteractionStatistic>
+    #[serde(rename = "agentInteractionStatistic")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub agent_interaction_statistic: Vec<InteractionCounter>,
+    ///<https://schema.org/legalName>
     #[serde(rename = "legalName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub legal_name: Vec<String>,
-    ///https://schema.org/diversityStaffingReport
+    ///<https://schema.org/leiCode>
+    #[serde(rename = "leiCode")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub lei_code: Vec<String>,
+    ///<https://schema.org/award>
+    #[serde(rename = "award")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub award: Vec<String>,
+    ///<https://schema.org/medicalSpecialty>
+    #[serde(rename = "medicalSpecialty")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub medical_specialty: Vec<MedicalSpecialtyEnum>,
+    ///<https://schema.org/naics>
+    #[serde(rename = "naics")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub naics: Vec<String>,
+    ///<https://schema.org/globalLocationNumber>
+    #[serde(rename = "globalLocationNumber")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub global_location_number: Vec<String>,
+    ///<https://schema.org/memberOf>
+    #[serde(rename = "memberOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub member_of: Vec<MedicalOrganizationMemberOfFieldEnum>,
+    ///<https://schema.org/diversityStaffingReport>
     #[serde(rename = "diversityStaffingReport")]
     #[serde_as(as = "OneOrMany<_>")]
     pub diversity_staffing_report: Vec<
         MedicalOrganizationDiversityStaffingReportFieldEnum,
     >,
-    ///https://schema.org/logo
-    #[serde(rename = "logo")]
+    ///<https://schema.org/awards>
+    #[serde(rename = "awards")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub logo: Vec<MedicalOrganizationLogoFieldEnum>,
-    ///https://schema.org/disambiguatingDescription
-    #[serde(rename = "disambiguatingDescription")]
+    pub awards: Vec<String>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///https://schema.org/knowsAbout
-    #[serde(rename = "knowsAbout")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub knows_about: Vec<MedicalOrganizationKnowsAboutFieldEnum>,
-    ///https://schema.org/nonprofitStatus
-    #[serde(rename = "nonprofitStatus")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub nonprofit_status: Vec<NonprofitType>,
-    ///https://schema.org/vatID
-    #[serde(rename = "vatID")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub vat_id: Vec<String>,
-    ///https://schema.org/sponsor
-    #[serde(rename = "sponsor")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sponsor: Vec<MedicalOrganizationSponsorFieldEnum>,
-    ///https://schema.org/diversityPolicy
-    #[serde(rename = "diversityPolicy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub diversity_policy: Vec<MedicalOrganizationDiversityPolicyFieldEnum>,
-    ///https://schema.org/description
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<MedicalOrganizationDescriptionFieldEnum>,
-    ///https://schema.org/hasMerchantReturnPolicy
-    #[serde(rename = "hasMerchantReturnPolicy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_merchant_return_policy: Vec<MerchantReturnPolicy>,
-    ///https://schema.org/serviceArea
-    #[serde(rename = "serviceArea")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub service_area: Vec<MedicalOrganizationServiceAreaFieldEnum>,
-    ///https://schema.org/award
-    #[serde(rename = "award")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub award: Vec<String>,
-    ///https://schema.org/publishingPrinciples
-    #[serde(rename = "publishingPrinciples")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub publishing_principles: Vec<MedicalOrganizationPublishingPrinciplesFieldEnum>,
-    ///https://schema.org/brand
-    #[serde(rename = "brand")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub brand: Vec<MedicalOrganizationBrandFieldEnum>,
-    ///https://schema.org/members
-    #[serde(rename = "members")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub members: Vec<MedicalOrganizationMembersFieldEnum>,
-    ///https://schema.org/member
-    #[serde(rename = "member")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub member: Vec<MedicalOrganizationMemberFieldEnum>,
-    ///https://schema.org/potentialAction
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///https://schema.org/areaServed
-    #[serde(rename = "areaServed")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub area_served: Vec<MedicalOrganizationAreaServedFieldEnum>,
-    ///https://schema.org/isAcceptingNewPatients
-    #[serde(rename = "isAcceptingNewPatients")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_accepting_new_patients: Vec<String>,
-    ///https://schema.org/reviews
-    #[serde(rename = "reviews")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub reviews: Vec<Review>,
-    ///https://schema.org/subOrganization
-    #[serde(rename = "subOrganization")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sub_organization: Vec<Organization>,
-    ///https://schema.org/events
-    #[serde(rename = "events")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub events: Vec<Event>,
-    ///https://schema.org/review
-    #[serde(rename = "review")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub review: Vec<Review>,
-    ///https://schema.org/skills
-    #[serde(rename = "skills")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub skills: Vec<MedicalOrganizationSkillsFieldEnum>,
-    ///https://schema.org/isicV4
-    #[serde(rename = "isicV4")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub isic_v4: Vec<String>,
-    ///https://schema.org/foundingDate
-    #[serde(rename = "foundingDate")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub founding_date: Vec<String>,
-    ///https://schema.org/hasOfferCatalog
-    #[serde(rename = "hasOfferCatalog")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_offer_catalog: Vec<OfferCatalog>,
-    ///https://schema.org/hasShippingService
-    #[serde(rename = "hasShippingService")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_shipping_service: Vec<ShippingService>,
-    ///https://schema.org/knowsLanguage
-    #[serde(rename = "knowsLanguage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub knows_language: Vec<MedicalOrganizationKnowsLanguageFieldEnum>,
-    ///https://schema.org/event
-    #[serde(rename = "event")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub event: Vec<Event>,
-    ///https://schema.org/interactionStatistic
-    #[serde(rename = "interactionStatistic")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub interaction_statistic: Vec<InteractionCounter>,
-    ///https://schema.org/location
-    #[serde(rename = "location")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub location: Vec<MedicalOrganizationLocationFieldEnum>,
-    ///https://schema.org/taxID
-    #[serde(rename = "taxID")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub tax_id: Vec<String>,
-    ///https://schema.org/funding
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///https://schema.org/memberOf
-    #[serde(rename = "memberOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub member_of: Vec<MedicalOrganizationMemberOfFieldEnum>,
-    ///https://schema.org/subjectOf
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<MedicalOrganizationSubjectOfFieldEnum>,
-    ///https://schema.org/keywords
-    #[serde(rename = "keywords")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub keywords: Vec<MedicalOrganizationKeywordsFieldEnum>,
-    ///https://schema.org/acceptedPaymentMethod
-    #[serde(rename = "acceptedPaymentMethod")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accepted_payment_method: Vec<MedicalOrganizationAcceptedPaymentMethodFieldEnum>,
-    ///https://schema.org/globalLocationNumber
-    #[serde(rename = "globalLocationNumber")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub global_location_number: Vec<String>,
-    ///https://schema.org/address
-    #[serde(rename = "address")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub address: Vec<MedicalOrganizationAddressFieldEnum>,
-    ///https://schema.org/medicalSpecialty
-    #[serde(rename = "medicalSpecialty")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub medical_specialty: Vec<MedicalSpecialtyEnum>,
-    ///https://schema.org/duns
-    #[serde(rename = "duns")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub duns: Vec<String>,
-    ///https://schema.org/iso6523Code
-    #[serde(rename = "iso6523Code")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub iso6523_code: Vec<String>,
-    ///https://schema.org/department
-    #[serde(rename = "department")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub department: Vec<Organization>,
-    ///https://schema.org/additionalType
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<MedicalOrganizationAdditionalTypeFieldEnum>,
-    ///https://schema.org/image
-    #[serde(rename = "image")]
+    ///<https://schema.org/reviews>
+    #[serde(rename = "reviews")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<MedicalOrganizationImageFieldEnum>,
-    ///https://schema.org/naics
-    #[serde(rename = "naics")]
+    pub reviews: Vec<Review>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub naics: Vec<String>,
-    ///https://schema.org/telephone
-    #[serde(rename = "telephone")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/knowsLanguage>
+    #[serde(rename = "knowsLanguage")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub telephone: Vec<String>,
-    ///https://schema.org/hasGS1DigitalLink
-    #[serde(rename = "hasGS1DigitalLink")]
+    pub knows_language: Vec<MedicalOrganizationKnowsLanguageFieldEnum>,
+    ///<https://schema.org/dissolutionDate>
+    #[serde(rename = "dissolutionDate")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_gs1_digital_link: Vec<String>,
-    ///https://schema.org/employee
-    #[serde(rename = "employee")]
+    pub dissolution_date: Vec<String>,
+    ///<https://schema.org/interactionStatistic>
+    #[serde(rename = "interactionStatistic")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub employee: Vec<Person>,
-    ///https://schema.org/ethicsPolicy
-    #[serde(rename = "ethicsPolicy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub ethics_policy: Vec<MedicalOrganizationEthicsPolicyFieldEnum>,
-    ///https://schema.org/sameAs
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///https://schema.org/alumni
-    #[serde(rename = "alumni")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alumni: Vec<Person>,
-    ///https://schema.org/makesOffer
-    #[serde(rename = "makesOffer")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub makes_offer: Vec<Offer>,
-    ///https://schema.org/correctionsPolicy
-    #[serde(rename = "correctionsPolicy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub corrections_policy: Vec<MedicalOrganizationCorrectionsPolicyFieldEnum>,
-    ///https://schema.org/founders
-    #[serde(rename = "founders")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub founders: Vec<Person>,
-    ///https://schema.org/founder
-    #[serde(rename = "founder")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub founder: Vec<MedicalOrganizationFounderFieldEnum>,
-    ///https://schema.org/email
-    #[serde(rename = "email")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub email: Vec<String>,
-    ///https://schema.org/numberOfEmployees
-    #[serde(rename = "numberOfEmployees")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub number_of_employees: Vec<QuantitativeValue>,
-    ///https://schema.org/contactPoint
+    pub interaction_statistic: Vec<InteractionCounter>,
+    ///<https://schema.org/contactPoint>
     #[serde(rename = "contactPoint")]
     #[serde_as(as = "OneOrMany<_>")]
     pub contact_point: Vec<ContactPoint>,
-    ///https://schema.org/name
-    #[serde(rename = "name")]
+    ///<https://schema.org/hasGS1DigitalLink>
+    #[serde(rename = "hasGS1DigitalLink")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub has_gs1_digital_link: Vec<String>,
+    ///<https://schema.org/serviceArea>
+    #[serde(rename = "serviceArea")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_area: Vec<MedicalOrganizationServiceAreaFieldEnum>,
+    ///<https://schema.org/keywords>
+    #[serde(rename = "keywords")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub keywords: Vec<MedicalOrganizationKeywordsFieldEnum>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/brand>
+    #[serde(rename = "brand")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub brand: Vec<MedicalOrganizationBrandFieldEnum>,
+    ///<https://schema.org/sponsor>
+    #[serde(rename = "sponsor")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sponsor: Vec<MedicalOrganizationSponsorFieldEnum>,
+    ///<https://schema.org/parentOrganization>
+    #[serde(rename = "parentOrganization")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub parent_organization: Vec<Organization>,
+    ///<https://schema.org/department>
+    #[serde(rename = "department")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub department: Vec<Organization>,
+    ///<https://schema.org/founder>
+    #[serde(rename = "founder")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub founder: Vec<MedicalOrganizationFounderFieldEnum>,
+    ///<https://schema.org/hasMerchantReturnPolicy>
+    #[serde(rename = "hasMerchantReturnPolicy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_merchant_return_policy: Vec<MerchantReturnPolicy>,
+    ///<https://schema.org/contactPoints>
+    #[serde(rename = "contactPoints")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub contact_points: Vec<ContactPoint>,
+    ///<https://schema.org/foundingLocation>
+    #[serde(rename = "foundingLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub founding_location: Vec<Place>,
+    ///<https://schema.org/slogan>
+    #[serde(rename = "slogan")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub slogan: Vec<String>,
+    ///<https://schema.org/acceptedPaymentMethod>
+    #[serde(rename = "acceptedPaymentMethod")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accepted_payment_method: Vec<MedicalOrganizationAcceptedPaymentMethodFieldEnum>,
+    ///<https://schema.org/publishingPrinciples>
+    #[serde(rename = "publishingPrinciples")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub publishing_principles: Vec<MedicalOrganizationPublishingPrinciplesFieldEnum>,
+    ///<https://schema.org/logo>
+    #[serde(rename = "logo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub logo: Vec<MedicalOrganizationLogoFieldEnum>,
+    ///<https://schema.org/member>
+    #[serde(rename = "member")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub member: Vec<MedicalOrganizationMemberFieldEnum>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/hasOfferCatalog>
+    #[serde(rename = "hasOfferCatalog")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_offer_catalog: Vec<OfferCatalog>,
+    ///<https://schema.org/hasCertification>
+    #[serde(rename = "hasCertification")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_certification: Vec<Certification>,
+    ///<https://schema.org/owns>
+    #[serde(rename = "owns")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub owns: Vec<MedicalOrganizationOwnsFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<MedicalOrganizationSubjectOfFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/seeks>
+    #[serde(rename = "seeks")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub seeks: Vec<Demand>,
+    ///<https://schema.org/subOrganization>
+    #[serde(rename = "subOrganization")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sub_organization: Vec<Organization>,
+    ///<https://schema.org/event>
+    #[serde(rename = "event")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub event: Vec<Event>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<MedicalOrganizationDescriptionFieldEnum>,
+    ///<https://schema.org/skills>
+    #[serde(rename = "skills")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub skills: Vec<MedicalOrganizationSkillsFieldEnum>,
+    ///<https://schema.org/iso6523Code>
+    #[serde(rename = "iso6523Code")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub iso6523_code: Vec<String>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/employees>
+    #[serde(rename = "employees")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub employees: Vec<Person>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<MedicalOrganizationImageFieldEnum>,
+    ///<https://schema.org/diversityPolicy>
+    #[serde(rename = "diversityPolicy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub diversity_policy: Vec<MedicalOrganizationDiversityPolicyFieldEnum>,
+    ///<https://schema.org/correctionsPolicy>
+    #[serde(rename = "correctionsPolicy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub corrections_policy: Vec<MedicalOrganizationCorrectionsPolicyFieldEnum>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<MedicalOrganizationIdentifierFieldEnum>,
+    ///<https://schema.org/duns>
+    #[serde(rename = "duns")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub duns: Vec<String>,
+    ///<https://schema.org/address>
+    #[serde(rename = "address")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub address: Vec<MedicalOrganizationAddressFieldEnum>,
+    ///<https://schema.org/taxID>
+    #[serde(rename = "taxID")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub tax_id: Vec<String>,
 }

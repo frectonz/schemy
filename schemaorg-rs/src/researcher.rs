@@ -1,70 +1,70 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///https://schema.org/additionalType
-///https://schema.org/Text
-///https://schema.org/URL
+///<https://schema.org/additionalType>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
 pub type ResearcherAdditionalTypeFieldEnum = String;
-///https://schema.org/Researcher
+///<https://schema.org/Researcher>
 #[serde_as]
 #[derive(Debug, serde::Deserialize)]
 #[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
 pub struct Researcher {
     #[serde(rename = "@context")]
     pub context: String,
-    ///https://schema.org/url
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///https://schema.org/audienceType
-    #[serde(rename = "audienceType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub audience_type: Vec<String>,
-    ///https://schema.org/geographicArea
-    #[serde(rename = "geographicArea")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub geographic_area: Vec<AdministrativeArea>,
-    ///https://schema.org/subjectOf
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<ResearcherSubjectOfFieldEnum>,
-    ///https://schema.org/alternateName
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///https://schema.org/disambiguatingDescription
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///https://schema.org/identifier
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<ResearcherIdentifierFieldEnum>,
-    ///https://schema.org/mainEntityOfPage
+    ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<ResearcherMainEntityOfPageFieldEnum>,
-    ///https://schema.org/name
-    #[serde(rename = "name")]
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///https://schema.org/additionalType
-    #[serde(rename = "additionalType")]
+    pub identifier: Vec<ResearcherIdentifierFieldEnum>,
+    ///<https://schema.org/audienceType>
+    #[serde(rename = "audienceType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<ResearcherAdditionalTypeFieldEnum>,
-    ///https://schema.org/potentialAction
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///https://schema.org/image
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<ResearcherImageFieldEnum>,
-    ///https://schema.org/description
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<ResearcherDescriptionFieldEnum>,
-    ///https://schema.org/sameAs
+    pub audience_type: Vec<String>,
+    ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<ResearcherAdditionalTypeFieldEnum>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<ResearcherImageFieldEnum>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<ResearcherDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<ResearcherSubjectOfFieldEnum>,
+    ///<https://schema.org/geographicArea>
+    #[serde(rename = "geographicArea")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub geographic_area: Vec<AdministrativeArea>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
 }

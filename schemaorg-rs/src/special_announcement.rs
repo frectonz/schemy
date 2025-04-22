@@ -1,629 +1,629 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///https://schema.org/dateModified
-///https://schema.org/Date
-///https://schema.org/DateTime
-pub type SpecialAnnouncementDateModifiedFieldEnum = String;
-///https://schema.org/encodingFormat
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementEncodingFormatFieldEnum = String;
-///https://schema.org/datePublished
-///https://schema.org/Date
-///https://schema.org/DateTime
-pub type SpecialAnnouncementDatePublishedFieldEnum = String;
-///https://schema.org/additionalType
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementAdditionalTypeFieldEnum = String;
-///https://schema.org/temporalCoverage
-///https://schema.org/DateTime
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementTemporalCoverageFieldEnum = String;
-///https://schema.org/editEIDR
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementEditEIDRFieldEnum = String;
-///https://schema.org/genre
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementGenreFieldEnum = String;
-///https://schema.org/dateCreated
-///https://schema.org/Date
-///https://schema.org/DateTime
-pub type SpecialAnnouncementDateCreatedFieldEnum = String;
-///https://schema.org/fileFormat
-///https://schema.org/Text
-///https://schema.org/URL
-pub type SpecialAnnouncementFileFormatFieldEnum = String;
-///https://schema.org/temporal
-///https://schema.org/DateTime
-///https://schema.org/Text
-pub type SpecialAnnouncementTemporalFieldEnum = String;
-///https://schema.org/datePosted
-///https://schema.org/Date
-///https://schema.org/DateTime
-pub type SpecialAnnouncementDatePostedFieldEnum = String;
-///https://schema.org/expires
-///https://schema.org/Date
-///https://schema.org/DateTime
+///<https://schema.org/expires>
+///<https://schema.org/Date>
+///<https://schema.org/DateTime>
 pub type SpecialAnnouncementExpiresFieldEnum = String;
-///https://schema.org/schemaVersion
-///https://schema.org/Text
-///https://schema.org/URL
+///<https://schema.org/editEIDR>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementEditEIDRFieldEnum = String;
+///<https://schema.org/datePosted>
+///<https://schema.org/Date>
+///<https://schema.org/DateTime>
+pub type SpecialAnnouncementDatePostedFieldEnum = String;
+///<https://schema.org/genre>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementGenreFieldEnum = String;
+///<https://schema.org/temporalCoverage>
+///<https://schema.org/DateTime>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementTemporalCoverageFieldEnum = String;
+///<https://schema.org/encodingFormat>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementEncodingFormatFieldEnum = String;
+///<https://schema.org/datePublished>
+///<https://schema.org/Date>
+///<https://schema.org/DateTime>
+pub type SpecialAnnouncementDatePublishedFieldEnum = String;
+///<https://schema.org/dateModified>
+///<https://schema.org/Date>
+///<https://schema.org/DateTime>
+pub type SpecialAnnouncementDateModifiedFieldEnum = String;
+///<https://schema.org/schemaVersion>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
 pub type SpecialAnnouncementSchemaVersionFieldEnum = String;
-///https://schema.org/SpecialAnnouncement
+///<https://schema.org/temporal>
+///<https://schema.org/DateTime>
+///<https://schema.org/Text>
+pub type SpecialAnnouncementTemporalFieldEnum = String;
+///<https://schema.org/fileFormat>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementFileFormatFieldEnum = String;
+///<https://schema.org/additionalType>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type SpecialAnnouncementAdditionalTypeFieldEnum = String;
+///<https://schema.org/dateCreated>
+///<https://schema.org/Date>
+///<https://schema.org/DateTime>
+pub type SpecialAnnouncementDateCreatedFieldEnum = String;
+///<https://schema.org/SpecialAnnouncement>
 #[serde_as]
 #[derive(Debug, serde::Deserialize)]
 #[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
 pub struct SpecialAnnouncement {
     #[serde(rename = "@context")]
     pub context: String,
-    ///https://schema.org/teaches
-    #[serde(rename = "teaches")]
+    ///<https://schema.org/travelBans>
+    #[serde(rename = "travelBans")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub teaches: Vec<SpecialAnnouncementTeachesFieldEnum>,
-    ///https://schema.org/archivedAt
-    #[serde(rename = "archivedAt")]
+    pub travel_bans: Vec<SpecialAnnouncementTravelBansFieldEnum>,
+    ///<https://schema.org/expires>
+    #[serde(rename = "expires")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub archived_at: Vec<SpecialAnnouncementArchivedAtFieldEnum>,
-    ///https://schema.org/license
+    pub expires: Vec<SpecialAnnouncementExpiresFieldEnum>,
+    ///<https://schema.org/license>
     #[serde(rename = "license")]
     #[serde_as(as = "OneOrMany<_>")]
     pub license: Vec<SpecialAnnouncementLicenseFieldEnum>,
-    ///https://schema.org/copyrightNotice
-    #[serde(rename = "copyrightNotice")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub copyright_notice: Vec<String>,
-    ///https://schema.org/educationalUse
-    #[serde(rename = "educationalUse")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub educational_use: Vec<SpecialAnnouncementEducationalUseFieldEnum>,
-    ///https://schema.org/dateModified
-    #[serde(rename = "dateModified")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub date_modified: Vec<SpecialAnnouncementDateModifiedFieldEnum>,
-    ///https://schema.org/mainEntityOfPage
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<SpecialAnnouncementMainEntityOfPageFieldEnum>,
-    ///https://schema.org/encodingFormat
-    #[serde(rename = "encodingFormat")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub encoding_format: Vec<SpecialAnnouncementEncodingFormatFieldEnum>,
-    ///https://schema.org/datePublished
-    #[serde(rename = "datePublished")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub date_published: Vec<SpecialAnnouncementDatePublishedFieldEnum>,
-    ///https://schema.org/accessModeSufficient
-    #[serde(rename = "accessModeSufficient")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub access_mode_sufficient: Vec<ItemList>,
-    ///https://schema.org/workExample
-    #[serde(rename = "workExample")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub work_example: Vec<CreativeWork>,
-    ///https://schema.org/creditText
-    #[serde(rename = "creditText")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub credit_text: Vec<String>,
-    ///https://schema.org/isBasedOn
-    #[serde(rename = "isBasedOn")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_based_on: Vec<SpecialAnnouncementIsBasedOnFieldEnum>,
-    ///https://schema.org/headline
-    #[serde(rename = "headline")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub headline: Vec<String>,
-    ///https://schema.org/producer
-    #[serde(rename = "producer")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub producer: Vec<SpecialAnnouncementProducerFieldEnum>,
-    ///https://schema.org/keywords
-    #[serde(rename = "keywords")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub keywords: Vec<SpecialAnnouncementKeywordsFieldEnum>,
-    ///https://schema.org/accessibilitySummary
-    #[serde(rename = "accessibilitySummary")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accessibility_summary: Vec<String>,
-    ///https://schema.org/interpretedAsClaim
-    #[serde(rename = "interpretedAsClaim")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub interpreted_as_claim: Vec<Claim>,
-    ///https://schema.org/image
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<SpecialAnnouncementImageFieldEnum>,
-    ///https://schema.org/materialExtent
-    #[serde(rename = "materialExtent")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub material_extent: Vec<SpecialAnnouncementMaterialExtentFieldEnum>,
-    ///https://schema.org/material
-    #[serde(rename = "material")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub material: Vec<SpecialAnnouncementMaterialFieldEnum>,
-    ///https://schema.org/description
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<SpecialAnnouncementDescriptionFieldEnum>,
-    ///https://schema.org/aggregateRating
-    #[serde(rename = "aggregateRating")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub aggregate_rating: Vec<AggregateRating>,
-    ///https://schema.org/governmentBenefitsInfo
-    #[serde(rename = "governmentBenefitsInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub government_benefits_info: Vec<GovernmentService>,
-    ///https://schema.org/creator
-    #[serde(rename = "creator")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub creator: Vec<SpecialAnnouncementCreatorFieldEnum>,
-    ///https://schema.org/learningResourceType
-    #[serde(rename = "learningResourceType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub learning_resource_type: Vec<SpecialAnnouncementLearningResourceTypeFieldEnum>,
-    ///https://schema.org/editor
-    #[serde(rename = "editor")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub editor: Vec<Person>,
-    ///https://schema.org/thumbnail
-    #[serde(rename = "thumbnail")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub thumbnail: Vec<ImageObject>,
-    ///https://schema.org/translationOfWork
-    #[serde(rename = "translationOfWork")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub translation_of_work: Vec<CreativeWork>,
-    ///https://schema.org/additionalType
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<SpecialAnnouncementAdditionalTypeFieldEnum>,
-    ///https://schema.org/sdPublisher
-    #[serde(rename = "sdPublisher")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sd_publisher: Vec<SpecialAnnouncementSdPublisherFieldEnum>,
-    ///https://schema.org/recordedAt
-    #[serde(rename = "recordedAt")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recorded_at: Vec<Event>,
-    ///https://schema.org/awards
-    #[serde(rename = "awards")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub awards: Vec<String>,
-    ///https://schema.org/author
-    #[serde(rename = "author")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub author: Vec<SpecialAnnouncementAuthorFieldEnum>,
-    ///https://schema.org/mentions
-    #[serde(rename = "mentions")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub mentions: Vec<Thing>,
-    ///https://schema.org/name
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///https://schema.org/correction
-    #[serde(rename = "correction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub correction: Vec<SpecialAnnouncementCorrectionFieldEnum>,
-    ///https://schema.org/conditionsOfAccess
-    #[serde(rename = "conditionsOfAccess")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub conditions_of_access: Vec<String>,
-    ///https://schema.org/review
-    #[serde(rename = "review")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub review: Vec<Review>,
-    ///https://schema.org/copyrightHolder
-    #[serde(rename = "copyrightHolder")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub copyright_holder: Vec<SpecialAnnouncementCopyrightHolderFieldEnum>,
-    ///https://schema.org/encoding
-    #[serde(rename = "encoding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub encoding: Vec<MediaObject>,
-    ///https://schema.org/locationCreated
-    #[serde(rename = "locationCreated")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub location_created: Vec<Place>,
-    ///https://schema.org/diseasePreventionInfo
-    #[serde(rename = "diseasePreventionInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disease_prevention_info: Vec<SpecialAnnouncementDiseasePreventionInfoFieldEnum>,
-    ///https://schema.org/maintainer
-    #[serde(rename = "maintainer")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub maintainer: Vec<SpecialAnnouncementMaintainerFieldEnum>,
-    ///https://schema.org/inLanguage
-    #[serde(rename = "inLanguage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub in_language: Vec<SpecialAnnouncementInLanguageFieldEnum>,
-    ///https://schema.org/abstract
-    #[serde(rename = "abstract")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub _abstract: Vec<String>,
-    ///https://schema.org/text
-    #[serde(rename = "text")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub text: Vec<String>,
-    ///https://schema.org/temporalCoverage
-    #[serde(rename = "temporalCoverage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub temporal_coverage: Vec<SpecialAnnouncementTemporalCoverageFieldEnum>,
-    ///https://schema.org/accessMode
-    #[serde(rename = "accessMode")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub access_mode: Vec<String>,
-    ///https://schema.org/subjectOf
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<SpecialAnnouncementSubjectOfFieldEnum>,
-    ///https://schema.org/alternateName
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///https://schema.org/editEIDR
-    #[serde(rename = "editEIDR")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub edit_eidr: Vec<SpecialAnnouncementEditEIDRFieldEnum>,
-    ///https://schema.org/sourceOrganization
-    #[serde(rename = "sourceOrganization")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub source_organization: Vec<Organization>,
-    ///https://schema.org/citation
-    #[serde(rename = "citation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub citation: Vec<SpecialAnnouncementCitationFieldEnum>,
-    ///https://schema.org/genre
-    #[serde(rename = "genre")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub genre: Vec<SpecialAnnouncementGenreFieldEnum>,
-    ///https://schema.org/webFeed
-    #[serde(rename = "webFeed")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub web_feed: Vec<SpecialAnnouncementWebFeedFieldEnum>,
-    ///https://schema.org/accountablePerson
-    #[serde(rename = "accountablePerson")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accountable_person: Vec<Person>,
-    ///https://schema.org/position
-    #[serde(rename = "position")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub position: Vec<SpecialAnnouncementPositionFieldEnum>,
-    ///https://schema.org/creativeWorkStatus
-    #[serde(rename = "creativeWorkStatus")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub creative_work_status: Vec<SpecialAnnouncementCreativeWorkStatusFieldEnum>,
-    ///https://schema.org/sdDatePublished
-    #[serde(rename = "sdDatePublished")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sd_date_published: Vec<String>,
-    ///https://schema.org/funding
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///https://schema.org/publishingPrinciples
-    #[serde(rename = "publishingPrinciples")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub publishing_principles: Vec<SpecialAnnouncementPublishingPrinciplesFieldEnum>,
-    ///https://schema.org/workTranslation
-    #[serde(rename = "workTranslation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub work_translation: Vec<CreativeWork>,
-    ///https://schema.org/commentCount
-    #[serde(rename = "commentCount")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub comment_count: Vec<i32>,
-    ///https://schema.org/publication
-    #[serde(rename = "publication")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub publication: Vec<PublicationEvent>,
-    ///https://schema.org/sdLicense
-    #[serde(rename = "sdLicense")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sd_license: Vec<SpecialAnnouncementSdLicenseFieldEnum>,
-    ///https://schema.org/character
-    #[serde(rename = "character")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub character: Vec<Person>,
-    ///https://schema.org/provider
-    #[serde(rename = "provider")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provider: Vec<SpecialAnnouncementProviderFieldEnum>,
-    ///https://schema.org/offers
-    #[serde(rename = "offers")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub offers: Vec<SpecialAnnouncementOffersFieldEnum>,
-    ///https://schema.org/isAccessibleForFree
-    #[serde(rename = "isAccessibleForFree")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_accessible_for_free: Vec<String>,
-    ///https://schema.org/category
-    #[serde(rename = "category")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub category: Vec<SpecialAnnouncementCategoryFieldEnum>,
-    ///https://schema.org/acquireLicensePage
-    #[serde(rename = "acquireLicensePage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub acquire_license_page: Vec<SpecialAnnouncementAcquireLicensePageFieldEnum>,
-    ///https://schema.org/comment
-    #[serde(rename = "comment")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub comment: Vec<Comment>,
-    ///https://schema.org/publicTransportClosuresInfo
-    #[serde(rename = "publicTransportClosuresInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub public_transport_closures_info: Vec<
-        SpecialAnnouncementPublicTransportClosuresInfoFieldEnum,
-    >,
-    ///https://schema.org/digitalSourceType
-    #[serde(rename = "digitalSourceType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub digital_source_type: Vec<IPTCDigitalSourceEnumerationEnum>,
-    ///https://schema.org/accessibilityAPI
-    #[serde(rename = "accessibilityAPI")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accessibility_api: Vec<String>,
-    ///https://schema.org/contentRating
-    #[serde(rename = "contentRating")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub content_rating: Vec<SpecialAnnouncementContentRatingFieldEnum>,
-    ///https://schema.org/encodings
-    #[serde(rename = "encodings")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub encodings: Vec<MediaObject>,
-    ///https://schema.org/thumbnailUrl
-    #[serde(rename = "thumbnailUrl")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub thumbnail_url: Vec<String>,
-    ///https://schema.org/alternativeHeadline
-    #[serde(rename = "alternativeHeadline")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternative_headline: Vec<String>,
-    ///https://schema.org/spatial
-    #[serde(rename = "spatial")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub spatial: Vec<Place>,
-    ///https://schema.org/releasedEvent
-    #[serde(rename = "releasedEvent")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub released_event: Vec<PublicationEvent>,
-    ///https://schema.org/mainEntity
-    #[serde(rename = "mainEntity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity: Vec<Thing>,
-    ///https://schema.org/contentLocation
-    #[serde(rename = "contentLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub content_location: Vec<Place>,
-    ///https://schema.org/about
-    #[serde(rename = "about")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub about: Vec<Thing>,
-    ///https://schema.org/translator
-    #[serde(rename = "translator")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub translator: Vec<SpecialAnnouncementTranslatorFieldEnum>,
-    ///https://schema.org/dateCreated
-    #[serde(rename = "dateCreated")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub date_created: Vec<SpecialAnnouncementDateCreatedFieldEnum>,
-    ///https://schema.org/contentReferenceTime
-    #[serde(rename = "contentReferenceTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub content_reference_time: Vec<String>,
-    ///https://schema.org/award
-    #[serde(rename = "award")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub award: Vec<String>,
-    ///https://schema.org/accessibilityHazard
-    #[serde(rename = "accessibilityHazard")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accessibility_hazard: Vec<String>,
-    ///https://schema.org/fileFormat
-    #[serde(rename = "fileFormat")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub file_format: Vec<SpecialAnnouncementFileFormatFieldEnum>,
-    ///https://schema.org/wordCount
-    #[serde(rename = "wordCount")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub word_count: Vec<i32>,
-    ///https://schema.org/url
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///https://schema.org/quarantineGuidelines
-    #[serde(rename = "quarantineGuidelines")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub quarantine_guidelines: Vec<SpecialAnnouncementQuarantineGuidelinesFieldEnum>,
-    ///https://schema.org/reviews
-    #[serde(rename = "reviews")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub reviews: Vec<Review>,
-    ///https://schema.org/isFamilyFriendly
-    #[serde(rename = "isFamilyFriendly")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_family_friendly: Vec<String>,
-    ///https://schema.org/audience
-    #[serde(rename = "audience")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub audience: Vec<Audience>,
-    ///https://schema.org/funder
-    #[serde(rename = "funder")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funder: Vec<SpecialAnnouncementFunderFieldEnum>,
-    ///https://schema.org/spatialCoverage
-    #[serde(rename = "spatialCoverage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub spatial_coverage: Vec<Place>,
-    ///https://schema.org/interactionStatistic
-    #[serde(rename = "interactionStatistic")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub interaction_statistic: Vec<InteractionCounter>,
-    ///https://schema.org/copyrightYear
-    #[serde(rename = "copyrightYear")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub copyright_year: Vec<f32>,
-    ///https://schema.org/typicalAgeRange
-    #[serde(rename = "typicalAgeRange")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub typical_age_range: Vec<String>,
-    ///https://schema.org/temporal
-    #[serde(rename = "temporal")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub temporal: Vec<SpecialAnnouncementTemporalFieldEnum>,
-    ///https://schema.org/associatedMedia
-    #[serde(rename = "associatedMedia")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub associated_media: Vec<MediaObject>,
-    ///https://schema.org/size
-    #[serde(rename = "size")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub size: Vec<SpecialAnnouncementSizeFieldEnum>,
-    ///https://schema.org/timeRequired
-    #[serde(rename = "timeRequired")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub time_required: Vec<Duration>,
-    ///https://schema.org/disambiguatingDescription
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///https://schema.org/accessibilityFeature
-    #[serde(rename = "accessibilityFeature")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub accessibility_feature: Vec<String>,
-    ///https://schema.org/publisher
-    #[serde(rename = "publisher")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub publisher: Vec<SpecialAnnouncementPublisherFieldEnum>,
-    ///https://schema.org/assesses
-    #[serde(rename = "assesses")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub assesses: Vec<SpecialAnnouncementAssessesFieldEnum>,
-    ///https://schema.org/usageInfo
-    #[serde(rename = "usageInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub usage_info: Vec<SpecialAnnouncementUsageInfoFieldEnum>,
-    ///https://schema.org/audio
-    #[serde(rename = "audio")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub audio: Vec<SpecialAnnouncementAudioFieldEnum>,
-    ///https://schema.org/diseaseSpreadStatistics
-    #[serde(rename = "diseaseSpreadStatistics")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disease_spread_statistics: Vec<
-        SpecialAnnouncementDiseaseSpreadStatisticsFieldEnum,
-    >,
-    ///https://schema.org/potentialAction
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///https://schema.org/announcementLocation
-    #[serde(rename = "announcementLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub announcement_location: Vec<SpecialAnnouncementAnnouncementLocationFieldEnum>,
-    ///https://schema.org/educationalLevel
-    #[serde(rename = "educationalLevel")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub educational_level: Vec<SpecialAnnouncementEducationalLevelFieldEnum>,
-    ///https://schema.org/video
-    #[serde(rename = "video")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub video: Vec<SpecialAnnouncementVideoFieldEnum>,
-    ///https://schema.org/gettingTestedInfo
-    #[serde(rename = "gettingTestedInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub getting_tested_info: Vec<SpecialAnnouncementGettingTestedInfoFieldEnum>,
-    ///https://schema.org/schoolClosuresInfo
-    #[serde(rename = "schoolClosuresInfo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub school_closures_info: Vec<SpecialAnnouncementSchoolClosuresInfoFieldEnum>,
-    ///https://schema.org/contributor
-    #[serde(rename = "contributor")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub contributor: Vec<SpecialAnnouncementContributorFieldEnum>,
-    ///https://schema.org/sameAs
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///https://schema.org/educationalAlignment
-    #[serde(rename = "educationalAlignment")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub educational_alignment: Vec<AlignmentObject>,
-    ///https://schema.org/identifier
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<SpecialAnnouncementIdentifierFieldEnum>,
-    ///https://schema.org/publisherImprint
+    ///<https://schema.org/publisherImprint>
     #[serde(rename = "publisherImprint")]
     #[serde_as(as = "OneOrMany<_>")]
     pub publisher_imprint: Vec<Organization>,
-    ///https://schema.org/pattern
-    #[serde(rename = "pattern")]
+    ///<https://schema.org/governmentBenefitsInfo>
+    #[serde(rename = "governmentBenefitsInfo")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub pattern: Vec<SpecialAnnouncementPatternFieldEnum>,
-    ///https://schema.org/isPartOf
-    #[serde(rename = "isPartOf")]
+    pub government_benefits_info: Vec<GovernmentService>,
+    ///<https://schema.org/publication>
+    #[serde(rename = "publication")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub is_part_of: Vec<SpecialAnnouncementIsPartOfFieldEnum>,
-    ///https://schema.org/interactivityType
-    #[serde(rename = "interactivityType")]
+    pub publication: Vec<PublicationEvent>,
+    ///<https://schema.org/editEIDR>
+    #[serde(rename = "editEIDR")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub interactivity_type: Vec<String>,
-    ///https://schema.org/sponsor
-    #[serde(rename = "sponsor")]
+    pub edit_eidr: Vec<SpecialAnnouncementEditEIDRFieldEnum>,
+    ///<https://schema.org/isAccessibleForFree>
+    #[serde(rename = "isAccessibleForFree")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub sponsor: Vec<SpecialAnnouncementSponsorFieldEnum>,
-    ///https://schema.org/discussionUrl
-    #[serde(rename = "discussionUrl")]
+    pub is_accessible_for_free: Vec<String>,
+    ///<https://schema.org/sdLicense>
+    #[serde(rename = "sdLicense")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub discussion_url: Vec<String>,
-    ///https://schema.org/newsUpdatesAndGuidelines
+    pub sd_license: Vec<SpecialAnnouncementSdLicenseFieldEnum>,
+    ///<https://schema.org/accessibilityFeature>
+    #[serde(rename = "accessibilityFeature")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accessibility_feature: Vec<String>,
+    ///<https://schema.org/character>
+    #[serde(rename = "character")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub character: Vec<Person>,
+    ///<https://schema.org/aggregateRating>
+    #[serde(rename = "aggregateRating")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub aggregate_rating: Vec<AggregateRating>,
+    ///<https://schema.org/author>
+    #[serde(rename = "author")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub author: Vec<SpecialAnnouncementAuthorFieldEnum>,
+    ///<https://schema.org/datePosted>
+    #[serde(rename = "datePosted")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub date_posted: Vec<SpecialAnnouncementDatePostedFieldEnum>,
+    ///<https://schema.org/webFeed>
+    #[serde(rename = "webFeed")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub web_feed: Vec<SpecialAnnouncementWebFeedFieldEnum>,
+    ///<https://schema.org/editor>
+    #[serde(rename = "editor")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub editor: Vec<Person>,
+    ///<https://schema.org/offers>
+    #[serde(rename = "offers")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub offers: Vec<SpecialAnnouncementOffersFieldEnum>,
+    ///<https://schema.org/accessibilityHazard>
+    #[serde(rename = "accessibilityHazard")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accessibility_hazard: Vec<String>,
+    ///<https://schema.org/accessMode>
+    #[serde(rename = "accessMode")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub access_mode: Vec<String>,
+    ///<https://schema.org/newsUpdatesAndGuidelines>
     #[serde(rename = "newsUpdatesAndGuidelines")]
     #[serde_as(as = "OneOrMany<_>")]
     pub news_updates_and_guidelines: Vec<
         SpecialAnnouncementNewsUpdatesAndGuidelinesFieldEnum,
     >,
-    ///https://schema.org/countryOfOrigin
-    #[serde(rename = "countryOfOrigin")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub country_of_origin: Vec<Country>,
-    ///https://schema.org/isBasedOnUrl
+    ///<https://schema.org/isBasedOnUrl>
     #[serde(rename = "isBasedOnUrl")]
     #[serde_as(as = "OneOrMany<_>")]
     pub is_based_on_url: Vec<SpecialAnnouncementIsBasedOnUrlFieldEnum>,
-    ///https://schema.org/version
-    #[serde(rename = "version")]
+    ///<https://schema.org/size>
+    #[serde(rename = "size")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub version: Vec<SpecialAnnouncementVersionFieldEnum>,
-    ///https://schema.org/datePosted
-    #[serde(rename = "datePosted")]
+    pub size: Vec<SpecialAnnouncementSizeFieldEnum>,
+    ///<https://schema.org/thumbnailUrl>
+    #[serde(rename = "thumbnailUrl")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub date_posted: Vec<SpecialAnnouncementDatePostedFieldEnum>,
-    ///https://schema.org/accessibilityControl
-    #[serde(rename = "accessibilityControl")]
+    pub thumbnail_url: Vec<String>,
+    ///<https://schema.org/publicTransportClosuresInfo>
+    #[serde(rename = "publicTransportClosuresInfo")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub accessibility_control: Vec<String>,
-    ///https://schema.org/expires
-    #[serde(rename = "expires")]
+    pub public_transport_closures_info: Vec<
+        SpecialAnnouncementPublicTransportClosuresInfoFieldEnum,
+    >,
+    ///<https://schema.org/sponsor>
+    #[serde(rename = "sponsor")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub expires: Vec<SpecialAnnouncementExpiresFieldEnum>,
-    ///https://schema.org/travelBans
-    #[serde(rename = "travelBans")]
+    pub sponsor: Vec<SpecialAnnouncementSponsorFieldEnum>,
+    ///<https://schema.org/digitalSourceType>
+    #[serde(rename = "digitalSourceType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub travel_bans: Vec<SpecialAnnouncementTravelBansFieldEnum>,
-    ///https://schema.org/hasPart
-    #[serde(rename = "hasPart")]
+    pub digital_source_type: Vec<IPTCDigitalSourceEnumerationEnum>,
+    ///<https://schema.org/associatedMedia>
+    #[serde(rename = "associatedMedia")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_part: Vec<CreativeWork>,
-    ///https://schema.org/exampleOfWork
+    pub associated_media: Vec<MediaObject>,
+    ///<https://schema.org/audio>
+    #[serde(rename = "audio")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub audio: Vec<SpecialAnnouncementAudioFieldEnum>,
+    ///<https://schema.org/accessibilityAPI>
+    #[serde(rename = "accessibilityAPI")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accessibility_api: Vec<String>,
+    ///<https://schema.org/genre>
+    #[serde(rename = "genre")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub genre: Vec<SpecialAnnouncementGenreFieldEnum>,
+    ///<https://schema.org/educationalUse>
+    #[serde(rename = "educationalUse")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub educational_use: Vec<SpecialAnnouncementEducationalUseFieldEnum>,
+    ///<https://schema.org/copyrightYear>
+    #[serde(rename = "copyrightYear")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub copyright_year: Vec<f32>,
+    ///<https://schema.org/temporalCoverage>
+    #[serde(rename = "temporalCoverage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub temporal_coverage: Vec<SpecialAnnouncementTemporalCoverageFieldEnum>,
+    ///<https://schema.org/accountablePerson>
+    #[serde(rename = "accountablePerson")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accountable_person: Vec<Person>,
+    ///<https://schema.org/releasedEvent>
+    #[serde(rename = "releasedEvent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub released_event: Vec<PublicationEvent>,
+    ///<https://schema.org/sdDatePublished>
+    #[serde(rename = "sdDatePublished")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sd_date_published: Vec<String>,
+    ///<https://schema.org/abstract>
+    #[serde(rename = "abstract")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub _abstract: Vec<String>,
+    ///<https://schema.org/archivedAt>
+    #[serde(rename = "archivedAt")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub archived_at: Vec<SpecialAnnouncementArchivedAtFieldEnum>,
+    ///<https://schema.org/learningResourceType>
+    #[serde(rename = "learningResourceType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub learning_resource_type: Vec<SpecialAnnouncementLearningResourceTypeFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/translationOfWork>
+    #[serde(rename = "translationOfWork")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub translation_of_work: Vec<CreativeWork>,
+    ///<https://schema.org/reviews>
+    #[serde(rename = "reviews")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub reviews: Vec<Review>,
+    ///<https://schema.org/about>
+    #[serde(rename = "about")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub about: Vec<Thing>,
+    ///<https://schema.org/spatial>
+    #[serde(rename = "spatial")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub spatial: Vec<Place>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<SpecialAnnouncementIdentifierFieldEnum>,
+    ///<https://schema.org/publisher>
+    #[serde(rename = "publisher")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub publisher: Vec<SpecialAnnouncementPublisherFieldEnum>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/workExample>
+    #[serde(rename = "workExample")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub work_example: Vec<CreativeWork>,
+    ///<https://schema.org/diseaseSpreadStatistics>
+    #[serde(rename = "diseaseSpreadStatistics")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disease_spread_statistics: Vec<
+        SpecialAnnouncementDiseaseSpreadStatisticsFieldEnum,
+    >,
+    ///<https://schema.org/material>
+    #[serde(rename = "material")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub material: Vec<SpecialAnnouncementMaterialFieldEnum>,
+    ///<https://schema.org/publishingPrinciples>
+    #[serde(rename = "publishingPrinciples")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub publishing_principles: Vec<SpecialAnnouncementPublishingPrinciplesFieldEnum>,
+    ///<https://schema.org/citation>
+    #[serde(rename = "citation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub citation: Vec<SpecialAnnouncementCitationFieldEnum>,
+    ///<https://schema.org/funder>
+    #[serde(rename = "funder")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funder: Vec<SpecialAnnouncementFunderFieldEnum>,
+    ///<https://schema.org/accessModeSufficient>
+    #[serde(rename = "accessModeSufficient")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub access_mode_sufficient: Vec<ItemList>,
+    ///<https://schema.org/accessibilitySummary>
+    #[serde(rename = "accessibilitySummary")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accessibility_summary: Vec<String>,
+    ///<https://schema.org/encoding>
+    #[serde(rename = "encoding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub encoding: Vec<MediaObject>,
+    ///<https://schema.org/diseasePreventionInfo>
+    #[serde(rename = "diseasePreventionInfo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disease_prevention_info: Vec<SpecialAnnouncementDiseasePreventionInfoFieldEnum>,
+    ///<https://schema.org/exampleOfWork>
     #[serde(rename = "exampleOfWork")]
     #[serde_as(as = "OneOrMany<_>")]
     pub example_of_work: Vec<CreativeWork>,
-    ///https://schema.org/schemaVersion
+    ///<https://schema.org/assesses>
+    #[serde(rename = "assesses")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub assesses: Vec<SpecialAnnouncementAssessesFieldEnum>,
+    ///<https://schema.org/contentLocation>
+    #[serde(rename = "contentLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub content_location: Vec<Place>,
+    ///<https://schema.org/pattern>
+    #[serde(rename = "pattern")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub pattern: Vec<SpecialAnnouncementPatternFieldEnum>,
+    ///<https://schema.org/keywords>
+    #[serde(rename = "keywords")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub keywords: Vec<SpecialAnnouncementKeywordsFieldEnum>,
+    ///<https://schema.org/producer>
+    #[serde(rename = "producer")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub producer: Vec<SpecialAnnouncementProducerFieldEnum>,
+    ///<https://schema.org/correction>
+    #[serde(rename = "correction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub correction: Vec<SpecialAnnouncementCorrectionFieldEnum>,
+    ///<https://schema.org/workTranslation>
+    #[serde(rename = "workTranslation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub work_translation: Vec<CreativeWork>,
+    ///<https://schema.org/sdPublisher>
+    #[serde(rename = "sdPublisher")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sd_publisher: Vec<SpecialAnnouncementSdPublisherFieldEnum>,
+    ///<https://schema.org/countryOfOrigin>
+    #[serde(rename = "countryOfOrigin")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub country_of_origin: Vec<Country>,
+    ///<https://schema.org/encodingFormat>
+    #[serde(rename = "encodingFormat")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub encoding_format: Vec<SpecialAnnouncementEncodingFormatFieldEnum>,
+    ///<https://schema.org/interactivityType>
+    #[serde(rename = "interactivityType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub interactivity_type: Vec<String>,
+    ///<https://schema.org/commentCount>
+    #[serde(rename = "commentCount")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub comment_count: Vec<i32>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<SpecialAnnouncementMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/contributor>
+    #[serde(rename = "contributor")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub contributor: Vec<SpecialAnnouncementContributorFieldEnum>,
+    ///<https://schema.org/datePublished>
+    #[serde(rename = "datePublished")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub date_published: Vec<SpecialAnnouncementDatePublishedFieldEnum>,
+    ///<https://schema.org/teaches>
+    #[serde(rename = "teaches")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub teaches: Vec<SpecialAnnouncementTeachesFieldEnum>,
+    ///<https://schema.org/video>
+    #[serde(rename = "video")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub video: Vec<SpecialAnnouncementVideoFieldEnum>,
+    ///<https://schema.org/creditText>
+    #[serde(rename = "creditText")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub credit_text: Vec<String>,
+    ///<https://schema.org/isBasedOn>
+    #[serde(rename = "isBasedOn")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_based_on: Vec<SpecialAnnouncementIsBasedOnFieldEnum>,
+    ///<https://schema.org/contentRating>
+    #[serde(rename = "contentRating")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub content_rating: Vec<SpecialAnnouncementContentRatingFieldEnum>,
+    ///<https://schema.org/conditionsOfAccess>
+    #[serde(rename = "conditionsOfAccess")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub conditions_of_access: Vec<String>,
+    ///<https://schema.org/gettingTestedInfo>
+    #[serde(rename = "gettingTestedInfo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub getting_tested_info: Vec<SpecialAnnouncementGettingTestedInfoFieldEnum>,
+    ///<https://schema.org/timeRequired>
+    #[serde(rename = "timeRequired")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub time_required: Vec<Duration>,
+    ///<https://schema.org/announcementLocation>
+    #[serde(rename = "announcementLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub announcement_location: Vec<SpecialAnnouncementAnnouncementLocationFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/sourceOrganization>
+    #[serde(rename = "sourceOrganization")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub source_organization: Vec<Organization>,
+    ///<https://schema.org/usageInfo>
+    #[serde(rename = "usageInfo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub usage_info: Vec<SpecialAnnouncementUsageInfoFieldEnum>,
+    ///<https://schema.org/inLanguage>
+    #[serde(rename = "inLanguage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub in_language: Vec<SpecialAnnouncementInLanguageFieldEnum>,
+    ///<https://schema.org/dateModified>
+    #[serde(rename = "dateModified")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub date_modified: Vec<SpecialAnnouncementDateModifiedFieldEnum>,
+    ///<https://schema.org/materialExtent>
+    #[serde(rename = "materialExtent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub material_extent: Vec<SpecialAnnouncementMaterialExtentFieldEnum>,
+    ///<https://schema.org/comment>
+    #[serde(rename = "comment")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub comment: Vec<Comment>,
+    ///<https://schema.org/educationalLevel>
+    #[serde(rename = "educationalLevel")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub educational_level: Vec<SpecialAnnouncementEducationalLevelFieldEnum>,
+    ///<https://schema.org/schemaVersion>
     #[serde(rename = "schemaVersion")]
     #[serde_as(as = "OneOrMany<_>")]
     pub schema_version: Vec<SpecialAnnouncementSchemaVersionFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<SpecialAnnouncementDescriptionFieldEnum>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/interactionStatistic>
+    #[serde(rename = "interactionStatistic")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub interaction_statistic: Vec<InteractionCounter>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/isFamilyFriendly>
+    #[serde(rename = "isFamilyFriendly")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_family_friendly: Vec<String>,
+    ///<https://schema.org/position>
+    #[serde(rename = "position")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub position: Vec<SpecialAnnouncementPositionFieldEnum>,
+    ///<https://schema.org/interpretedAsClaim>
+    #[serde(rename = "interpretedAsClaim")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub interpreted_as_claim: Vec<Claim>,
+    ///<https://schema.org/translator>
+    #[serde(rename = "translator")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub translator: Vec<SpecialAnnouncementTranslatorFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<SpecialAnnouncementSubjectOfFieldEnum>,
+    ///<https://schema.org/category>
+    #[serde(rename = "category")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub category: Vec<SpecialAnnouncementCategoryFieldEnum>,
+    ///<https://schema.org/copyrightNotice>
+    #[serde(rename = "copyrightNotice")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub copyright_notice: Vec<String>,
+    ///<https://schema.org/alternativeHeadline>
+    #[serde(rename = "alternativeHeadline")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternative_headline: Vec<String>,
+    ///<https://schema.org/recordedAt>
+    #[serde(rename = "recordedAt")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub recorded_at: Vec<Event>,
+    ///<https://schema.org/creator>
+    #[serde(rename = "creator")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub creator: Vec<SpecialAnnouncementCreatorFieldEnum>,
+    ///<https://schema.org/wordCount>
+    #[serde(rename = "wordCount")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub word_count: Vec<i32>,
+    ///<https://schema.org/temporal>
+    #[serde(rename = "temporal")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub temporal: Vec<SpecialAnnouncementTemporalFieldEnum>,
+    ///<https://schema.org/thumbnail>
+    #[serde(rename = "thumbnail")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub thumbnail: Vec<ImageObject>,
+    ///<https://schema.org/isPartOf>
+    #[serde(rename = "isPartOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_part_of: Vec<SpecialAnnouncementIsPartOfFieldEnum>,
+    ///<https://schema.org/version>
+    #[serde(rename = "version")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub version: Vec<SpecialAnnouncementVersionFieldEnum>,
+    ///<https://schema.org/text>
+    #[serde(rename = "text")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub text: Vec<String>,
+    ///<https://schema.org/maintainer>
+    #[serde(rename = "maintainer")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub maintainer: Vec<SpecialAnnouncementMaintainerFieldEnum>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<SpecialAnnouncementImageFieldEnum>,
+    ///<https://schema.org/spatialCoverage>
+    #[serde(rename = "spatialCoverage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub spatial_coverage: Vec<Place>,
+    ///<https://schema.org/award>
+    #[serde(rename = "award")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub award: Vec<String>,
+    ///<https://schema.org/quarantineGuidelines>
+    #[serde(rename = "quarantineGuidelines")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub quarantine_guidelines: Vec<SpecialAnnouncementQuarantineGuidelinesFieldEnum>,
+    ///<https://schema.org/accessibilityControl>
+    #[serde(rename = "accessibilityControl")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub accessibility_control: Vec<String>,
+    ///<https://schema.org/audience>
+    #[serde(rename = "audience")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub audience: Vec<Audience>,
+    ///<https://schema.org/contentReferenceTime>
+    #[serde(rename = "contentReferenceTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub content_reference_time: Vec<String>,
+    ///<https://schema.org/educationalAlignment>
+    #[serde(rename = "educationalAlignment")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub educational_alignment: Vec<AlignmentObject>,
+    ///<https://schema.org/copyrightHolder>
+    #[serde(rename = "copyrightHolder")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub copyright_holder: Vec<SpecialAnnouncementCopyrightHolderFieldEnum>,
+    ///<https://schema.org/fileFormat>
+    #[serde(rename = "fileFormat")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub file_format: Vec<SpecialAnnouncementFileFormatFieldEnum>,
+    ///<https://schema.org/review>
+    #[serde(rename = "review")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub review: Vec<Review>,
+    ///<https://schema.org/acquireLicensePage>
+    #[serde(rename = "acquireLicensePage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub acquire_license_page: Vec<SpecialAnnouncementAcquireLicensePageFieldEnum>,
+    ///<https://schema.org/awards>
+    #[serde(rename = "awards")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub awards: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<SpecialAnnouncementAdditionalTypeFieldEnum>,
+    ///<https://schema.org/hasPart>
+    #[serde(rename = "hasPart")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_part: Vec<CreativeWork>,
+    ///<https://schema.org/discussionUrl>
+    #[serde(rename = "discussionUrl")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub discussion_url: Vec<String>,
+    ///<https://schema.org/creativeWorkStatus>
+    #[serde(rename = "creativeWorkStatus")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub creative_work_status: Vec<SpecialAnnouncementCreativeWorkStatusFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/locationCreated>
+    #[serde(rename = "locationCreated")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub location_created: Vec<Place>,
+    ///<https://schema.org/mainEntity>
+    #[serde(rename = "mainEntity")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity: Vec<Thing>,
+    ///<https://schema.org/typicalAgeRange>
+    #[serde(rename = "typicalAgeRange")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub typical_age_range: Vec<String>,
+    ///<https://schema.org/provider>
+    #[serde(rename = "provider")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider: Vec<SpecialAnnouncementProviderFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/schoolClosuresInfo>
+    #[serde(rename = "schoolClosuresInfo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub school_closures_info: Vec<SpecialAnnouncementSchoolClosuresInfoFieldEnum>,
+    ///<https://schema.org/encodings>
+    #[serde(rename = "encodings")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub encodings: Vec<MediaObject>,
+    ///<https://schema.org/dateCreated>
+    #[serde(rename = "dateCreated")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub date_created: Vec<SpecialAnnouncementDateCreatedFieldEnum>,
+    ///<https://schema.org/headline>
+    #[serde(rename = "headline")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub headline: Vec<String>,
+    ///<https://schema.org/mentions>
+    #[serde(rename = "mentions")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub mentions: Vec<Thing>,
 }

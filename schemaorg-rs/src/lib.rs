@@ -1,3 +1,4 @@
+#![recursion_limit = "512"]
 #[cfg(feature = "uniffi")]
 uniffi::setup_scaffolding!();
 mod field;
