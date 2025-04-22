@@ -22,7 +22,3 @@ jobs:
 
     - name: Publish Schemy
       run: cargo publish
-
-    - name: Publish schemaorg-rs
-      run: cd schemaorg-rs && cargo publish
-
