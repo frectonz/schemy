@@ -286,7 +286,7 @@ impl Item {
         trace!("Getting doc comment of {:?}", self.id);
 
         let comment = self.label.value();
-        let comment = format!("https://schema.org/{comment}");
+        let comment = format!("<https://schema.org/{comment}>");
         quote! {
             #[doc = #comment]
         }
@@ -923,6 +923,8 @@ fn main() -> Result<()> {
     write_to_file(
         args.lib_file(),
         quote! {
+            #![recursion_limit = "512"]
+
             #[cfg(feature = "uniffi")]
             uniffi::setup_scaffolding!();
 
