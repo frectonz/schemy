@@ -1,5 +1,6 @@
-use std::{borrow::Cow, collections::HashSet, sync::Arc};
+use std::{borrow::Cow, collections::HashSet, path::PathBuf, sync::Arc};
 
+use clap::Parser;
 use color_eyre::{Result, eyre::Context};
 use heck::ToSnakeCase;
 use indexmap::IndexMap;
@@ -364,7 +365,7 @@ impl ResolvedPropertyType {
 }
 
 impl SchemaDefinitions {
-    fn read(path: &str) -> Result<SchemaDefinitions> {
+    fn read(path: &PathBuf) -> Result<SchemaDefinitions> {
         info!("Reading schema definitions from {path:?}");
 
         let file = std::fs::read_to_string(path)?;
@@ -789,13 +790,79 @@ impl SchemaDefinitions {
     }
 }
 
-fn write_to_file(path: &str, tokens: TokenStream) -> Result<()> {
+fn write_to_file(path: PathBuf, tokens: TokenStream) -> Result<()> {
+    info!("Writing generated code to {}", path.display());
+
     let file: syn::File = syn::parse2(tokens).expect("Failed to parse tokens");
     let file = prettyplease::unparse(&file);
 
     std::fs::write(path, file)?;
 
     Ok(())
+}
+
+#[derive(Parser, Debug)]
+#[command(
+    author,
+    version,
+    about = "Generates Rust types from Schema.org JSON-LD vocabulary.",
+    long_about = None
+)]
+struct Args {
+    /// Path to the Schema.org JSON-LD input file.
+    #[arg(
+        short,
+        long,
+        value_name = "SCHEMA_FILE",
+        default_value = "schema/schemaorg-current-https.jsonld"
+    )]
+    input_file: PathBuf,
+
+    /// Path to the output directory for the generated Rust crate source.
+    #[arg(
+        short,
+        long,
+        value_name = "OUTPUT_DIR",
+        default_value = "schemaorg-rs/src"
+    )]
+    output_dir: PathBuf,
+}
+
+impl Args {
+    fn enums_file(&self) -> PathBuf {
+        let mut path = self.output_dir.clone();
+        path.push("src");
+        path.push("enums.rs");
+        path
+    }
+
+    fn field_enums_file(&self) -> PathBuf {
+        let mut path = self.output_dir.clone();
+        path.push("src");
+        path.push("field.rs");
+        path
+    }
+
+    fn type_file(&self, typ: &str) -> PathBuf {
+        let mut path = self.output_dir.clone();
+        path.push("src");
+        path.push(format!("{typ}.rs"));
+        path
+    }
+
+    fn all_file(&self) -> PathBuf {
+        let mut path = self.output_dir.clone();
+        path.push("src");
+        path.push("all.rs");
+        path
+    }
+
+    fn lib_file(&self) -> PathBuf {
+        let mut path = self.output_dir.clone();
+        path.push("src");
+        path.push("lib.rs");
+        path
+    }
 }
 
 fn main() -> Result<()> {
@@ -807,16 +874,18 @@ fn main() -> Result<()> {
     }
     logger.init();
 
-    let definitions = SchemaDefinitions::read("schema/schemaorg-current-https.jsonld")?;
+    let args = Args::parse();
+
+    let definitions = SchemaDefinitions::read(&args.input_file)?;
 
     let enumerations = definitions.enumerations_module();
-    write_to_file("schemy-test/src/enums.rs", enumerations)
+    write_to_file(args.enums_file(), enumerations)
         .wrap_err("Failed to write enumerations module")?;
 
     let (types, field_enums) = definitions.types_module();
 
     write_to_file(
-        "schemy-test/src/field.rs",
+        args.field_enums_file(),
         quote! {
             use crate::*;
 
@@ -828,9 +897,8 @@ fn main() -> Result<()> {
     let mut type_module = Vec::new();
 
     for (typ_name, typ) in types {
-        let filename = format!("schemy-test/src/{typ_name}.rs");
         write_to_file(
-            &filename,
+            args.type_file(&typ_name.to_string()),
             quote! {
                 use crate::*;
                 use serde_with::{serde_as, OneOrMany};
@@ -848,7 +916,7 @@ fn main() -> Result<()> {
 
     let all_types = definitions.all_types();
     write_to_file(
-        "schemy-test/src/all.rs",
+        args.all_file(),
         quote! {
             use crate::*;
 
@@ -858,7 +926,7 @@ fn main() -> Result<()> {
     .wrap_err("Failed to write all types enum module")?;
 
     write_to_file(
-        "schemy-test/src/lib.rs",
+        args.lib_file(),
         quote! {
             #[cfg(feature = "uniffi")]
             uniffi::setup_scaffolding!();
