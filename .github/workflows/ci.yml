@@ -11,7 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Flake check
         run: nix flake check
@@ -21,9 +20,3 @@ jobs:
 
       - name: Run Schemy Clippy
         run: nix develop -c cargo clippy
-
-      - name: Build schemaorg-rs
-        run: cd schemaorg-rs && nix develop -c cargo build --verbose
-
-      - name: Run schemaorg-rs clippy
-        run: cd schemaorg-rs && nix develop -c cargo clippy
