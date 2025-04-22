@@ -2,6 +2,9 @@
 name = "schemy"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "Generates Rust types from Schema.org JSON-LD vocabulary."
+repository = "https://github.com/frectonz/schemy"
 
 [dependencies]
 clap = { version = "4.5.37", features = ["derive"] }
