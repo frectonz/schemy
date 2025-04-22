@@ -19,7 +19,10 @@
       forAllSystems =
         fn:
         let
-          systems = [ "x86_64-linux" "aarch64-darwin" ];
+          systems = [
+            "x86_64-linux"
+            "aarch64-darwin"
+          ];
           overlays = [ (import rust-overlay) ];
         in
         nixpkgs.lib.genAttrs systems (
@@ -35,9 +38,7 @@
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
           buildInputs = [
-            pkgs.just
             pkgs.bacon
-            pkgs.httpie
             pkgs.cargo-expand
             pkgs.rust-analyzer
             pkgs.rust-bin.stable.latest.default
