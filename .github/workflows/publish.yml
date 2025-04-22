@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '**[0-9]+.[0-9]+.[0-9]+*'
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+
+    - name: Flake check
+      run: nix flake check
+
+    - name: Publish Schemy
+      run: cargo publish
+
+    - name: Publish schemaorg-rs
+      run: cd schemaorg-rs && cargo publish
+
