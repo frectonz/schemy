@@ -1,9 +1,9 @@
-use std::{borrow::Cow, collections::HashSet, path::PathBuf, sync::Arc};
+use std::{borrow::Cow, path::PathBuf, sync::Arc};
 
 use clap::Parser;
 use color_eyre::{Result, eyre::Context};
 use heck::ToSnakeCase;
-use indexmap::IndexMap;
+use indexmap::{IndexMap, IndexSet};
 use itertools::Itertools;
 use log::{info, trace};
 use proc_macro2::{Span, TokenStream};
@@ -346,7 +346,7 @@ struct SchemaDefinitions {
 #[derive(Debug)]
 struct ResolvedType {
     type_id: Str,
-    properties: HashSet<ResolvedPropertyType>,
+    properties: IndexSet<ResolvedPropertyType>,
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
@@ -417,12 +417,12 @@ impl SchemaDefinitions {
     fn resolve_properties(&self) -> Vec<ResolvedType> {
         info!("Resolving properties for all types by traversing hierarchy...");
 
-        let mut resolved_props: IndexMap<Str, HashSet<ResolvedPropertyType>> = IndexMap::new();
+        let mut resolved_props: IndexMap<Str, IndexSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
-            let mut all_props_set = HashSet::new();
+            let mut all_props_set = IndexSet::new();
             let mut types_to_visit = vec![type_id.clone()];
-            let mut visited_types = HashSet::new();
+            let mut visited_types = IndexSet::new();
 
             while let Some(current_type_id) = types_to_visit.pop() {
                 // Avoid cycles
