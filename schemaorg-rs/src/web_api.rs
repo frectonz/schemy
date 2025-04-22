@@ -1,0 +1,170 @@
+use crate::*;
+use serde_with::{serde_as, OneOrMany};
+///https://schema.org/termsOfService
+///https://schema.org/Text
+///https://schema.org/URL
+pub type WebAPITermsOfServiceFieldEnum = String;
+///https://schema.org/additionalType
+///https://schema.org/Text
+///https://schema.org/URL
+pub type WebAPIAdditionalTypeFieldEnum = String;
+///https://schema.org/WebAPI
+#[serde_as]
+#[derive(Debug, serde::Deserialize)]
+#[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
+pub struct WebAPI {
+    #[serde(rename = "@context")]
+    pub context: String,
+    ///https://schema.org/termsOfService
+    #[serde(rename = "termsOfService")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub terms_of_service: Vec<WebAPITermsOfServiceFieldEnum>,
+    ///https://schema.org/mainEntityOfPage
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<WebAPIMainEntityOfPageFieldEnum>,
+    ///https://schema.org/image
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<WebAPIImageFieldEnum>,
+    ///https://schema.org/isRelatedTo
+    #[serde(rename = "isRelatedTo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_related_to: Vec<WebAPIIsRelatedToFieldEnum>,
+    ///https://schema.org/serviceAudience
+    #[serde(rename = "serviceAudience")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_audience: Vec<Audience>,
+    ///https://schema.org/audience
+    #[serde(rename = "audience")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub audience: Vec<Audience>,
+    ///https://schema.org/review
+    #[serde(rename = "review")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub review: Vec<Review>,
+    ///https://schema.org/serviceType
+    #[serde(rename = "serviceType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_type: Vec<WebAPIServiceTypeFieldEnum>,
+    ///https://schema.org/hasCertification
+    #[serde(rename = "hasCertification")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_certification: Vec<Certification>,
+    ///https://schema.org/aggregateRating
+    #[serde(rename = "aggregateRating")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub aggregate_rating: Vec<AggregateRating>,
+    ///https://schema.org/slogan
+    #[serde(rename = "slogan")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub slogan: Vec<String>,
+    ///https://schema.org/serviceOutput
+    #[serde(rename = "serviceOutput")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_output: Vec<Thing>,
+    ///https://schema.org/provider
+    #[serde(rename = "provider")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider: Vec<WebAPIProviderFieldEnum>,
+    ///https://schema.org/logo
+    #[serde(rename = "logo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub logo: Vec<WebAPILogoFieldEnum>,
+    ///https://schema.org/description
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<WebAPIDescriptionFieldEnum>,
+    ///https://schema.org/documentation
+    #[serde(rename = "documentation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub documentation: Vec<WebAPIDocumentationFieldEnum>,
+    ///https://schema.org/url
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///https://schema.org/offers
+    #[serde(rename = "offers")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub offers: Vec<WebAPIOffersFieldEnum>,
+    ///https://schema.org/subjectOf
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<WebAPISubjectOfFieldEnum>,
+    ///https://schema.org/hoursAvailable
+    #[serde(rename = "hoursAvailable")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub hours_available: Vec<OpeningHoursSpecification>,
+    ///https://schema.org/sameAs
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///https://schema.org/produces
+    #[serde(rename = "produces")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub produces: Vec<Thing>,
+    ///https://schema.org/additionalType
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<WebAPIAdditionalTypeFieldEnum>,
+    ///https://schema.org/brand
+    #[serde(rename = "brand")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub brand: Vec<WebAPIBrandFieldEnum>,
+    ///https://schema.org/disambiguatingDescription
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///https://schema.org/identifier
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<WebAPIIdentifierFieldEnum>,
+    ///https://schema.org/alternateName
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///https://schema.org/potentialAction
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///https://schema.org/serviceArea
+    #[serde(rename = "serviceArea")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_area: Vec<WebAPIServiceAreaFieldEnum>,
+    ///https://schema.org/award
+    #[serde(rename = "award")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub award: Vec<String>,
+    ///https://schema.org/category
+    #[serde(rename = "category")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub category: Vec<WebAPICategoryFieldEnum>,
+    ///https://schema.org/areaServed
+    #[serde(rename = "areaServed")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub area_served: Vec<WebAPIAreaServedFieldEnum>,
+    ///https://schema.org/name
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///https://schema.org/broker
+    #[serde(rename = "broker")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broker: Vec<WebAPIBrokerFieldEnum>,
+    ///https://schema.org/availableChannel
+    #[serde(rename = "availableChannel")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub available_channel: Vec<ServiceChannel>,
+    ///https://schema.org/isSimilarTo
+    #[serde(rename = "isSimilarTo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_similar_to: Vec<WebAPIIsSimilarToFieldEnum>,
+    ///https://schema.org/hasOfferCatalog
+    #[serde(rename = "hasOfferCatalog")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_offer_catalog: Vec<OfferCatalog>,
+    ///https://schema.org/providerMobility
+    #[serde(rename = "providerMobility")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider_mobility: Vec<String>,
+}

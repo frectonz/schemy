@@ -831,35 +831,30 @@ struct Args {
 impl Args {
     fn enums_file(&self) -> PathBuf {
         let mut path = self.output_dir.clone();
-        path.push("src");
         path.push("enums.rs");
         path
     }
 
     fn field_enums_file(&self) -> PathBuf {
         let mut path = self.output_dir.clone();
-        path.push("src");
         path.push("field.rs");
         path
     }
 
     fn type_file(&self, typ: &str) -> PathBuf {
         let mut path = self.output_dir.clone();
-        path.push("src");
         path.push(format!("{typ}.rs"));
         path
     }
 
     fn all_file(&self) -> PathBuf {
         let mut path = self.output_dir.clone();
-        path.push("src");
         path.push("all.rs");
         path
     }
 
     fn lib_file(&self) -> PathBuf {
         let mut path = self.output_dir.clone();
-        path.push("src");
         path.push("lib.rs");
         path
     }
