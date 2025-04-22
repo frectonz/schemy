@@ -19,46 +19,50 @@ pub type TicketAdditionalTypeFieldEnum = String;
 pub struct Ticket {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
+    ///<https://schema.org/totalPrice>
+    #[serde(rename = "totalPrice")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/ticketNumber>
-    #[serde(rename = "ticketNumber")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub ticket_number: Vec<String>,
-    ///<https://schema.org/issuedBy>
-    #[serde(rename = "issuedBy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub issued_by: Vec<Organization>,
-    ///<https://schema.org/priceCurrency>
-    #[serde(rename = "priceCurrency")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub price_currency: Vec<String>,
-    ///<https://schema.org/ticketedSeat>
-    #[serde(rename = "ticketedSeat")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub ticketed_seat: Vec<Seat>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<TicketDescriptionFieldEnum>,
+    pub total_price: Vec<TicketTotalPriceFieldEnum>,
     ///<https://schema.org/ticketToken>
     #[serde(rename = "ticketToken")]
     #[serde_as(as = "OneOrMany<_>")]
     pub ticket_token: Vec<TicketTicketTokenFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
+    ///<https://schema.org/issuedBy>
+    #[serde(rename = "issuedBy")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    pub issued_by: Vec<Organization>,
+    ///<https://schema.org/dateIssued>
+    #[serde(rename = "dateIssued")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub date_issued: Vec<TicketDateIssuedFieldEnum>,
+    ///<https://schema.org/ticketedSeat>
+    #[serde(rename = "ticketedSeat")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub ticketed_seat: Vec<Seat>,
+    ///<https://schema.org/ticketNumber>
+    #[serde(rename = "ticketNumber")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub ticket_number: Vec<String>,
+    ///<https://schema.org/priceCurrency>
+    #[serde(rename = "priceCurrency")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub price_currency: Vec<String>,
+    ///<https://schema.org/underName>
+    #[serde(rename = "underName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub under_name: Vec<TicketUnderNameFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<TicketMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -67,26 +71,18 @@ pub struct Ticket {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<TicketIdentifierFieldEnum>,
-    ///<https://schema.org/underName>
-    #[serde(rename = "underName")]
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub under_name: Vec<TicketUnderNameFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<TicketImageFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<TicketMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/dateIssued>
-    #[serde(rename = "dateIssued")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub date_issued: Vec<TicketDateIssuedFieldEnum>,
+    pub description: Vec<TicketDescriptionFieldEnum>,
     ///<https://schema.org/subjectOf>
     #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
     pub subject_of: Vec<TicketSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -95,8 +91,12 @@ pub struct Ticket {
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
-    ///<https://schema.org/totalPrice>
-    #[serde(rename = "totalPrice")]
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub total_price: Vec<TicketTotalPriceFieldEnum>,
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<TicketImageFieldEnum>,
 }

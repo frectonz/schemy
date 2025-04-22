@@ -35,6 +35,10 @@ pub struct WearableSizeGroupEnumeration {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<WearableSizeGroupEnumerationIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<WearableSizeGroupEnumerationDescriptionFieldEnum>,
     ///<https://schema.org/subjectOf>
     #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -55,10 +59,6 @@ pub struct WearableSizeGroupEnumeration {
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<WearableSizeGroupEnumerationDescriptionFieldEnum>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]

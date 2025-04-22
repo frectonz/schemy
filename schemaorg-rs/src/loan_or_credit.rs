@@ -1,9 +1,5 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///<https://schema.org/termsOfService>
-///<https://schema.org/Text>
-///<https://schema.org/URL>
-pub type LoanOrCreditTermsOfServiceFieldEnum = String;
 ///<https://schema.org/loanType>
 ///<https://schema.org/Text>
 ///<https://schema.org/URL>
@@ -12,6 +8,10 @@ pub type LoanOrCreditLoanTypeFieldEnum = String;
 ///<https://schema.org/Text>
 ///<https://schema.org/URL>
 pub type LoanOrCreditFeesAndCommissionsSpecificationFieldEnum = String;
+///<https://schema.org/termsOfService>
+///<https://schema.org/Text>
+///<https://schema.org/URL>
+pub type LoanOrCreditTermsOfServiceFieldEnum = String;
 ///<https://schema.org/additionalType>
 ///<https://schema.org/Text>
 ///<https://schema.org/URL>
@@ -23,102 +23,42 @@ pub type LoanOrCreditAdditionalTypeFieldEnum = String;
 pub struct LoanOrCredit {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/providerMobility>
-    #[serde(rename = "providerMobility")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provider_mobility: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<LoanOrCreditIdentifierFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/availableChannel>
-    #[serde(rename = "availableChannel")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub available_channel: Vec<ServiceChannel>,
-    ///<https://schema.org/serviceOutput>
-    #[serde(rename = "serviceOutput")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub service_output: Vec<Thing>,
-    ///<https://schema.org/recourseLoan>
-    #[serde(rename = "recourseLoan")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recourse_loan: Vec<String>,
     ///<https://schema.org/loanTerm>
     #[serde(rename = "loanTerm")]
     #[serde_as(as = "OneOrMany<_>")]
     pub loan_term: Vec<QuantitativeValue>,
-    ///<https://schema.org/amount>
-    #[serde(rename = "amount")]
+    ///<https://schema.org/loanRepaymentForm>
+    #[serde(rename = "loanRepaymentForm")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub amount: Vec<LoanOrCreditAmountFieldEnum>,
-    ///<https://schema.org/slogan>
-    #[serde(rename = "slogan")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub slogan: Vec<String>,
-    ///<https://schema.org/hasOfferCatalog>
-    #[serde(rename = "hasOfferCatalog")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_offer_catalog: Vec<OfferCatalog>,
-    ///<https://schema.org/termsOfService>
-    #[serde(rename = "termsOfService")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub terms_of_service: Vec<LoanOrCreditTermsOfServiceFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/category>
-    #[serde(rename = "category")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub category: Vec<LoanOrCreditCategoryFieldEnum>,
-    ///<https://schema.org/areaServed>
-    #[serde(rename = "areaServed")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub area_served: Vec<LoanOrCreditAreaServedFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/renegotiableLoan>
-    #[serde(rename = "renegotiableLoan")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub renegotiable_loan: Vec<String>,
-    ///<https://schema.org/audience>
-    #[serde(rename = "audience")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub audience: Vec<Audience>,
-    ///<https://schema.org/provider>
-    #[serde(rename = "provider")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provider: Vec<LoanOrCreditProviderFieldEnum>,
+    pub loan_repayment_form: Vec<RepaymentSpecification>,
     ///<https://schema.org/loanType>
     #[serde(rename = "loanType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub loan_type: Vec<LoanOrCreditLoanTypeFieldEnum>,
-    ///<https://schema.org/isSimilarTo>
-    #[serde(rename = "isSimilarTo")]
+    ///<https://schema.org/amount>
+    #[serde(rename = "amount")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub is_similar_to: Vec<LoanOrCreditIsSimilarToFieldEnum>,
-    ///<https://schema.org/isRelatedTo>
-    #[serde(rename = "isRelatedTo")]
+    pub amount: Vec<LoanOrCreditAmountFieldEnum>,
+    ///<https://schema.org/gracePeriod>
+    #[serde(rename = "gracePeriod")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub is_related_to: Vec<LoanOrCreditIsRelatedToFieldEnum>,
-    ///<https://schema.org/award>
-    #[serde(rename = "award")]
+    pub grace_period: Vec<Duration>,
+    ///<https://schema.org/recourseLoan>
+    #[serde(rename = "recourseLoan")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub award: Vec<String>,
+    pub recourse_loan: Vec<String>,
+    ///<https://schema.org/requiredCollateral>
+    #[serde(rename = "requiredCollateral")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub required_collateral: Vec<LoanOrCreditRequiredCollateralFieldEnum>,
+    ///<https://schema.org/currency>
+    #[serde(rename = "currency")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub currency: Vec<String>,
+    ///<https://schema.org/renegotiableLoan>
+    #[serde(rename = "renegotiableLoan")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub renegotiable_loan: Vec<String>,
     ///<https://schema.org/feesAndCommissionsSpecification>
     #[serde(rename = "feesAndCommissionsSpecification")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -129,62 +69,130 @@ pub struct LoanOrCredit {
     #[serde(rename = "interestRate")]
     #[serde_as(as = "OneOrMany<_>")]
     pub interest_rate: Vec<LoanOrCreditInterestRateFieldEnum>,
-    ///<https://schema.org/requiredCollateral>
-    #[serde(rename = "requiredCollateral")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub required_collateral: Vec<LoanOrCreditRequiredCollateralFieldEnum>,
-    ///<https://schema.org/serviceArea>
-    #[serde(rename = "serviceArea")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub service_area: Vec<LoanOrCreditServiceAreaFieldEnum>,
-    ///<https://schema.org/serviceAudience>
-    #[serde(rename = "serviceAudience")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub service_audience: Vec<Audience>,
-    ///<https://schema.org/loanRepaymentForm>
-    #[serde(rename = "loanRepaymentForm")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub loan_repayment_form: Vec<RepaymentSpecification>,
     ///<https://schema.org/annualPercentageRate>
     #[serde(rename = "annualPercentageRate")]
     #[serde_as(as = "OneOrMany<_>")]
     pub annual_percentage_rate: Vec<LoanOrCreditAnnualPercentageRateFieldEnum>,
-    ///<https://schema.org/hasCertification>
-    #[serde(rename = "hasCertification")]
+    ///<https://schema.org/provider>
+    #[serde(rename = "provider")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_certification: Vec<Certification>,
-    ///<https://schema.org/currency>
-    #[serde(rename = "currency")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub currency: Vec<String>,
-    ///<https://schema.org/broker>
-    #[serde(rename = "broker")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub broker: Vec<LoanOrCreditBrokerFieldEnum>,
-    ///<https://schema.org/gracePeriod>
-    #[serde(rename = "gracePeriod")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub grace_period: Vec<Duration>,
-    ///<https://schema.org/serviceType>
-    #[serde(rename = "serviceType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub service_type: Vec<LoanOrCreditServiceTypeFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<LoanOrCreditMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/offers>
-    #[serde(rename = "offers")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub offers: Vec<LoanOrCreditOffersFieldEnum>,
+    pub provider: Vec<LoanOrCreditProviderFieldEnum>,
     ///<https://schema.org/aggregateRating>
     #[serde(rename = "aggregateRating")]
     #[serde_as(as = "OneOrMany<_>")]
     pub aggregate_rating: Vec<AggregateRating>,
+    ///<https://schema.org/hasCertification>
+    #[serde(rename = "hasCertification")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_certification: Vec<Certification>,
+    ///<https://schema.org/isSimilarTo>
+    #[serde(rename = "isSimilarTo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_similar_to: Vec<LoanOrCreditIsSimilarToFieldEnum>,
+    ///<https://schema.org/availableChannel>
+    #[serde(rename = "availableChannel")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub available_channel: Vec<ServiceChannel>,
+    ///<https://schema.org/hoursAvailable>
+    #[serde(rename = "hoursAvailable")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub hours_available: Vec<OpeningHoursSpecification>,
+    ///<https://schema.org/broker>
+    #[serde(rename = "broker")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broker: Vec<LoanOrCreditBrokerFieldEnum>,
+    ///<https://schema.org/serviceArea>
+    #[serde(rename = "serviceArea")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_area: Vec<LoanOrCreditServiceAreaFieldEnum>,
+    ///<https://schema.org/isRelatedTo>
+    #[serde(rename = "isRelatedTo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_related_to: Vec<LoanOrCreditIsRelatedToFieldEnum>,
+    ///<https://schema.org/offers>
+    #[serde(rename = "offers")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub offers: Vec<LoanOrCreditOffersFieldEnum>,
+    ///<https://schema.org/termsOfService>
+    #[serde(rename = "termsOfService")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub terms_of_service: Vec<LoanOrCreditTermsOfServiceFieldEnum>,
+    ///<https://schema.org/category>
+    #[serde(rename = "category")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub category: Vec<LoanOrCreditCategoryFieldEnum>,
+    ///<https://schema.org/logo>
+    #[serde(rename = "logo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub logo: Vec<LoanOrCreditLogoFieldEnum>,
+    ///<https://schema.org/award>
+    #[serde(rename = "award")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub award: Vec<String>,
     ///<https://schema.org/brand>
     #[serde(rename = "brand")]
     #[serde_as(as = "OneOrMany<_>")]
     pub brand: Vec<LoanOrCreditBrandFieldEnum>,
+    ///<https://schema.org/providerMobility>
+    #[serde(rename = "providerMobility")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider_mobility: Vec<String>,
+    ///<https://schema.org/audience>
+    #[serde(rename = "audience")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub audience: Vec<Audience>,
+    ///<https://schema.org/slogan>
+    #[serde(rename = "slogan")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub slogan: Vec<String>,
+    ///<https://schema.org/review>
+    #[serde(rename = "review")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub review: Vec<Review>,
+    ///<https://schema.org/hasOfferCatalog>
+    #[serde(rename = "hasOfferCatalog")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_offer_catalog: Vec<OfferCatalog>,
+    ///<https://schema.org/produces>
+    #[serde(rename = "produces")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub produces: Vec<Thing>,
+    ///<https://schema.org/areaServed>
+    #[serde(rename = "areaServed")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub area_served: Vec<LoanOrCreditAreaServedFieldEnum>,
+    ///<https://schema.org/serviceAudience>
+    #[serde(rename = "serviceAudience")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_audience: Vec<Audience>,
+    ///<https://schema.org/serviceType>
+    #[serde(rename = "serviceType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_type: Vec<LoanOrCreditServiceTypeFieldEnum>,
+    ///<https://schema.org/serviceOutput>
+    #[serde(rename = "serviceOutput")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub service_output: Vec<Thing>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<LoanOrCreditMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<LoanOrCreditIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -193,6 +201,10 @@ pub struct LoanOrCredit {
     #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
     pub subject_of: Vec<LoanOrCreditSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -201,24 +213,12 @@ pub struct LoanOrCredit {
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<LoanOrCreditImageFieldEnum>,
-    ///<https://schema.org/review>
-    #[serde(rename = "review")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub review: Vec<Review>,
-    ///<https://schema.org/logo>
-    #[serde(rename = "logo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub logo: Vec<LoanOrCreditLogoFieldEnum>,
-    ///<https://schema.org/produces>
-    #[serde(rename = "produces")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub produces: Vec<Thing>,
-    ///<https://schema.org/hoursAvailable>
-    #[serde(rename = "hoursAvailable")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub hours_available: Vec<OpeningHoursSpecification>,
 }

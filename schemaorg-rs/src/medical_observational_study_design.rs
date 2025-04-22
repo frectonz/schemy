@@ -11,42 +11,14 @@ pub type MedicalObservationalStudyDesignAdditionalTypeFieldEnum = String;
 pub struct MedicalObservationalStudyDesign {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
     ///<https://schema.org/supersededBy>
     #[serde(rename = "supersededBy")]
     #[serde_as(as = "OneOrMany<_>")]
     pub superseded_by: Vec<MedicalObservationalStudyDesignSupersededByFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<MedicalObservationalStudyDesignImageFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<MedicalObservationalStudyDesignAdditionalTypeFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<MedicalObservationalStudyDesignIdentifierFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<MedicalObservationalStudyDesignSubjectOfFieldEnum>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -57,12 +29,40 @@ pub struct MedicalObservationalStudyDesign {
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<MedicalObservationalStudyDesignDescriptionFieldEnum>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<MedicalObservationalStudyDesignIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<MedicalObservationalStudyDesignDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<MedicalObservationalStudyDesignSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<MedicalObservationalStudyDesignAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<MedicalObservationalStudyDesignImageFieldEnum>,
 }

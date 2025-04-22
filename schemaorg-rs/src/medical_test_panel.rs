@@ -11,10 +11,54 @@ pub type MedicalTestPanelAdditionalTypeFieldEnum = String;
 pub struct MedicalTestPanel {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/subTest>
+    #[serde(rename = "subTest")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sub_test: Vec<MedicalTest>,
+    ///<https://schema.org/usesDevice>
+    #[serde(rename = "usesDevice")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub uses_device: Vec<MedicalDevice>,
+    ///<https://schema.org/affectedBy>
+    #[serde(rename = "affectedBy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub affected_by: Vec<Drug>,
     ///<https://schema.org/signDetected>
     #[serde(rename = "signDetected")]
     #[serde_as(as = "OneOrMany<_>")]
     pub sign_detected: Vec<MedicalSign>,
+    ///<https://schema.org/usedToDiagnose>
+    #[serde(rename = "usedToDiagnose")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub used_to_diagnose: Vec<MedicalCondition>,
+    ///<https://schema.org/normalRange>
+    #[serde(rename = "normalRange")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub normal_range: Vec<MedicalTestPanelNormalRangeFieldEnum>,
+    ///<https://schema.org/legalStatus>
+    #[serde(rename = "legalStatus")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub legal_status: Vec<MedicalTestPanelLegalStatusFieldEnum>,
+    ///<https://schema.org/relevantSpecialty>
+    #[serde(rename = "relevantSpecialty")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/recognizingAuthority>
+    #[serde(rename = "recognizingAuthority")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub recognizing_authority: Vec<Organization>,
+    ///<https://schema.org/medicineSystem>
+    #[serde(rename = "medicineSystem")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub medicine_system: Vec<MedicineSystemEnum>,
+    ///<https://schema.org/guideline>
+    #[serde(rename = "guideline")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub guideline: Vec<MedicalGuideline>,
     ///<https://schema.org/study>
     #[serde(rename = "study")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -27,92 +71,48 @@ pub struct MedicalTestPanel {
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
-    ///<https://schema.org/usedToDiagnose>
-    #[serde(rename = "usedToDiagnose")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub used_to_diagnose: Vec<MedicalCondition>,
-    ///<https://schema.org/guideline>
-    #[serde(rename = "guideline")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub guideline: Vec<MedicalGuideline>,
-    ///<https://schema.org/usesDevice>
-    #[serde(rename = "usesDevice")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub uses_device: Vec<MedicalDevice>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<MedicalTestPanelMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/medicineSystem>
-    #[serde(rename = "medicineSystem")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub medicine_system: Vec<MedicineSystemEnum>,
-    ///<https://schema.org/legalStatus>
-    #[serde(rename = "legalStatus")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub legal_status: Vec<MedicalTestPanelLegalStatusFieldEnum>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<MedicalTestPanelIdentifierFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<MedicalTestPanelSubjectOfFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<MedicalTestPanelAdditionalTypeFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<MedicalTestPanelImageFieldEnum>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/recognizingAuthority>
-    #[serde(rename = "recognizingAuthority")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recognizing_authority: Vec<Organization>,
-    ///<https://schema.org/affectedBy>
-    #[serde(rename = "affectedBy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub affected_by: Vec<Drug>,
-    ///<https://schema.org/relevantSpecialty>
-    #[serde(rename = "relevantSpecialty")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/subTest>
-    #[serde(rename = "subTest")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sub_test: Vec<MedicalTest>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/normalRange>
-    #[serde(rename = "normalRange")]
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub normal_range: Vec<MedicalTestPanelNormalRangeFieldEnum>,
+    pub identifier: Vec<MedicalTestPanelIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<MedicalTestPanelDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<MedicalTestPanelSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<MedicalTestPanelAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<MedicalTestPanelImageFieldEnum>,
 }

@@ -19,14 +19,58 @@ pub type ReviewActionAdditionalTypeFieldEnum = String;
 pub struct ReviewAction {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/resultReview>
+    #[serde(rename = "resultReview")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub result_review: Vec<Review>,
+    ///<https://schema.org/provider>
+    #[serde(rename = "provider")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider: Vec<ReviewActionProviderFieldEnum>,
     ///<https://schema.org/actionProcess>
     #[serde(rename = "actionProcess")]
     #[serde_as(as = "OneOrMany<_>")]
     pub action_process: Vec<HowTo>,
+    ///<https://schema.org/startTime>
+    #[serde(rename = "startTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub start_time: Vec<ReviewActionStartTimeFieldEnum>,
     ///<https://schema.org/actionStatus>
     #[serde(rename = "actionStatus")]
     #[serde_as(as = "OneOrMany<_>")]
     pub action_status: Vec<ActionStatusTypeEnum>,
+    ///<https://schema.org/object>
+    #[serde(rename = "object")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub object: Vec<Thing>,
+    ///<https://schema.org/error>
+    #[serde(rename = "error")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub error: Vec<Thing>,
+    ///<https://schema.org/location>
+    #[serde(rename = "location")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub location: Vec<ReviewActionLocationFieldEnum>,
+    ///<https://schema.org/agent>
+    #[serde(rename = "agent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub agent: Vec<ReviewActionAgentFieldEnum>,
+    ///<https://schema.org/result>
+    #[serde(rename = "result")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub result: Vec<Thing>,
+    ///<https://schema.org/target>
+    #[serde(rename = "target")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub target: Vec<ReviewActionTargetFieldEnum>,
+    ///<https://schema.org/endTime>
+    #[serde(rename = "endTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub end_time: Vec<ReviewActionEndTimeFieldEnum>,
+    ///<https://schema.org/instrument>
+    #[serde(rename = "instrument")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub instrument: Vec<Thing>,
     ///<https://schema.org/participant>
     #[serde(rename = "participant")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -35,92 +79,48 @@ pub struct ReviewAction {
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<ReviewActionIdentifierFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/resultReview>
-    #[serde(rename = "resultReview")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub result_review: Vec<Review>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/provider>
-    #[serde(rename = "provider")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provider: Vec<ReviewActionProviderFieldEnum>,
-    ///<https://schema.org/startTime>
-    #[serde(rename = "startTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub start_time: Vec<ReviewActionStartTimeFieldEnum>,
-    ///<https://schema.org/target>
-    #[serde(rename = "target")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub target: Vec<ReviewActionTargetFieldEnum>,
-    ///<https://schema.org/object>
-    #[serde(rename = "object")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub object: Vec<Thing>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<ReviewActionSubjectOfFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<ReviewActionImageFieldEnum>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<ReviewActionDescriptionFieldEnum>,
-    ///<https://schema.org/error>
-    #[serde(rename = "error")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub error: Vec<Thing>,
-    ///<https://schema.org/result>
-    #[serde(rename = "result")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub result: Vec<Thing>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<ReviewActionMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/agent>
-    #[serde(rename = "agent")]
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub agent: Vec<ReviewActionAgentFieldEnum>,
-    ///<https://schema.org/instrument>
-    #[serde(rename = "instrument")]
+    pub identifier: Vec<ReviewActionIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub instrument: Vec<Thing>,
-    ///<https://schema.org/endTime>
-    #[serde(rename = "endTime")]
+    pub description: Vec<ReviewActionDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub end_time: Vec<ReviewActionEndTimeFieldEnum>,
+    pub subject_of: Vec<ReviewActionSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<ReviewActionAdditionalTypeFieldEnum>,
-    ///<https://schema.org/location>
-    #[serde(rename = "location")]
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub location: Vec<ReviewActionLocationFieldEnum>,
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<ReviewActionImageFieldEnum>,
 }

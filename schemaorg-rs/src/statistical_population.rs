@@ -11,26 +11,18 @@ pub type StatisticalPopulationAdditionalTypeFieldEnum = String;
 pub struct StatisticalPopulation {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<StatisticalPopulationDescriptionFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
     ///<https://schema.org/populationType>
     #[serde(rename = "populationType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub population_type: Vec<Class>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<StatisticalPopulationMainEntityOfPageFieldEnum>,
     ///<https://schema.org/name>
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<StatisticalPopulationMainEntityOfPageFieldEnum>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -43,6 +35,14 @@ pub struct StatisticalPopulation {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<StatisticalPopulationIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<StatisticalPopulationDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<StatisticalPopulationSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -51,14 +51,14 @@ pub struct StatisticalPopulation {
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<StatisticalPopulationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<StatisticalPopulationSubjectOfFieldEnum>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]

@@ -11,14 +11,106 @@ pub type GeneAdditionalTypeFieldEnum = String;
 pub struct Gene {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/encodesBioChemEntity>
+    #[serde(rename = "encodesBioChemEntity")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub encodes_bio_chem_entity: Vec<BioChemEntity>,
+    ///<https://schema.org/alternativeOf>
+    #[serde(rename = "alternativeOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternative_of: Vec<Gene>,
     ///<https://schema.org/hasBioPolymerSequence>
     #[serde(rename = "hasBioPolymerSequence")]
     #[serde_as(as = "OneOrMany<_>")]
     pub has_bio_polymer_sequence: Vec<String>,
+    ///<https://schema.org/expressedIn>
+    #[serde(rename = "expressedIn")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub expressed_in: Vec<GeneExpressedInFieldEnum>,
+    ///<https://schema.org/bioChemSimilarity>
+    #[serde(rename = "bioChemSimilarity")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub bio_chem_similarity: Vec<BioChemEntity>,
+    ///<https://schema.org/hasRepresentation>
+    #[serde(rename = "hasRepresentation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_representation: Vec<GeneHasRepresentationFieldEnum>,
+    ///<https://schema.org/hasBioChemEntityPart>
+    #[serde(rename = "hasBioChemEntityPart")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_bio_chem_entity_part: Vec<BioChemEntity>,
+    ///<https://schema.org/taxonomicRange>
+    #[serde(rename = "taxonomicRange")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub taxonomic_range: Vec<GeneTaxonomicRangeFieldEnum>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/isEncodedByBioChemEntity>
+    #[serde(rename = "isEncodedByBioChemEntity")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_encoded_by_bio_chem_entity: Vec<Gene>,
+    ///<https://schema.org/isInvolvedInBiologicalProcess>
+    #[serde(rename = "isInvolvedInBiologicalProcess")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_involved_in_biological_process: Vec<
+        GeneIsInvolvedInBiologicalProcessFieldEnum,
+    >,
+    ///<https://schema.org/associatedDisease>
+    #[serde(rename = "associatedDisease")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub associated_disease: Vec<GeneAssociatedDiseaseFieldEnum>,
+    ///<https://schema.org/bioChemInteraction>
+    #[serde(rename = "bioChemInteraction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub bio_chem_interaction: Vec<BioChemEntity>,
+    ///<https://schema.org/isLocatedInSubcellularLocation>
+    #[serde(rename = "isLocatedInSubcellularLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_located_in_subcellular_location: Vec<
+        GeneIsLocatedInSubcellularLocationFieldEnum,
+    >,
+    ///<https://schema.org/hasMolecularFunction>
+    #[serde(rename = "hasMolecularFunction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_molecular_function: Vec<GeneHasMolecularFunctionFieldEnum>,
+    ///<https://schema.org/biologicalRole>
+    #[serde(rename = "biologicalRole")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub biological_role: Vec<DefinedTerm>,
+    ///<https://schema.org/isPartOfBioChemEntity>
+    #[serde(rename = "isPartOfBioChemEntity")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_part_of_bio_chem_entity: Vec<BioChemEntity>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<GeneMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<GeneIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<GeneDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<GeneSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -27,50 +119,10 @@ pub struct Gene {
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<GeneAdditionalTypeFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/biologicalRole>
-    #[serde(rename = "biologicalRole")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub biological_role: Vec<DefinedTerm>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/expressedIn>
-    #[serde(rename = "expressedIn")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub expressed_in: Vec<GeneExpressedInFieldEnum>,
-    ///<https://schema.org/taxonomicRange>
-    #[serde(rename = "taxonomicRange")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub taxonomic_range: Vec<GeneTaxonomicRangeFieldEnum>,
-    ///<https://schema.org/associatedDisease>
-    #[serde(rename = "associatedDisease")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub associated_disease: Vec<GeneAssociatedDiseaseFieldEnum>,
-    ///<https://schema.org/isEncodedByBioChemEntity>
-    #[serde(rename = "isEncodedByBioChemEntity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_encoded_by_bio_chem_entity: Vec<Gene>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<GeneSubjectOfFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<GeneIdentifierFieldEnum>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -79,56 +131,4 @@ pub struct Gene {
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<GeneImageFieldEnum>,
-    ///<https://schema.org/hasBioChemEntityPart>
-    #[serde(rename = "hasBioChemEntityPart")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_bio_chem_entity_part: Vec<BioChemEntity>,
-    ///<https://schema.org/bioChemInteraction>
-    #[serde(rename = "bioChemInteraction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub bio_chem_interaction: Vec<BioChemEntity>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<GeneMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/encodesBioChemEntity>
-    #[serde(rename = "encodesBioChemEntity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub encodes_bio_chem_entity: Vec<BioChemEntity>,
-    ///<https://schema.org/hasRepresentation>
-    #[serde(rename = "hasRepresentation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_representation: Vec<GeneHasRepresentationFieldEnum>,
-    ///<https://schema.org/isPartOfBioChemEntity>
-    #[serde(rename = "isPartOfBioChemEntity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_part_of_bio_chem_entity: Vec<BioChemEntity>,
-    ///<https://schema.org/isLocatedInSubcellularLocation>
-    #[serde(rename = "isLocatedInSubcellularLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_located_in_subcellular_location: Vec<
-        GeneIsLocatedInSubcellularLocationFieldEnum,
-    >,
-    ///<https://schema.org/bioChemSimilarity>
-    #[serde(rename = "bioChemSimilarity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub bio_chem_similarity: Vec<BioChemEntity>,
-    ///<https://schema.org/isInvolvedInBiologicalProcess>
-    #[serde(rename = "isInvolvedInBiologicalProcess")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_involved_in_biological_process: Vec<
-        GeneIsInvolvedInBiologicalProcessFieldEnum,
-    >,
-    ///<https://schema.org/alternativeOf>
-    #[serde(rename = "alternativeOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternative_of: Vec<Gene>,
-    ///<https://schema.org/hasMolecularFunction>
-    #[serde(rename = "hasMolecularFunction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_molecular_function: Vec<GeneHasMolecularFunctionFieldEnum>,
 }

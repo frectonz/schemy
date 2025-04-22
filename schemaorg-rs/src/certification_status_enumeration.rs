@@ -11,10 +11,36 @@ pub type CertificationStatusEnumerationAdditionalTypeFieldEnum = String;
 pub struct CertificationStatusEnumeration {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/supersededBy>
+    #[serde(rename = "supersededBy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub superseded_by: Vec<CertificationStatusEnumerationSupersededByFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<
+        CertificationStatusEnumerationMainEntityOfPageFieldEnum,
+    >,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
     ///<https://schema.org/identifier>
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<CertificationStatusEnumerationIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<CertificationStatusEnumerationDescriptionFieldEnum>,
     ///<https://schema.org/subjectOf>
     #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -23,14 +49,10 @@ pub struct CertificationStatusEnumeration {
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<CertificationStatusEnumerationImageFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
+    pub additional_type: Vec<CertificationStatusEnumerationAdditionalTypeFieldEnum>,
     ///<https://schema.org/potentialAction>
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -39,30 +61,8 @@ pub struct CertificationStatusEnumeration {
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<CertificationStatusEnumerationDescriptionFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<CertificationStatusEnumerationAdditionalTypeFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<
-        CertificationStatusEnumerationMainEntityOfPageFieldEnum,
-    >,
-    ///<https://schema.org/supersededBy>
-    #[serde(rename = "supersededBy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub superseded_by: Vec<CertificationStatusEnumerationSupersededByFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub image: Vec<CertificationStatusEnumerationImageFieldEnum>,
 }

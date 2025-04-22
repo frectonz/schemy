@@ -11,18 +11,14 @@ pub type RepaymentSpecificationAdditionalTypeFieldEnum = String;
 pub struct RepaymentSpecification {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    ///<https://schema.org/downPayment>
+    #[serde(rename = "downPayment")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<RepaymentSpecificationMainEntityOfPageFieldEnum>,
+    pub down_payment: Vec<RepaymentSpecificationDownPaymentFieldEnum>,
     ///<https://schema.org/numberOfLoanPayments>
     #[serde(rename = "numberOfLoanPayments")]
     #[serde_as(as = "OneOrMany<_>")]
     pub number_of_loan_payments: Vec<f32>,
-    ///<https://schema.org/earlyPrepaymentPenalty>
-    #[serde(rename = "earlyPrepaymentPenalty")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub early_prepayment_penalty: Vec<MonetaryAmount>,
     ///<https://schema.org/loanPaymentFrequency>
     #[serde(rename = "loanPaymentFrequency")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -31,6 +27,18 @@ pub struct RepaymentSpecification {
     #[serde(rename = "loanPaymentAmount")]
     #[serde_as(as = "OneOrMany<_>")]
     pub loan_payment_amount: Vec<MonetaryAmount>,
+    ///<https://schema.org/earlyPrepaymentPenalty>
+    #[serde(rename = "earlyPrepaymentPenalty")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub early_prepayment_penalty: Vec<MonetaryAmount>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<RepaymentSpecificationMainEntityOfPageFieldEnum>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -39,6 +47,10 @@ pub struct RepaymentSpecification {
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<RepaymentSpecificationIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -51,30 +63,18 @@ pub struct RepaymentSpecification {
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
-    ///<https://schema.org/downPayment>
-    #[serde(rename = "downPayment")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub down_payment: Vec<RepaymentSpecificationDownPaymentFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<RepaymentSpecificationIdentifierFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<RepaymentSpecificationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]

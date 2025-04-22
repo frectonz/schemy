@@ -11,6 +11,10 @@ pub type DrugLegalStatusAdditionalTypeFieldEnum = String;
 pub struct DrugLegalStatus {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/applicableLocation>
+    #[serde(rename = "applicableLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub applicable_location: Vec<AdministrativeArea>,
     ///<https://schema.org/legalStatus>
     #[serde(rename = "legalStatus")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -19,14 +23,14 @@ pub struct DrugLegalStatus {
     #[serde(rename = "relevantSpecialty")]
     #[serde_as(as = "OneOrMany<_>")]
     pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
-    ///<https://schema.org/applicableLocation>
-    #[serde(rename = "applicableLocation")]
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub applicable_location: Vec<AdministrativeArea>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/recognizingAuthority>
+    #[serde(rename = "recognizingAuthority")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub recognizing_authority: Vec<Organization>,
     ///<https://schema.org/medicineSystem>
     #[serde(rename = "medicineSystem")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -35,38 +39,10 @@ pub struct DrugLegalStatus {
     #[serde(rename = "guideline")]
     #[serde_as(as = "OneOrMany<_>")]
     pub guideline: Vec<MedicalGuideline>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
+    ///<https://schema.org/study>
+    #[serde(rename = "study")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<DrugLegalStatusSubjectOfFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<DrugLegalStatusIdentifierFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<DrugLegalStatusDescriptionFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<DrugLegalStatusAdditionalTypeFieldEnum>,
-    ///<https://schema.org/recognizingAuthority>
-    #[serde(rename = "recognizingAuthority")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recognizing_authority: Vec<Organization>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
+    pub study: Vec<MedicalStudy>,
     ///<https://schema.org/code>
     #[serde(rename = "code")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -75,22 +51,46 @@ pub struct DrugLegalStatus {
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/study>
-    #[serde(rename = "study")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub study: Vec<MedicalStudy>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<DrugLegalStatusMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<DrugLegalStatusIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<DrugLegalStatusDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<DrugLegalStatusSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<DrugLegalStatusAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]

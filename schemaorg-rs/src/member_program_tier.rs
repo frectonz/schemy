@@ -11,30 +11,54 @@ pub type MemberProgramTierAdditionalTypeFieldEnum = String;
 pub struct MemberProgramTier {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
+    ///<https://schema.org/hasTierBenefit>
+    #[serde(rename = "hasTierBenefit")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    pub has_tier_benefit: Vec<TierBenefitEnumerationEnum>,
+    ///<https://schema.org/hasTierRequirement>
+    #[serde(rename = "hasTierRequirement")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<MemberProgramTierImageFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    pub has_tier_requirement: Vec<MemberProgramTierHasTierRequirementFieldEnum>,
+    ///<https://schema.org/membershipPointsEarned>
+    #[serde(rename = "membershipPointsEarned")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<MemberProgramTierMainEntityOfPageFieldEnum>,
+    pub membership_points_earned: Vec<MemberProgramTierMembershipPointsEarnedFieldEnum>,
+    ///<https://schema.org/isTierOf>
+    #[serde(rename = "isTierOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub is_tier_of: Vec<MemberProgram>,
     ///<https://schema.org/name>
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<MemberProgramTierMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<MemberProgramTierIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<MemberProgramTierDescriptionFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub subject_of: Vec<MemberProgramTierSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -43,36 +67,12 @@ pub struct MemberProgramTier {
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
-    ///<https://schema.org/hasTierRequirement>
-    #[serde(rename = "hasTierRequirement")]
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_tier_requirement: Vec<MemberProgramTierHasTierRequirementFieldEnum>,
-    ///<https://schema.org/hasTierBenefit>
-    #[serde(rename = "hasTierBenefit")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub has_tier_benefit: Vec<TierBenefitEnumerationEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/membershipPointsEarned>
-    #[serde(rename = "membershipPointsEarned")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub membership_points_earned: Vec<MemberProgramTierMembershipPointsEarnedFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<MemberProgramTierIdentifierFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/isTierOf>
-    #[serde(rename = "isTierOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub is_tier_of: Vec<MemberProgram>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<MemberProgramTierSubjectOfFieldEnum>,
+    pub image: Vec<MemberProgramTierImageFieldEnum>,
 }

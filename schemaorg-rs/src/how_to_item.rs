@@ -11,14 +11,10 @@ pub type HowToItemAdditionalTypeFieldEnum = String;
 pub struct HowToItem {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
+    ///<https://schema.org/requiredQuantity>
+    #[serde(rename = "requiredQuantity")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<HowToItemIdentifierFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
+    pub required_quantity: Vec<HowToItemRequiredQuantityFieldEnum>,
     ///<https://schema.org/nextItem>
     #[serde(rename = "nextItem")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -31,26 +27,50 @@ pub struct HowToItem {
     #[serde(rename = "position")]
     #[serde_as(as = "OneOrMany<_>")]
     pub position: Vec<HowToItemPositionFieldEnum>,
+    ///<https://schema.org/previousItem>
+    #[serde(rename = "previousItem")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub previous_item: Vec<ListItem>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<HowToItemMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<HowToItemIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<HowToItemDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<HowToItemSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<HowToItemAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -59,24 +79,4 @@ pub struct HowToItem {
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<HowToItemImageFieldEnum>,
-    ///<https://schema.org/previousItem>
-    #[serde(rename = "previousItem")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub previous_item: Vec<ListItem>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<HowToItemSubjectOfFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/requiredQuantity>
-    #[serde(rename = "requiredQuantity")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub required_quantity: Vec<HowToItemRequiredQuantityFieldEnum>,
 }

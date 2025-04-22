@@ -11,198 +11,194 @@ pub type PersonAdditionalTypeFieldEnum = String;
 pub struct Person {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/telephone>
-    #[serde(rename = "telephone")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub telephone: Vec<String>,
-    ///<https://schema.org/follows>
-    #[serde(rename = "follows")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub follows: Vec<Person>,
-    ///<https://schema.org/contactPoint>
-    #[serde(rename = "contactPoint")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub contact_point: Vec<ContactPoint>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<PersonImageFieldEnum>,
-    ///<https://schema.org/birthPlace>
-    #[serde(rename = "birthPlace")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub birth_place: Vec<Place>,
-    ///<https://schema.org/seeks>
-    #[serde(rename = "seeks")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub seeks: Vec<Demand>,
-    ///<https://schema.org/vatID>
-    #[serde(rename = "vatID")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub vat_id: Vec<String>,
-    ///<https://schema.org/address>
-    #[serde(rename = "address")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub address: Vec<PersonAddressFieldEnum>,
-    ///<https://schema.org/makesOffer>
-    #[serde(rename = "makesOffer")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub makes_offer: Vec<Offer>,
     ///<https://schema.org/sibling>
     #[serde(rename = "sibling")]
     #[serde_as(as = "OneOrMany<_>")]
     pub sibling: Vec<Person>,
-    ///<https://schema.org/deathDate>
-    #[serde(rename = "deathDate")]
+    ///<https://schema.org/knows>
+    #[serde(rename = "knows")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub death_date: Vec<String>,
-    ///<https://schema.org/awards>
-    #[serde(rename = "awards")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub awards: Vec<String>,
-    ///<https://schema.org/nationality>
-    #[serde(rename = "nationality")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub nationality: Vec<Country>,
-    ///<https://schema.org/award>
-    #[serde(rename = "award")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub award: Vec<String>,
-    ///<https://schema.org/parent>
-    #[serde(rename = "parent")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub parent: Vec<Person>,
-    ///<https://schema.org/deathPlace>
-    #[serde(rename = "deathPlace")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub death_place: Vec<Place>,
-    ///<https://schema.org/memberOf>
-    #[serde(rename = "memberOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub member_of: Vec<PersonMemberOfFieldEnum>,
-    ///<https://schema.org/performerIn>
-    #[serde(rename = "performerIn")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub performer_in: Vec<Event>,
-    ///<https://schema.org/gender>
-    #[serde(rename = "gender")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub gender: Vec<PersonGenderFieldEnum>,
-    ///<https://schema.org/brand>
-    #[serde(rename = "brand")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub brand: Vec<PersonBrandFieldEnum>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<PersonDescriptionFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/funder>
-    #[serde(rename = "funder")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funder: Vec<PersonFunderFieldEnum>,
-    ///<https://schema.org/worksFor>
-    #[serde(rename = "worksFor")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub works_for: Vec<Organization>,
-    ///<https://schema.org/children>
-    #[serde(rename = "children")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub children: Vec<Person>,
-    ///<https://schema.org/birthDate>
-    #[serde(rename = "birthDate")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub birth_date: Vec<String>,
-    ///<https://schema.org/givenName>
-    #[serde(rename = "givenName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub given_name: Vec<String>,
+    pub knows: Vec<Person>,
     ///<https://schema.org/isicV4>
     #[serde(rename = "isicV4")]
     #[serde_as(as = "OneOrMany<_>")]
     pub isic_v4: Vec<String>,
-    ///<https://schema.org/naics>
-    #[serde(rename = "naics")]
+    ///<https://schema.org/nationality>
+    #[serde(rename = "nationality")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub naics: Vec<String>,
-    ///<https://schema.org/hasCertification>
-    #[serde(rename = "hasCertification")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_certification: Vec<Certification>,
-    ///<https://schema.org/colleague>
-    #[serde(rename = "colleague")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub colleague: Vec<PersonColleagueFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/hasOfferCatalog>
-    #[serde(rename = "hasOfferCatalog")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_offer_catalog: Vec<OfferCatalog>,
-    ///<https://schema.org/workLocation>
-    #[serde(rename = "workLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub work_location: Vec<PersonWorkLocationFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/contactPoints>
-    #[serde(rename = "contactPoints")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub contact_points: Vec<ContactPoint>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<PersonMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<PersonSubjectOfFieldEnum>,
-    ///<https://schema.org/spouse>
-    #[serde(rename = "spouse")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub spouse: Vec<Person>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/sponsor>
-    #[serde(rename = "sponsor")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sponsor: Vec<PersonSponsorFieldEnum>,
-    ///<https://schema.org/colleagues>
-    #[serde(rename = "colleagues")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub colleagues: Vec<Person>,
-    ///<https://schema.org/knowsLanguage>
-    #[serde(rename = "knowsLanguage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub knows_language: Vec<PersonKnowsLanguageFieldEnum>,
-    ///<https://schema.org/weight>
-    #[serde(rename = "weight")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub weight: Vec<PersonWeightFieldEnum>,
-    ///<https://schema.org/netWorth>
-    #[serde(rename = "netWorth")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub net_worth: Vec<PersonNetWorthFieldEnum>,
+    pub nationality: Vec<Country>,
     ///<https://schema.org/honorificPrefix>
     #[serde(rename = "honorificPrefix")]
     #[serde_as(as = "OneOrMany<_>")]
     pub honorific_prefix: Vec<String>,
-    ///<https://schema.org/owns>
-    #[serde(rename = "owns")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub owns: Vec<PersonOwnsFieldEnum>,
     ///<https://schema.org/siblings>
     #[serde(rename = "siblings")]
     #[serde_as(as = "OneOrMany<_>")]
     pub siblings: Vec<Person>,
+    ///<https://schema.org/colleague>
+    #[serde(rename = "colleague")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub colleague: Vec<PersonColleagueFieldEnum>,
+    ///<https://schema.org/hasCertification>
+    #[serde(rename = "hasCertification")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_certification: Vec<Certification>,
+    ///<https://schema.org/parent>
+    #[serde(rename = "parent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub parent: Vec<Person>,
+    ///<https://schema.org/skills>
+    #[serde(rename = "skills")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub skills: Vec<PersonSkillsFieldEnum>,
+    ///<https://schema.org/publishingPrinciples>
+    #[serde(rename = "publishingPrinciples")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub publishing_principles: Vec<PersonPublishingPrinciplesFieldEnum>,
+    ///<https://schema.org/birthPlace>
+    #[serde(rename = "birthPlace")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub birth_place: Vec<Place>,
+    ///<https://schema.org/hasPOS>
+    #[serde(rename = "hasPOS")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_pos: Vec<Place>,
+    ///<https://schema.org/knowsAbout>
+    #[serde(rename = "knowsAbout")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub knows_about: Vec<PersonKnowsAboutFieldEnum>,
+    ///<https://schema.org/telephone>
+    #[serde(rename = "telephone")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub telephone: Vec<String>,
+    ///<https://schema.org/weight>
+    #[serde(rename = "weight")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub weight: Vec<PersonWeightFieldEnum>,
+    ///<https://schema.org/seeks>
+    #[serde(rename = "seeks")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub seeks: Vec<Demand>,
+    ///<https://schema.org/additionalName>
+    #[serde(rename = "additionalName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_name: Vec<String>,
+    ///<https://schema.org/hasCredential>
+    #[serde(rename = "hasCredential")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub has_credential: Vec<EducationalOccupationalCredential>,
+    ///<https://schema.org/deathDate>
+    #[serde(rename = "deathDate")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub death_date: Vec<String>,
+    ///<https://schema.org/jobTitle>
+    #[serde(rename = "jobTitle")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub job_title: Vec<PersonJobTitleFieldEnum>,
+    ///<https://schema.org/vatID>
+    #[serde(rename = "vatID")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub vat_id: Vec<String>,
+    ///<https://schema.org/taxID>
+    #[serde(rename = "taxID")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub tax_id: Vec<String>,
+    ///<https://schema.org/colleagues>
+    #[serde(rename = "colleagues")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub colleagues: Vec<Person>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/givenName>
+    #[serde(rename = "givenName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub given_name: Vec<String>,
+    ///<https://schema.org/relatedTo>
+    #[serde(rename = "relatedTo")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub related_to: Vec<Person>,
+    ///<https://schema.org/birthDate>
+    #[serde(rename = "birthDate")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub birth_date: Vec<String>,
+    ///<https://schema.org/homeLocation>
+    #[serde(rename = "homeLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub home_location: Vec<PersonHomeLocationFieldEnum>,
+    ///<https://schema.org/alumniOf>
+    #[serde(rename = "alumniOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alumni_of: Vec<PersonAlumniOfFieldEnum>,
+    ///<https://schema.org/contactPoints>
+    #[serde(rename = "contactPoints")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub contact_points: Vec<ContactPoint>,
+    ///<https://schema.org/naics>
+    #[serde(rename = "naics")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub naics: Vec<String>,
+    ///<https://schema.org/owns>
+    #[serde(rename = "owns")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub owns: Vec<PersonOwnsFieldEnum>,
+    ///<https://schema.org/callSign>
+    #[serde(rename = "callSign")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub call_sign: Vec<String>,
+    ///<https://schema.org/award>
+    #[serde(rename = "award")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub award: Vec<String>,
+    ///<https://schema.org/brand>
+    #[serde(rename = "brand")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub brand: Vec<PersonBrandFieldEnum>,
+    ///<https://schema.org/children>
+    #[serde(rename = "children")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub children: Vec<Person>,
+    ///<https://schema.org/knowsLanguage>
+    #[serde(rename = "knowsLanguage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub knows_language: Vec<PersonKnowsLanguageFieldEnum>,
+    ///<https://schema.org/awards>
+    #[serde(rename = "awards")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub awards: Vec<String>,
+    ///<https://schema.org/affiliation>
+    #[serde(rename = "affiliation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub affiliation: Vec<Organization>,
+    ///<https://schema.org/parents>
+    #[serde(rename = "parents")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub parents: Vec<Person>,
+    ///<https://schema.org/spouse>
+    #[serde(rename = "spouse")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub spouse: Vec<Person>,
+    ///<https://schema.org/agentInteractionStatistic>
+    #[serde(rename = "agentInteractionStatistic")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub agent_interaction_statistic: Vec<InteractionCounter>,
+    ///<https://schema.org/funder>
+    #[serde(rename = "funder")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funder: Vec<PersonFunderFieldEnum>,
+    ///<https://schema.org/address>
+    #[serde(rename = "address")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub address: Vec<PersonAddressFieldEnum>,
+    ///<https://schema.org/netWorth>
+    #[serde(rename = "netWorth")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub net_worth: Vec<PersonNetWorthFieldEnum>,
+    ///<https://schema.org/interactionStatistic>
+    #[serde(rename = "interactionStatistic")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub interaction_statistic: Vec<InteractionCounter>,
     ///<https://schema.org/globalLocationNumber>
     #[serde(rename = "globalLocationNumber")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -211,116 +207,120 @@ pub struct Person {
     #[serde(rename = "hasOccupation")]
     #[serde_as(as = "OneOrMany<_>")]
     pub has_occupation: Vec<Occupation>,
-    ///<https://schema.org/homeLocation>
-    #[serde(rename = "homeLocation")]
+    ///<https://schema.org/deathPlace>
+    #[serde(rename = "deathPlace")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub home_location: Vec<PersonHomeLocationFieldEnum>,
-    ///<https://schema.org/parents>
-    #[serde(rename = "parents")]
+    pub death_place: Vec<Place>,
+    ///<https://schema.org/makesOffer>
+    #[serde(rename = "makesOffer")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub parents: Vec<Person>,
-    ///<https://schema.org/knowsAbout>
-    #[serde(rename = "knowsAbout")]
+    pub makes_offer: Vec<Offer>,
+    ///<https://schema.org/sponsor>
+    #[serde(rename = "sponsor")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub knows_about: Vec<PersonKnowsAboutFieldEnum>,
-    ///<https://schema.org/additionalName>
-    #[serde(rename = "additionalName")]
+    pub sponsor: Vec<PersonSponsorFieldEnum>,
+    ///<https://schema.org/memberOf>
+    #[serde(rename = "memberOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub additional_name: Vec<String>,
-    ///<https://schema.org/skills>
-    #[serde(rename = "skills")]
+    pub member_of: Vec<PersonMemberOfFieldEnum>,
+    ///<https://schema.org/hasOfferCatalog>
+    #[serde(rename = "hasOfferCatalog")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub skills: Vec<PersonSkillsFieldEnum>,
-    ///<https://schema.org/taxID>
-    #[serde(rename = "taxID")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub tax_id: Vec<String>,
-    ///<https://schema.org/hasCredential>
-    #[serde(rename = "hasCredential")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_credential: Vec<EducationalOccupationalCredential>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/hasPOS>
-    #[serde(rename = "hasPOS")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub has_pos: Vec<Place>,
-    ///<https://schema.org/familyName>
-    #[serde(rename = "familyName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub family_name: Vec<String>,
-    ///<https://schema.org/knows>
-    #[serde(rename = "knows")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub knows: Vec<Person>,
-    ///<https://schema.org/agentInteractionStatistic>
-    #[serde(rename = "agentInteractionStatistic")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub agent_interaction_statistic: Vec<InteractionCounter>,
-    ///<https://schema.org/jobTitle>
-    #[serde(rename = "jobTitle")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub job_title: Vec<PersonJobTitleFieldEnum>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/callSign>
-    #[serde(rename = "callSign")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub call_sign: Vec<String>,
-    ///<https://schema.org/interactionStatistic>
-    #[serde(rename = "interactionStatistic")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub interaction_statistic: Vec<InteractionCounter>,
-    ///<https://schema.org/honorificSuffix>
-    #[serde(rename = "honorificSuffix")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub honorific_suffix: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<PersonIdentifierFieldEnum>,
-    ///<https://schema.org/faxNumber>
-    #[serde(rename = "faxNumber")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub fax_number: Vec<String>,
-    ///<https://schema.org/relatedTo>
-    #[serde(rename = "relatedTo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub related_to: Vec<Person>,
-    ///<https://schema.org/publishingPrinciples>
-    #[serde(rename = "publishingPrinciples")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub publishing_principles: Vec<PersonPublishingPrinciplesFieldEnum>,
+    pub has_offer_catalog: Vec<OfferCatalog>,
     ///<https://schema.org/height>
     #[serde(rename = "height")]
     #[serde_as(as = "OneOrMany<_>")]
     pub height: Vec<PersonHeightFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<PersonAdditionalTypeFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/email>
-    #[serde(rename = "email")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub email: Vec<String>,
-    ///<https://schema.org/alumniOf>
-    #[serde(rename = "alumniOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alumni_of: Vec<PersonAlumniOfFieldEnum>,
-    ///<https://schema.org/affiliation>
-    #[serde(rename = "affiliation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub affiliation: Vec<Organization>,
     ///<https://schema.org/duns>
     #[serde(rename = "duns")]
     #[serde_as(as = "OneOrMany<_>")]
     pub duns: Vec<String>,
+    ///<https://schema.org/familyName>
+    #[serde(rename = "familyName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub family_name: Vec<String>,
+    ///<https://schema.org/worksFor>
+    #[serde(rename = "worksFor")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub works_for: Vec<Organization>,
+    ///<https://schema.org/follows>
+    #[serde(rename = "follows")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub follows: Vec<Person>,
+    ///<https://schema.org/faxNumber>
+    #[serde(rename = "faxNumber")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub fax_number: Vec<String>,
+    ///<https://schema.org/contactPoint>
+    #[serde(rename = "contactPoint")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub contact_point: Vec<ContactPoint>,
+    ///<https://schema.org/honorificSuffix>
+    #[serde(rename = "honorificSuffix")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub honorific_suffix: Vec<String>,
+    ///<https://schema.org/performerIn>
+    #[serde(rename = "performerIn")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub performer_in: Vec<Event>,
+    ///<https://schema.org/email>
+    #[serde(rename = "email")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub email: Vec<String>,
+    ///<https://schema.org/workLocation>
+    #[serde(rename = "workLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub work_location: Vec<PersonWorkLocationFieldEnum>,
+    ///<https://schema.org/gender>
+    #[serde(rename = "gender")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub gender: Vec<PersonGenderFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<PersonMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<PersonIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<PersonDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<PersonSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<PersonAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<PersonImageFieldEnum>,
 }

@@ -11,14 +11,14 @@ pub type MusicAlbumReleaseTypeAdditionalTypeFieldEnum = String;
 pub struct MusicAlbumReleaseType {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
+    ///<https://schema.org/supersededBy>
+    #[serde(rename = "supersededBy")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<MusicAlbumReleaseTypeIdentifierFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    pub superseded_by: Vec<MusicAlbumReleaseTypeSupersededByFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<MusicAlbumReleaseTypeSubjectOfFieldEnum>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -27,22 +27,22 @@ pub struct MusicAlbumReleaseType {
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub identifier: Vec<MusicAlbumReleaseTypeIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<MusicAlbumReleaseTypeDescriptionFieldEnum>,
-    ///<https://schema.org/supersededBy>
-    #[serde(rename = "supersededBy")]
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub superseded_by: Vec<MusicAlbumReleaseTypeSupersededByFieldEnum>,
+    pub subject_of: Vec<MusicAlbumReleaseTypeSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -51,16 +51,16 @@ pub struct MusicAlbumReleaseType {
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<MusicAlbumReleaseTypeAdditionalTypeFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<MusicAlbumReleaseTypeImageFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
 }

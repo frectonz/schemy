@@ -11,20 +11,40 @@ pub type WearableMeasurementTypeEnumerationAdditionalTypeFieldEnum = String;
 pub struct WearableMeasurementTypeEnumeration {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/supersededBy>
+    #[serde(rename = "supersededBy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub superseded_by: Vec<WearableMeasurementTypeEnumerationSupersededByFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<
         WearableMeasurementTypeEnumerationMainEntityOfPageFieldEnum,
     >,
-    ///<https://schema.org/supersededBy>
-    #[serde(rename = "supersededBy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub superseded_by: Vec<WearableMeasurementTypeEnumerationSupersededByFieldEnum>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<WearableMeasurementTypeEnumerationIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<WearableMeasurementTypeEnumerationDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<WearableMeasurementTypeEnumerationSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -33,6 +53,10 @@ pub struct WearableMeasurementTypeEnumeration {
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<WearableMeasurementTypeEnumerationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -41,28 +65,4 @@ pub struct WearableMeasurementTypeEnumeration {
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<WearableMeasurementTypeEnumerationImageFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<WearableMeasurementTypeEnumerationSubjectOfFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<WearableMeasurementTypeEnumerationIdentifierFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<WearableMeasurementTypeEnumerationDescriptionFieldEnum>,
 }

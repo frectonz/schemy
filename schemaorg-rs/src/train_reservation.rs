@@ -11,18 +11,42 @@ pub type TrainReservationAdditionalTypeFieldEnum = String;
 pub struct TrainReservation {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/bookingTime>
-    #[serde(rename = "bookingTime")]
+    ///<https://schema.org/provider>
+    #[serde(rename = "provider")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub booking_time: Vec<String>,
+    pub provider: Vec<TrainReservationProviderFieldEnum>,
     ///<https://schema.org/programMembershipUsed>
     #[serde(rename = "programMembershipUsed")]
     #[serde_as(as = "OneOrMany<_>")]
     pub program_membership_used: Vec<ProgramMembership>,
+    ///<https://schema.org/totalPrice>
+    #[serde(rename = "totalPrice")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub total_price: Vec<TrainReservationTotalPriceFieldEnum>,
+    ///<https://schema.org/broker>
+    #[serde(rename = "broker")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub broker: Vec<TrainReservationBrokerFieldEnum>,
     ///<https://schema.org/reservationStatus>
     #[serde(rename = "reservationStatus")]
     #[serde_as(as = "OneOrMany<_>")]
     pub reservation_status: Vec<ReservationStatusTypeEnum>,
+    ///<https://schema.org/reservationId>
+    #[serde(rename = "reservationId")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub reservation_id: Vec<String>,
+    ///<https://schema.org/bookingTime>
+    #[serde(rename = "bookingTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub booking_time: Vec<String>,
+    ///<https://schema.org/modifiedTime>
+    #[serde(rename = "modifiedTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub modified_time: Vec<String>,
+    ///<https://schema.org/priceCurrency>
+    #[serde(rename = "priceCurrency")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub price_currency: Vec<String>,
     ///<https://schema.org/bookingAgent>
     #[serde(rename = "bookingAgent")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -31,38 +55,30 @@ pub struct TrainReservation {
     #[serde(rename = "reservationFor")]
     #[serde_as(as = "OneOrMany<_>")]
     pub reservation_for: Vec<Thing>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
+    ///<https://schema.org/underName>
+    #[serde(rename = "underName")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub under_name: Vec<TrainReservationUnderNameFieldEnum>,
     ///<https://schema.org/reservedTicket>
     #[serde(rename = "reservedTicket")]
     #[serde_as(as = "OneOrMany<_>")]
     pub reserved_ticket: Vec<Ticket>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/reservationId>
-    #[serde(rename = "reservationId")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub reservation_id: Vec<String>,
-    ///<https://schema.org/modifiedTime>
-    #[serde(rename = "modifiedTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub modified_time: Vec<String>,
-    ///<https://schema.org/provider>
-    #[serde(rename = "provider")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub provider: Vec<TrainReservationProviderFieldEnum>,
-    ///<https://schema.org/priceCurrency>
-    #[serde(rename = "priceCurrency")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub price_currency: Vec<String>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<TrainReservationMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
     ///<https://schema.org/identifier>
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -71,18 +87,22 @@ pub struct TrainReservation {
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<TrainReservationDescriptionFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<TrainReservationAdditionalTypeFieldEnum>,
+    pub subject_of: Vec<TrainReservationSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
-    ///<https://schema.org/totalPrice>
-    #[serde(rename = "totalPrice")]
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub total_price: Vec<TrainReservationTotalPriceFieldEnum>,
+    pub additional_type: Vec<TrainReservationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -91,24 +111,4 @@ pub struct TrainReservation {
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
     pub image: Vec<TrainReservationImageFieldEnum>,
-    ///<https://schema.org/broker>
-    #[serde(rename = "broker")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub broker: Vec<TrainReservationBrokerFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<TrainReservationSubjectOfFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/underName>
-    #[serde(rename = "underName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub under_name: Vec<TrainReservationUnderNameFieldEnum>,
 }

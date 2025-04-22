@@ -11,26 +11,14 @@ pub type ItemListOrderTypeAdditionalTypeFieldEnum = String;
 pub struct ItemListOrderType {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
     ///<https://schema.org/supersededBy>
     #[serde(rename = "supersededBy")]
     #[serde_as(as = "OneOrMany<_>")]
     pub superseded_by: Vec<ItemListOrderTypeSupersededByFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<ItemListOrderTypeImageFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -39,18 +27,10 @@ pub struct ItemListOrderType {
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<ItemListOrderTypeSubjectOfFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<ItemListOrderTypeAdditionalTypeFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub disambiguating_description: Vec<String>,
     ///<https://schema.org/identifier>
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -59,8 +39,28 @@ pub struct ItemListOrderType {
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<ItemListOrderTypeDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<ItemListOrderTypeSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<ItemListOrderTypeAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
     ///<https://schema.org/sameAs>
     #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
     pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<ItemListOrderTypeImageFieldEnum>,
 }

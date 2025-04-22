@@ -11,26 +11,66 @@ pub type PhysicalActivityAdditionalTypeFieldEnum = String;
 pub struct PhysicalActivity {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/code>
-    #[serde(rename = "code")]
+    ///<https://schema.org/associatedAnatomy>
+    #[serde(rename = "associatedAnatomy")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub code: Vec<MedicalCode>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    pub associated_anatomy: Vec<PhysicalActivityAssociatedAnatomyFieldEnum>,
+    ///<https://schema.org/category>
+    #[serde(rename = "category")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<PhysicalActivitySubjectOfFieldEnum>,
-    ///<https://schema.org/medicineSystem>
-    #[serde(rename = "medicineSystem")]
+    pub category: Vec<PhysicalActivityCategoryFieldEnum>,
+    ///<https://schema.org/epidemiology>
+    #[serde(rename = "epidemiology")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub medicine_system: Vec<MedicineSystemEnum>,
+    pub epidemiology: Vec<String>,
+    ///<https://schema.org/pathophysiology>
+    #[serde(rename = "pathophysiology")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub pathophysiology: Vec<String>,
     ///<https://schema.org/legalStatus>
     #[serde(rename = "legalStatus")]
     #[serde_as(as = "OneOrMany<_>")]
     pub legal_status: Vec<PhysicalActivityLegalStatusFieldEnum>,
+    ///<https://schema.org/relevantSpecialty>
+    #[serde(rename = "relevantSpecialty")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/recognizingAuthority>
+    #[serde(rename = "recognizingAuthority")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub recognizing_authority: Vec<Organization>,
+    ///<https://schema.org/medicineSystem>
+    #[serde(rename = "medicineSystem")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub medicine_system: Vec<MedicineSystemEnum>,
     ///<https://schema.org/guideline>
     #[serde(rename = "guideline")]
     #[serde_as(as = "OneOrMany<_>")]
     pub guideline: Vec<MedicalGuideline>,
+    ///<https://schema.org/study>
+    #[serde(rename = "study")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub study: Vec<MedicalStudy>,
+    ///<https://schema.org/code>
+    #[serde(rename = "code")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub code: Vec<MedicalCode>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<PhysicalActivityMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -39,72 +79,32 @@ pub struct PhysicalActivity {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<PhysicalActivityIdentifierFieldEnum>,
-    ///<https://schema.org/category>
-    #[serde(rename = "category")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub category: Vec<PhysicalActivityCategoryFieldEnum>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/relevantSpecialty>
-    #[serde(rename = "relevantSpecialty")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
-    ///<https://schema.org/study>
-    #[serde(rename = "study")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub study: Vec<MedicalStudy>,
-    ///<https://schema.org/recognizingAuthority>
-    #[serde(rename = "recognizingAuthority")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recognizing_authority: Vec<Organization>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<PhysicalActivityImageFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<PhysicalActivityMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<PhysicalActivityAdditionalTypeFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/associatedAnatomy>
-    #[serde(rename = "associatedAnatomy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub associated_anatomy: Vec<PhysicalActivityAssociatedAnatomyFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/pathophysiology>
-    #[serde(rename = "pathophysiology")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub pathophysiology: Vec<String>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/epidemiology>
-    #[serde(rename = "epidemiology")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub epidemiology: Vec<String>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<PhysicalActivityDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<PhysicalActivitySubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<PhysicalActivityAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<PhysicalActivityImageFieldEnum>,
 }

@@ -11,38 +11,40 @@ pub type HealthPlanCostSharingSpecificationAdditionalTypeFieldEnum = String;
 pub struct HealthPlanCostSharingSpecification {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/healthPlanCoinsuranceRate>
-    #[serde(rename = "healthPlanCoinsuranceRate")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub health_plan_coinsurance_rate: Vec<f32>,
-    ///<https://schema.org/healthPlanCopay>
-    #[serde(rename = "healthPlanCopay")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub health_plan_copay: Vec<PriceSpecification>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<HealthPlanCostSharingSpecificationSubjectOfFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<HealthPlanCostSharingSpecificationImageFieldEnum>,
     ///<https://schema.org/healthPlanCoinsuranceOption>
     #[serde(rename = "healthPlanCoinsuranceOption")]
     #[serde_as(as = "OneOrMany<_>")]
     pub health_plan_coinsurance_option: Vec<String>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
+    ///<https://schema.org/healthPlanCopay>
+    #[serde(rename = "healthPlanCopay")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<HealthPlanCostSharingSpecificationDescriptionFieldEnum>,
+    pub health_plan_copay: Vec<PriceSpecification>,
+    ///<https://schema.org/healthPlanCoinsuranceRate>
+    #[serde(rename = "healthPlanCoinsuranceRate")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub health_plan_coinsurance_rate: Vec<f32>,
+    ///<https://schema.org/healthPlanCopayOption>
+    #[serde(rename = "healthPlanCopayOption")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub health_plan_copay_option: Vec<String>,
+    ///<https://schema.org/healthPlanPharmacyCategory>
+    #[serde(rename = "healthPlanPharmacyCategory")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub health_plan_pharmacy_category: Vec<String>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<
+        HealthPlanCostSharingSpecificationMainEntityOfPageFieldEnum,
+    >,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -51,34 +53,32 @@ pub struct HealthPlanCostSharingSpecification {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<HealthPlanCostSharingSpecificationIdentifierFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<
-        HealthPlanCostSharingSpecificationMainEntityOfPageFieldEnum,
-    >,
-    ///<https://schema.org/healthPlanPharmacyCategory>
-    #[serde(rename = "healthPlanPharmacyCategory")]
+    pub description: Vec<HealthPlanCostSharingSpecificationDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub health_plan_pharmacy_category: Vec<String>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<HealthPlanCostSharingSpecificationAdditionalTypeFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
+    pub subject_of: Vec<HealthPlanCostSharingSpecificationSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
-    ///<https://schema.org/healthPlanCopayOption>
-    #[serde(rename = "healthPlanCopayOption")]
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub health_plan_copay_option: Vec<String>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
+    pub additional_type: Vec<HealthPlanCostSharingSpecificationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<HealthPlanCostSharingSpecificationImageFieldEnum>,
 }

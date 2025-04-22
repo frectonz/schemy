@@ -11,62 +11,66 @@ pub type ArteryAdditionalTypeFieldEnum = String;
 pub struct Artery {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
+    ///<https://schema.org/arterialBranch>
+    #[serde(rename = "arterialBranch")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/associatedPathophysiology>
-    #[serde(rename = "associatedPathophysiology")]
+    pub arterial_branch: Vec<AnatomicalStructure>,
+    ///<https://schema.org/supplyTo>
+    #[serde(rename = "supplyTo")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub associated_pathophysiology: Vec<String>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    pub supply_to: Vec<AnatomicalStructure>,
+    ///<https://schema.org/diagram>
+    #[serde(rename = "diagram")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/recognizingAuthority>
-    #[serde(rename = "recognizingAuthority")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recognizing_authority: Vec<Organization>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<ArteryAdditionalTypeFieldEnum>,
-    ///<https://schema.org/relatedCondition>
-    #[serde(rename = "relatedCondition")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub related_condition: Vec<MedicalCondition>,
+    pub diagram: Vec<ImageObject>,
     ///<https://schema.org/partOfSystem>
     #[serde(rename = "partOfSystem")]
     #[serde_as(as = "OneOrMany<_>")]
     pub part_of_system: Vec<AnatomicalSystem>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    ///<https://schema.org/connectedTo>
+    #[serde(rename = "connectedTo")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<ArteryMainEntityOfPageFieldEnum>,
+    pub connected_to: Vec<AnatomicalStructure>,
+    ///<https://schema.org/associatedPathophysiology>
+    #[serde(rename = "associatedPathophysiology")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub associated_pathophysiology: Vec<String>,
+    ///<https://schema.org/relatedCondition>
+    #[serde(rename = "relatedCondition")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub related_condition: Vec<MedicalCondition>,
+    ///<https://schema.org/relatedTherapy>
+    #[serde(rename = "relatedTherapy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub related_therapy: Vec<MedicalTherapy>,
+    ///<https://schema.org/subStructure>
+    #[serde(rename = "subStructure")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub sub_structure: Vec<AnatomicalStructure>,
+    ///<https://schema.org/bodyLocation>
+    #[serde(rename = "bodyLocation")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub body_location: Vec<String>,
+    ///<https://schema.org/legalStatus>
+    #[serde(rename = "legalStatus")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub legal_status: Vec<ArteryLegalStatusFieldEnum>,
     ///<https://schema.org/relevantSpecialty>
     #[serde(rename = "relevantSpecialty")]
     #[serde_as(as = "OneOrMany<_>")]
     pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<ArteryImageFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/recognizingAuthority>
+    #[serde(rename = "recognizingAuthority")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<ArterySubjectOfFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
+    pub recognizing_authority: Vec<Organization>,
+    ///<https://schema.org/medicineSystem>
+    #[serde(rename = "medicineSystem")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<ArteryIdentifierFieldEnum>,
+    pub medicine_system: Vec<MedicineSystemEnum>,
     ///<https://schema.org/guideline>
     #[serde(rename = "guideline")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -75,60 +79,56 @@ pub struct Artery {
     #[serde(rename = "study")]
     #[serde_as(as = "OneOrMany<_>")]
     pub study: Vec<MedicalStudy>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/supplyTo>
-    #[serde(rename = "supplyTo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub supply_to: Vec<AnatomicalStructure>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<ArteryDescriptionFieldEnum>,
-    ///<https://schema.org/connectedTo>
-    #[serde(rename = "connectedTo")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub connected_to: Vec<AnatomicalStructure>,
     ///<https://schema.org/code>
     #[serde(rename = "code")]
     #[serde_as(as = "OneOrMany<_>")]
     pub code: Vec<MedicalCode>,
-    ///<https://schema.org/relatedTherapy>
-    #[serde(rename = "relatedTherapy")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub related_therapy: Vec<MedicalTherapy>,
-    ///<https://schema.org/bodyLocation>
-    #[serde(rename = "bodyLocation")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub body_location: Vec<String>,
-    ///<https://schema.org/subStructure>
-    #[serde(rename = "subStructure")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub sub_structure: Vec<AnatomicalStructure>,
-    ///<https://schema.org/legalStatus>
-    #[serde(rename = "legalStatus")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub legal_status: Vec<ArteryLegalStatusFieldEnum>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/diagram>
-    #[serde(rename = "diagram")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub diagram: Vec<ImageObject>,
-    ///<https://schema.org/arterialBranch>
-    #[serde(rename = "arterialBranch")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub arterial_branch: Vec<AnatomicalStructure>,
-    ///<https://schema.org/medicineSystem>
-    #[serde(rename = "medicineSystem")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub medicine_system: Vec<MedicineSystemEnum>,
+    pub main_entity_of_page: Vec<ArteryMainEntityOfPageFieldEnum>,
     ///<https://schema.org/url>
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<ArteryIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<ArteryDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<ArterySubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<ArteryAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<ArteryImageFieldEnum>,
 }

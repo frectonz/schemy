@@ -7,14 +7,14 @@ use serde_with::{serde_as, OneOrMany};
 pub struct PronounceableText {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/inLanguage>
-    #[serde(rename = "inLanguage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub in_language: Vec<PronounceableTextInLanguageFieldEnum>,
     ///<https://schema.org/phoneticText>
     #[serde(rename = "phoneticText")]
     #[serde_as(as = "OneOrMany<_>")]
     pub phonetic_text: Vec<String>,
+    ///<https://schema.org/inLanguage>
+    #[serde(rename = "inLanguage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub in_language: Vec<PronounceableTextInLanguageFieldEnum>,
     ///<https://schema.org/speechToTextMarkup>
     #[serde(rename = "speechToTextMarkup")]
     #[serde_as(as = "OneOrMany<_>")]

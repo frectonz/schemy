@@ -11,18 +11,22 @@ pub type EducationalAudienceAdditionalTypeFieldEnum = String;
 pub struct EducationalAudience {
     #[serde(rename = "@context")]
     pub context: String,
+    ///<https://schema.org/educationalRole>
+    #[serde(rename = "educationalRole")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub educational_role: Vec<String>,
+    ///<https://schema.org/audienceType>
+    #[serde(rename = "audienceType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub audience_type: Vec<String>,
     ///<https://schema.org/geographicArea>
     #[serde(rename = "geographicArea")]
     #[serde_as(as = "OneOrMany<_>")]
     pub geographic_area: Vec<AdministrativeArea>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<EducationalAudienceIdentifierFieldEnum>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -31,26 +35,22 @@ pub struct EducationalAudience {
     #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
     pub url: Vec<String>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<EducationalAudienceImageFieldEnum>,
-    ///<https://schema.org/audienceType>
-    #[serde(rename = "audienceType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub audience_type: Vec<String>,
+    pub identifier: Vec<EducationalAudienceIdentifierFieldEnum>,
     ///<https://schema.org/description>
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<EducationalAudienceDescriptionFieldEnum>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
+    pub subject_of: Vec<EducationalAudienceSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -59,16 +59,16 @@ pub struct EducationalAudience {
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub additional_type: Vec<EducationalAudienceAdditionalTypeFieldEnum>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<EducationalAudienceSubjectOfFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/educationalRole>
-    #[serde(rename = "educationalRole")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub educational_role: Vec<String>,
+    pub image: Vec<EducationalAudienceImageFieldEnum>,
 }

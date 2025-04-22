@@ -19,74 +19,74 @@ pub type InteractionCounterAdditionalTypeFieldEnum = String;
 pub struct InteractionCounter {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<InteractionCounterDescriptionFieldEnum>,
-    ///<https://schema.org/userInteractionCount>
-    #[serde(rename = "userInteractionCount")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub user_interaction_count: Vec<i32>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<InteractionCounterIdentifierFieldEnum>,
-    ///<https://schema.org/interactionService>
-    #[serde(rename = "interactionService")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub interaction_service: Vec<InteractionCounterInteractionServiceFieldEnum>,
     ///<https://schema.org/startTime>
     #[serde(rename = "startTime")]
     #[serde_as(as = "OneOrMany<_>")]
     pub start_time: Vec<InteractionCounterStartTimeFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
     ///<https://schema.org/interactionType>
     #[serde(rename = "interactionType")]
     #[serde_as(as = "OneOrMany<_>")]
     pub interaction_type: Vec<Action>,
-    ///<https://schema.org/endTime>
-    #[serde(rename = "endTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub end_time: Vec<InteractionCounterEndTimeFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<InteractionCounterMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<InteractionCounterAdditionalTypeFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<InteractionCounterSubjectOfFieldEnum>,
     ///<https://schema.org/location>
     #[serde(rename = "location")]
     #[serde_as(as = "OneOrMany<_>")]
     pub location: Vec<InteractionCounterLocationFieldEnum>,
+    ///<https://schema.org/endTime>
+    #[serde(rename = "endTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub end_time: Vec<InteractionCounterEndTimeFieldEnum>,
+    ///<https://schema.org/interactionService>
+    #[serde(rename = "interactionService")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub interaction_service: Vec<InteractionCounterInteractionServiceFieldEnum>,
+    ///<https://schema.org/userInteractionCount>
+    #[serde(rename = "userInteractionCount")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub user_interaction_count: Vec<i32>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<InteractionCounterMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<InteractionCounterIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<InteractionCounterDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<InteractionCounterSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<InteractionCounterAdditionalTypeFieldEnum>,
     ///<https://schema.org/potentialAction>
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
     ///<https://schema.org/image>
     #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]

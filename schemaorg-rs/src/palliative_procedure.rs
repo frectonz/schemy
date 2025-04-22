@@ -11,78 +11,26 @@ pub type PalliativeProcedureAdditionalTypeFieldEnum = String;
 pub struct PalliativeProcedure {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/preparation>
-    #[serde(rename = "preparation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub preparation: Vec<PalliativeProcedurePreparationFieldEnum>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<PalliativeProcedureDescriptionFieldEnum>,
     ///<https://schema.org/howPerformed>
     #[serde(rename = "howPerformed")]
     #[serde_as(as = "OneOrMany<_>")]
     pub how_performed: Vec<String>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    ///<https://schema.org/followup>
+    #[serde(rename = "followup")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/contraindication>
-    #[serde(rename = "contraindication")]
+    pub followup: Vec<String>,
+    ///<https://schema.org/bodyLocation>
+    #[serde(rename = "bodyLocation")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub contraindication: Vec<PalliativeProcedureContraindicationFieldEnum>,
-    ///<https://schema.org/study>
-    #[serde(rename = "study")]
+    pub body_location: Vec<String>,
+    ///<https://schema.org/preparation>
+    #[serde(rename = "preparation")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub study: Vec<MedicalStudy>,
-    ///<https://schema.org/duplicateTherapy>
-    #[serde(rename = "duplicateTherapy")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub duplicate_therapy: Vec<MedicalTherapy>,
-    ///<https://schema.org/funding>
-    #[serde(rename = "funding")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub funding: Vec<Grant>,
-    ///<https://schema.org/drug>
-    #[serde(rename = "drug")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub drug: Vec<Drug>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/adverseOutcome>
-    #[serde(rename = "adverseOutcome")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub adverse_outcome: Vec<MedicalEntity>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<PalliativeProcedureAdditionalTypeFieldEnum>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
+    pub preparation: Vec<PalliativeProcedurePreparationFieldEnum>,
     ///<https://schema.org/status>
     #[serde(rename = "status")]
     #[serde_as(as = "OneOrMany<_>")]
     pub status: Vec<PalliativeProcedureStatusFieldEnum>,
-    ///<https://schema.org/doseSchedule>
-    #[serde(rename = "doseSchedule")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub dose_schedule: Vec<DoseSchedule>,
-    ///<https://schema.org/guideline>
-    #[serde(rename = "guideline")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub guideline: Vec<MedicalGuideline>,
     ///<https://schema.org/procedureType>
     #[serde(rename = "procedureType")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -91,52 +39,104 @@ pub struct PalliativeProcedure {
     #[serde(rename = "legalStatus")]
     #[serde_as(as = "OneOrMany<_>")]
     pub legal_status: Vec<PalliativeProcedureLegalStatusFieldEnum>,
-    ///<https://schema.org/recognizingAuthority>
-    #[serde(rename = "recognizingAuthority")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub recognizing_authority: Vec<Organization>,
-    ///<https://schema.org/disambiguatingDescription>
-    #[serde(rename = "disambiguatingDescription")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub disambiguating_description: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<PalliativeProcedureSubjectOfFieldEnum>,
-    ///<https://schema.org/seriousAdverseOutcome>
-    #[serde(rename = "seriousAdverseOutcome")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub serious_adverse_outcome: Vec<MedicalEntity>,
     ///<https://schema.org/relevantSpecialty>
     #[serde(rename = "relevantSpecialty")]
     #[serde_as(as = "OneOrMany<_>")]
     pub relevant_specialty: Vec<MedicalSpecialtyEnum>,
-    ///<https://schema.org/code>
-    #[serde(rename = "code")]
+    ///<https://schema.org/funding>
+    #[serde(rename = "funding")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub code: Vec<MedicalCode>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    pub funding: Vec<Grant>,
+    ///<https://schema.org/recognizingAuthority>
+    #[serde(rename = "recognizingAuthority")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<PalliativeProcedureMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<PalliativeProcedureImageFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<PalliativeProcedureIdentifierFieldEnum>,
+    pub recognizing_authority: Vec<Organization>,
     ///<https://schema.org/medicineSystem>
     #[serde(rename = "medicineSystem")]
     #[serde_as(as = "OneOrMany<_>")]
     pub medicine_system: Vec<MedicineSystemEnum>,
-    ///<https://schema.org/bodyLocation>
-    #[serde(rename = "bodyLocation")]
+    ///<https://schema.org/guideline>
+    #[serde(rename = "guideline")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub body_location: Vec<String>,
-    ///<https://schema.org/followup>
-    #[serde(rename = "followup")]
+    pub guideline: Vec<MedicalGuideline>,
+    ///<https://schema.org/study>
+    #[serde(rename = "study")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub followup: Vec<String>,
+    pub study: Vec<MedicalStudy>,
+    ///<https://schema.org/code>
+    #[serde(rename = "code")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub code: Vec<MedicalCode>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<PalliativeProcedureMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
+    ///<https://schema.org/disambiguatingDescription>
+    #[serde(rename = "disambiguatingDescription")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<PalliativeProcedureIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<PalliativeProcedureDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<PalliativeProcedureSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<PalliativeProcedureAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<PalliativeProcedureImageFieldEnum>,
+    ///<https://schema.org/contraindication>
+    #[serde(rename = "contraindication")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub contraindication: Vec<PalliativeProcedureContraindicationFieldEnum>,
+    ///<https://schema.org/seriousAdverseOutcome>
+    #[serde(rename = "seriousAdverseOutcome")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub serious_adverse_outcome: Vec<MedicalEntity>,
+    ///<https://schema.org/duplicateTherapy>
+    #[serde(rename = "duplicateTherapy")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub duplicate_therapy: Vec<MedicalTherapy>,
+    ///<https://schema.org/adverseOutcome>
+    #[serde(rename = "adverseOutcome")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub adverse_outcome: Vec<MedicalEntity>,
+    ///<https://schema.org/drug>
+    #[serde(rename = "drug")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub drug: Vec<Drug>,
+    ///<https://schema.org/doseSchedule>
+    #[serde(rename = "doseSchedule")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub dose_schedule: Vec<DoseSchedule>,
 }

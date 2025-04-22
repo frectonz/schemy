@@ -11,82 +11,62 @@ pub type RentalCarReservationAdditionalTypeFieldEnum = String;
 pub struct RentalCarReservation {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/provider>
-    #[serde(rename = "provider")]
+    ///<https://schema.org/dropoffTime>
+    #[serde(rename = "dropoffTime")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub provider: Vec<RentalCarReservationProviderFieldEnum>,
-    ///<https://schema.org/reservedTicket>
-    #[serde(rename = "reservedTicket")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub reserved_ticket: Vec<Ticket>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<RentalCarReservationDescriptionFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/dropoffLocation>
-    #[serde(rename = "dropoffLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub dropoff_location: Vec<Place>,
-    ///<https://schema.org/modifiedTime>
-    #[serde(rename = "modifiedTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub modified_time: Vec<String>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/potentialAction>
-    #[serde(rename = "potentialAction")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub potential_action: Vec<Action>,
-    ///<https://schema.org/programMembershipUsed>
-    #[serde(rename = "programMembershipUsed")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub program_membership_used: Vec<ProgramMembership>,
-    ///<https://schema.org/reservationId>
-    #[serde(rename = "reservationId")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub reservation_id: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<RentalCarReservationSubjectOfFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
-    ///<https://schema.org/priceCurrency>
-    #[serde(rename = "priceCurrency")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub price_currency: Vec<String>,
-    ///<https://schema.org/pickupLocation>
-    #[serde(rename = "pickupLocation")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub pickup_location: Vec<Place>,
+    pub dropoff_time: Vec<String>,
     ///<https://schema.org/pickupTime>
     #[serde(rename = "pickupTime")]
     #[serde_as(as = "OneOrMany<_>")]
     pub pickup_time: Vec<String>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
+    ///<https://schema.org/dropoffLocation>
+    #[serde(rename = "dropoffLocation")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<RentalCarReservationAdditionalTypeFieldEnum>,
-    ///<https://schema.org/bookingAgent>
-    #[serde(rename = "bookingAgent")]
+    pub dropoff_location: Vec<Place>,
+    ///<https://schema.org/pickupLocation>
+    #[serde(rename = "pickupLocation")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub booking_agent: Vec<RentalCarReservationBookingAgentFieldEnum>,
+    pub pickup_location: Vec<Place>,
+    ///<https://schema.org/provider>
+    #[serde(rename = "provider")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub provider: Vec<RentalCarReservationProviderFieldEnum>,
+    ///<https://schema.org/programMembershipUsed>
+    #[serde(rename = "programMembershipUsed")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub program_membership_used: Vec<ProgramMembership>,
+    ///<https://schema.org/totalPrice>
+    #[serde(rename = "totalPrice")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub total_price: Vec<RentalCarReservationTotalPriceFieldEnum>,
     ///<https://schema.org/broker>
     #[serde(rename = "broker")]
     #[serde_as(as = "OneOrMany<_>")]
     pub broker: Vec<RentalCarReservationBrokerFieldEnum>,
+    ///<https://schema.org/reservationStatus>
+    #[serde(rename = "reservationStatus")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub reservation_status: Vec<ReservationStatusTypeEnum>,
+    ///<https://schema.org/reservationId>
+    #[serde(rename = "reservationId")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub reservation_id: Vec<String>,
     ///<https://schema.org/bookingTime>
     #[serde(rename = "bookingTime")]
     #[serde_as(as = "OneOrMany<_>")]
     pub booking_time: Vec<String>,
+    ///<https://schema.org/modifiedTime>
+    #[serde(rename = "modifiedTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub modified_time: Vec<String>,
+    ///<https://schema.org/priceCurrency>
+    #[serde(rename = "priceCurrency")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub price_currency: Vec<String>,
+    ///<https://schema.org/bookingAgent>
+    #[serde(rename = "bookingAgent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub booking_agent: Vec<RentalCarReservationBookingAgentFieldEnum>,
     ///<https://schema.org/reservationFor>
     #[serde(rename = "reservationFor")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -95,36 +75,56 @@ pub struct RentalCarReservation {
     #[serde(rename = "underName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub under_name: Vec<RentalCarReservationUnderNameFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
+    ///<https://schema.org/reservedTicket>
+    #[serde(rename = "reservedTicket")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
-    ///<https://schema.org/reservationStatus>
-    #[serde(rename = "reservationStatus")]
+    pub reserved_ticket: Vec<Ticket>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub reservation_status: Vec<ReservationStatusTypeEnum>,
-    ///<https://schema.org/totalPrice>
-    #[serde(rename = "totalPrice")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub total_price: Vec<RentalCarReservationTotalPriceFieldEnum>,
-    ///<https://schema.org/identifier>
-    #[serde(rename = "identifier")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub identifier: Vec<RentalCarReservationIdentifierFieldEnum>,
+    pub name: Vec<String>,
     ///<https://schema.org/mainEntityOfPage>
     #[serde(rename = "mainEntityOfPage")]
     #[serde_as(as = "OneOrMany<_>")]
     pub main_entity_of_page: Vec<RentalCarReservationMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/dropoffTime>
-    #[serde(rename = "dropoffTime")]
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub dropoff_time: Vec<String>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<RentalCarReservationImageFieldEnum>,
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
     pub disambiguating_description: Vec<String>,
+    ///<https://schema.org/identifier>
+    #[serde(rename = "identifier")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub identifier: Vec<RentalCarReservationIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<RentalCarReservationDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<RentalCarReservationSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<RentalCarReservationAdditionalTypeFieldEnum>,
+    ///<https://schema.org/potentialAction>
+    #[serde(rename = "potentialAction")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub potential_action: Vec<Action>,
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub image: Vec<RentalCarReservationImageFieldEnum>,
 }

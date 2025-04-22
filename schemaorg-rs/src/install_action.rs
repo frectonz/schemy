@@ -1,13 +1,13 @@
 use crate::*;
 use serde_with::{serde_as, OneOrMany};
-///<https://schema.org/endTime>
-///<https://schema.org/DateTime>
-///<https://schema.org/Time>
-pub type InstallActionEndTimeFieldEnum = String;
 ///<https://schema.org/startTime>
 ///<https://schema.org/DateTime>
 ///<https://schema.org/Time>
 pub type InstallActionStartTimeFieldEnum = String;
+///<https://schema.org/endTime>
+///<https://schema.org/DateTime>
+///<https://schema.org/Time>
+pub type InstallActionEndTimeFieldEnum = String;
 ///<https://schema.org/additionalType>
 ///<https://schema.org/Text>
 ///<https://schema.org/URL>
@@ -19,14 +19,10 @@ pub type InstallActionAdditionalTypeFieldEnum = String;
 pub struct InstallAction {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    ///<https://schema.org/expectsAcceptanceOf>
+    #[serde(rename = "expectsAcceptanceOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<InstallActionSubjectOfFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub expects_acceptance_of: Vec<Offer>,
     ///<https://schema.org/actionAccessibilityRequirement>
     #[serde(rename = "actionAccessibilityRequirement")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -35,50 +31,66 @@ pub struct InstallAction {
     #[serde(rename = "provider")]
     #[serde_as(as = "OneOrMany<_>")]
     pub provider: Vec<InstallActionProviderFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<InstallActionImageFieldEnum>,
-    ///<https://schema.org/description>
-    #[serde(rename = "description")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub description: Vec<InstallActionDescriptionFieldEnum>,
-    ///<https://schema.org/instrument>
-    #[serde(rename = "instrument")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub instrument: Vec<Thing>,
-    ///<https://schema.org/name>
-    #[serde(rename = "name")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub name: Vec<String>,
-    ///<https://schema.org/location>
-    #[serde(rename = "location")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub location: Vec<InstallActionLocationFieldEnum>,
-    ///<https://schema.org/alternateName>
-    #[serde(rename = "alternateName")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub alternate_name: Vec<String>,
-    ///<https://schema.org/endTime>
-    #[serde(rename = "endTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub end_time: Vec<InstallActionEndTimeFieldEnum>,
-    ///<https://schema.org/result>
-    #[serde(rename = "result")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub result: Vec<Thing>,
-    ///<https://schema.org/startTime>
-    #[serde(rename = "startTime")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub start_time: Vec<InstallActionStartTimeFieldEnum>,
-    ///<https://schema.org/error>
-    #[serde(rename = "error")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub error: Vec<Thing>,
     ///<https://schema.org/actionProcess>
     #[serde(rename = "actionProcess")]
     #[serde_as(as = "OneOrMany<_>")]
     pub action_process: Vec<HowTo>,
+    ///<https://schema.org/startTime>
+    #[serde(rename = "startTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub start_time: Vec<InstallActionStartTimeFieldEnum>,
+    ///<https://schema.org/actionStatus>
+    #[serde(rename = "actionStatus")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub action_status: Vec<ActionStatusTypeEnum>,
+    ///<https://schema.org/object>
+    #[serde(rename = "object")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub object: Vec<Thing>,
+    ///<https://schema.org/error>
+    #[serde(rename = "error")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub error: Vec<Thing>,
+    ///<https://schema.org/location>
+    #[serde(rename = "location")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub location: Vec<InstallActionLocationFieldEnum>,
+    ///<https://schema.org/agent>
+    #[serde(rename = "agent")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub agent: Vec<InstallActionAgentFieldEnum>,
+    ///<https://schema.org/result>
+    #[serde(rename = "result")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub result: Vec<Thing>,
+    ///<https://schema.org/target>
+    #[serde(rename = "target")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub target: Vec<InstallActionTargetFieldEnum>,
+    ///<https://schema.org/endTime>
+    #[serde(rename = "endTime")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub end_time: Vec<InstallActionEndTimeFieldEnum>,
+    ///<https://schema.org/instrument>
+    #[serde(rename = "instrument")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub instrument: Vec<Thing>,
+    ///<https://schema.org/participant>
+    #[serde(rename = "participant")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub participant: Vec<InstallActionParticipantFieldEnum>,
+    ///<https://schema.org/name>
+    #[serde(rename = "name")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<InstallActionMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -87,6 +99,18 @@ pub struct InstallAction {
     #[serde(rename = "identifier")]
     #[serde_as(as = "OneOrMany<_>")]
     pub identifier: Vec<InstallActionIdentifierFieldEnum>,
+    ///<https://schema.org/description>
+    #[serde(rename = "description")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub description: Vec<InstallActionDescriptionFieldEnum>,
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub subject_of: Vec<InstallActionSubjectOfFieldEnum>,
+    ///<https://schema.org/alternateName>
+    #[serde(rename = "alternateName")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub alternate_name: Vec<String>,
     ///<https://schema.org/additionalType>
     #[serde(rename = "additionalType")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -95,36 +119,12 @@ pub struct InstallAction {
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
-    ///<https://schema.org/expectsAcceptanceOf>
-    #[serde(rename = "expectsAcceptanceOf")]
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub expects_acceptance_of: Vec<Offer>,
-    ///<https://schema.org/object>
-    #[serde(rename = "object")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub object: Vec<Thing>,
-    ///<https://schema.org/target>
-    #[serde(rename = "target")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub target: Vec<InstallActionTargetFieldEnum>,
-    ///<https://schema.org/participant>
-    #[serde(rename = "participant")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub participant: Vec<InstallActionParticipantFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<InstallActionMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/actionStatus>
-    #[serde(rename = "actionStatus")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub action_status: Vec<ActionStatusTypeEnum>,
-    ///<https://schema.org/agent>
-    #[serde(rename = "agent")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub agent: Vec<InstallActionAgentFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
+    pub image: Vec<InstallActionImageFieldEnum>,
 }

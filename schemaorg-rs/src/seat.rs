@@ -11,34 +11,34 @@ pub type SeatAdditionalTypeFieldEnum = String;
 pub struct Seat {
     #[serde(rename = "@context")]
     pub context: String,
-    ///<https://schema.org/seatRow>
-    #[serde(rename = "seatRow")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub seat_row: Vec<String>,
     ///<https://schema.org/seatNumber>
     #[serde(rename = "seatNumber")]
     #[serde_as(as = "OneOrMany<_>")]
     pub seat_number: Vec<String>,
-    ///<https://schema.org/subjectOf>
-    #[serde(rename = "subjectOf")]
+    ///<https://schema.org/seatRow>
+    #[serde(rename = "seatRow")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub subject_of: Vec<SeatSubjectOfFieldEnum>,
-    ///<https://schema.org/mainEntityOfPage>
-    #[serde(rename = "mainEntityOfPage")]
+    pub seat_row: Vec<String>,
+    ///<https://schema.org/seatSection>
+    #[serde(rename = "seatSection")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub main_entity_of_page: Vec<SeatMainEntityOfPageFieldEnum>,
-    ///<https://schema.org/image>
-    #[serde(rename = "image")]
+    pub seat_section: Vec<String>,
+    ///<https://schema.org/seatingType>
+    #[serde(rename = "seatingType")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub image: Vec<SeatImageFieldEnum>,
-    ///<https://schema.org/sameAs>
-    #[serde(rename = "sameAs")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub same_as: Vec<String>,
+    pub seating_type: Vec<SeatSeatingTypeFieldEnum>,
     ///<https://schema.org/name>
     #[serde(rename = "name")]
     #[serde_as(as = "OneOrMany<_>")]
     pub name: Vec<String>,
+    ///<https://schema.org/mainEntityOfPage>
+    #[serde(rename = "mainEntityOfPage")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub main_entity_of_page: Vec<SeatMainEntityOfPageFieldEnum>,
+    ///<https://schema.org/url>
+    #[serde(rename = "url")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub url: Vec<String>,
     ///<https://schema.org/disambiguatingDescription>
     #[serde(rename = "disambiguatingDescription")]
     #[serde_as(as = "OneOrMany<_>")]
@@ -51,28 +51,28 @@ pub struct Seat {
     #[serde(rename = "description")]
     #[serde_as(as = "OneOrMany<_>")]
     pub description: Vec<SeatDescriptionFieldEnum>,
-    ///<https://schema.org/additionalType>
-    #[serde(rename = "additionalType")]
+    ///<https://schema.org/subjectOf>
+    #[serde(rename = "subjectOf")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub additional_type: Vec<SeatAdditionalTypeFieldEnum>,
-    ///<https://schema.org/seatSection>
-    #[serde(rename = "seatSection")]
-    #[serde_as(as = "OneOrMany<_>")]
-    pub seat_section: Vec<String>,
+    pub subject_of: Vec<SeatSubjectOfFieldEnum>,
     ///<https://schema.org/alternateName>
     #[serde(rename = "alternateName")]
     #[serde_as(as = "OneOrMany<_>")]
     pub alternate_name: Vec<String>,
+    ///<https://schema.org/additionalType>
+    #[serde(rename = "additionalType")]
+    #[serde_as(as = "OneOrMany<_>")]
+    pub additional_type: Vec<SeatAdditionalTypeFieldEnum>,
     ///<https://schema.org/potentialAction>
     #[serde(rename = "potentialAction")]
     #[serde_as(as = "OneOrMany<_>")]
     pub potential_action: Vec<Action>,
-    ///<https://schema.org/seatingType>
-    #[serde(rename = "seatingType")]
+    ///<https://schema.org/sameAs>
+    #[serde(rename = "sameAs")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub seating_type: Vec<SeatSeatingTypeFieldEnum>,
-    ///<https://schema.org/url>
-    #[serde(rename = "url")]
+    pub same_as: Vec<String>,
+    ///<https://schema.org/image>
+    #[serde(rename = "image")]
     #[serde_as(as = "OneOrMany<_>")]
-    pub url: Vec<String>,
+    pub image: Vec<SeatImageFieldEnum>,
 }
