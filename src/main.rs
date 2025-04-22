@@ -586,6 +586,7 @@ impl SchemaDefinitions {
                     #property_comment
                     #property_rename
                     #[serde_as(as = "OneOrMany<_>")]
+                    #[serde(default)]
                     pub #property_name: Vec<#property_type>
                 }
             });
