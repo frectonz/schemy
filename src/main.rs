@@ -500,7 +500,8 @@ impl SchemaDefinitions {
 
             quote! {
                 #enum_comment
-                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                #[derive(Debug, serde::Deserialize)]
+                #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
                 #[serde(untagged)]
                 pub enum #enum_name {
                     #(#variant_defs),*
@@ -693,7 +694,8 @@ impl SchemaDefinitions {
 
                     #class_comments
                     #[serde_as]
-                    #[derive(Debug, serde::Deserialize, uniffi::Record)]
+                    #[derive(Debug, serde::Deserialize)]
+                    #[cfg_attr(feature = "uniffi", derive(uniffi::Record))]
                     pub struct #class_name {
                         #[serde(rename = "@context")]
                         pub context: String,
@@ -716,7 +718,8 @@ impl SchemaDefinitions {
             });
 
             quote! {
-                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                #[derive(Debug, serde::Deserialize)]
+                #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
                 #[serde(untagged)]
                 pub enum #combined_name {
                     #(#variants),*
@@ -754,7 +757,8 @@ impl SchemaDefinitions {
             });
 
             quote! {
-                #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+                #[derive(Debug, serde::Deserialize)]
+                #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
                 #[serde(tag = "@type")]
                 pub enum #group_name {
                     #(#variant_defs),*
@@ -775,7 +779,8 @@ impl SchemaDefinitions {
             #(#group_variant_defs)*
 
             /// All schema.org types
-            #[derive(Debug, serde::Deserialize, uniffi::Enum)]
+            #[derive(Debug, serde::Deserialize)]
+            #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
             #[serde(untagged)]
             pub enum SchemaOrg {
                 #(#group_defs),*
@@ -795,13 +800,11 @@ fn write_to_file(path: &str, tokens: TokenStream) -> Result<()> {
 
 fn main() -> Result<()> {
     let mut logger = pretty_env_logger::formatted_timed_builder();
-
     if let Ok(s) = ::std::env::var("RUST_LOG") {
         logger.parse_filters(&s);
     } else {
         logger.filter_level(log::LevelFilter::Info);
     }
-
     logger.init();
 
     let definitions = SchemaDefinitions::read("schema/schemaorg-current-https.jsonld")?;
@@ -857,6 +860,7 @@ fn main() -> Result<()> {
     write_to_file(
         "schemy-test/src/lib.rs",
         quote! {
+            #[cfg(feature = "uniffi")]
             uniffi::setup_scaffolding!();
 
             mod field;
