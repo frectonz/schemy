@@ -803,7 +803,7 @@ fn main() -> Result<()> {
         args.field_enums_file(),
         format!(
             "
-import * as all from './index';
+import type * as all from './index';
 
 {field_enums}"
         ),
@@ -817,7 +817,7 @@ import * as all from './index';
             args.type_file(&typ_name.to_string()),
             format!(
                 "
-import * as all from './index';
+import type * as all from './index';
 
 {typ}"
             ),
@@ -834,7 +834,7 @@ import * as all from './index';
         args.all_file(),
         format!(
             "
-import * as all from './index';
+import type * as all from './index';
 
 {all_types}"
         ),
