@@ -629,10 +629,6 @@ export enum {enum_name} {{
                             if all_the_same {
                                 let (_, _, variant_type) = variant_defs.first().unwrap().clone();
 
-                                let variant_comments = variant_defs
-                                    .into_iter()
-                                    .map(|(variant_comment, _, _)| variant_comment);
-
                                 Some(format!(
                                     "
 {property_comment}
@@ -657,14 +653,6 @@ export type {enum_name} = {variant_type};"
                                 let variant_defs = type_to_names
                                     .into_iter()
                                     .map(|(_, variants)| {
-                                        let comments = variants.iter().map(|(c, _, _)| c);
-
-                                        let combined_name = variants
-                                            .iter()
-                                            .map(|(_, name, _)| name.to_string())
-                                            .collect::<Vec<_>>()
-                                            .join("Or");
-
                                         let (_, _, ty) = variants.first().unwrap();
 
                                         format!("| {ty}")
