@@ -42,6 +42,11 @@
             pkgs.cargo-expand
             pkgs.rust-analyzer
             pkgs.rust-bin.stable.latest.default
+
+            pkgs.nodejs
+            pkgs.nodePackages.pnpm
+            pkgs.nodePackages.typescript
+            pkgs.nodePackages.typescript-language-server
           ];
         };
       });
