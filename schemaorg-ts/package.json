@@ -1,6 +1,6 @@
 {
   "name": "schemaorg-ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generated TypeScript types from Schema.org JSON-LD vocabulary.",
   "license": "MIT",
   "author": "frectonz",
