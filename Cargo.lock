@@ -463,11 +463,8 @@ dependencies = [
  "log",
  "pretty_env_logger",
  "prettyplease",
- "proc-macro2",
- "quote",
  "serde",
  "serde_json",
- "syn",
 ]
 
 [[package]]
