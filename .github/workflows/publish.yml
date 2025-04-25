@@ -21,4 +21,7 @@ jobs:
       run: nix flake check
 
     - name: Publish Schemy
-      run: cargo publish
+      run: cargo publish -p schemy
+
+    - name: Publish Schemy TS
+      run: cargo publish -p schemy-ts
