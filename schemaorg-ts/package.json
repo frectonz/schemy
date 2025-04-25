@@ -1,0 +1,28 @@
+{
+  "name": "schemaorg-ts",
+  "version": "0.1.0",
+  "description": "Generated TypeScript types from Schema.org JSON-LD vocabulary.",
+  "license": "MIT",
+  "author": "frectonz",
+  "files": ["dist"],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "release": "pnpm run build && changeset publish",
+    "typecheck": "tsc",
+    "lint": "biome lint .",
+    "format": "biome format . --write"
+  },
+  "keywords": ["schemaorg", "types", "type-definition"],
+  "packageManager": "pnpm@10.8.0",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
