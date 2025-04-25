@@ -138,9 +138,9 @@ pub struct Item {
 }
 
 mod string_helpers {
-    use std::{borrow::Cow, collections::HashSet, sync::LazyLock};
+    use std::borrow::Cow;
 
-    use log::{info, trace};
+    use log::trace;
 
     pub fn capitalize(s: Cow<'_, str>) -> Cow<'_, str> {
         trace!("Capitalizing {s}");
@@ -207,30 +207,6 @@ mod string_helpers {
             Cow::Owned(result)
         }
     }
-
-    static KEYWORD_SET: LazyLock<HashSet<&'static str>> = LazyLock::new(|| {
-        info!("Initializing KEYWORD_SET");
-        [
-            "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn",
-            "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref",
-            "return", "self", "Self", "static", "struct", "super", "trait", "true", "type",
-            "unsafe", "use", "where", "while", "async", "await", "dyn", "abstract", "become",
-            "box", "do", "final", "macro", "override", "priv", "try", "typeof", "unsized",
-            "virtual", "yield",
-        ]
-        .into_iter()
-        .collect()
-    });
-
-    pub fn escape_if_keyword(s: Cow<'_, str>) -> Cow<'_, str> {
-        trace!("Checking if {s} is a keyword");
-        if KEYWORD_SET.contains(s.as_ref()) {
-            let escaped_string = format!("_{}", s);
-            Cow::Owned(escaped_string)
-        } else {
-            s
-        }
-    }
 }
 
 use string_helpers::*;
@@ -242,7 +218,6 @@ impl Item {
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
-        let name = escape_if_keyword(name);
 
         name
     }
@@ -253,7 +228,6 @@ impl Item {
         let name = self.label.value();
         let name = Cow::Borrowed(name);
         let name = replace_leading_digit_with_word(name);
-        let name = escape_if_keyword(name);
         let name = format!("{name}Enum");
         let name = Cow::Owned(name);
 
@@ -268,7 +242,6 @@ impl Item {
         let name = replace_leading_digit_with_word(name);
         let name = name.to_snake_case();
         let name = Cow::Owned(name);
-        let name = escape_if_keyword(name);
 
         name
     }
