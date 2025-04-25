@@ -23,3 +23,9 @@ jobs:
 
       - name: Run Schemy Clippy
         run: nix develop -c cargo clippy
+
+      - name: Run schemaorg-ts typecheck
+        run: cd schemaorg-ts && nix develop -c pnpm typecheck
+
+      - name: Run schemaorg-ts lint
+        run: cd schemaorg-ts && nix develop -c pnpm lint
