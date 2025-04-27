@@ -50,6 +50,136 @@ impl ItemRef {
             ItemRef::List(items) => items.iter().any(|item| item.item_id.as_ref() == item_ref),
         }
     }
+
+    pub fn variants(&self, schema: &SchemaDefinitions) -> Option<Vec<Variant>> {
+        let ItemRef::List(item_ids) = self else {
+            return None;
+        };
+
+        let variants: Vec<Variant> = item_ids
+            .into_iter()
+            .sorted_by_key(|item| &item.item_id)
+            .map(|item| {
+                let item = schema.types.get(&item.item_id).unwrap();
+
+                let variant_name = schema.name_ident(&item.id).unwrap();
+                let variant_comment = item.doc_comment();
+                let variant_type = match basic_type_to_rust(&item.id.item_id) {
+                    Some(basic_type) => basic_type,
+                    None => quote! { #variant_name },
+                };
+
+                Variant {
+                    name: variant_name,
+                    comment: variant_comment,
+                    typ: variant_type,
+                }
+            })
+            .collect();
+
+        Some(variants)
+    }
+}
+
+pub struct Variant {
+    name: TokenStream,
+    comment: TokenStream,
+    typ: TokenStream,
+}
+
+impl PartialEq for Variant {
+    fn eq(&self, other: &Self) -> bool {
+        self.typ.to_string() == other.typ.to_string()
+    }
+}
+
+fn group_variant_by_type(variant_defs: Vec<Variant>) -> IndexMap<String, Vec<Variant>> {
+    let mut type_to_variants: IndexMap<String, Vec<Variant>> = IndexMap::new();
+
+    for variant in variant_defs {
+        let typ = variant.typ.to_string();
+        if let Some(vec) = type_to_variants.get_mut(&typ) {
+            vec.push(variant);
+        } else {
+            type_to_variants.insert(typ, vec![variant]);
+        }
+    }
+
+    type_to_variants
+}
+
+pub struct Enum {
+    name: TokenStream,
+    comment: TokenStream,
+    variants: Vec<TokenStream>,
+}
+
+struct FieldEnums {
+    map: IndexMap<String, Vec<Enum>>,
+}
+
+impl FieldEnums {
+    fn new() -> Self {
+        Self {
+            map: IndexMap::new(),
+        }
+    }
+
+    fn add_enum(&mut self, e: Enum) {
+        let key = e.variants.iter().map(|x| x.to_string()).join(",");
+
+        if let Some(enums) = self.map.get_mut(&key) {
+            enums.push(e);
+        } else {
+            self.map.insert(key, vec![e]);
+        }
+    }
+
+    fn render(self) -> TokenStream {
+        let all_field_enums = self.map.into_values().enumerate().map(|(i, enums)| {
+            let field_name = format_ident!("FieldEnum{i}");
+            let variants = enums.first().unwrap().variants.as_slice();
+
+            let enum_types = enums.iter().map(|e| {
+                let enum_comment = &e.comment;
+                let enum_name = &e.name;
+
+                quote! {
+                    #enum_comment
+                    pub type #enum_name = #field_name;
+                }
+            });
+
+            quote! {
+                #[derive(Debug, serde::Deserialize)]
+                #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
+                #[serde(untagged)]
+                pub enum #field_name {
+                    #(#variants),*
+                }
+
+                #(#enum_types)*
+            }
+        });
+
+        let all_field_enums = quote! {
+            #(#all_field_enums)*
+        };
+
+        all_field_enums
+    }
+}
+
+fn render_variant_group(variants: Vec<Variant>) -> TokenStream {
+    let variant_type = &variants.first().unwrap().typ;
+    let variant_name = variants.iter().map(|v| v.name.to_string()).join("Or");
+    let variant_name = Ident::new(&variant_name, Span::call_site());
+    let comments = variants.iter().map(|v| &v.comment);
+
+    quote! {
+        #(#comments)*
+        #variant_name(#variant_type)
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -309,7 +439,7 @@ impl Item {
         let property_name = self.label.value();
 
         match range_includes {
-            ItemRef::Single(item_id) => schema.type_ident(&item_id).unwrap(),
+            ItemRef::Single(item_id) => schema.type_ident(item_id).unwrap(),
             ItemRef::List(_) => field_enum_name(&type_name, property_name),
         }
     }
@@ -361,7 +491,7 @@ where
     }
 }
 
-struct SchemaDefinitions {
+pub struct SchemaDefinitions {
     types: IndexMap<Str, Item>,
     properties: IndexMap<Str, Item>,
     enumerations: IndexMap<Str, Vec<Arc<Item>>>,
@@ -381,7 +511,7 @@ impl ResolvedType {
             let property_name = property.snake_case_ident();
             let property_comment = property.doc_comment();
             let property_rename = property.rename_annotaion();
-            let property_type = property.property_type(&schema, class_item);
+            let property_type = property.property_type(schema, class_item);
 
             quote! {
                 #property_comment
@@ -411,6 +541,16 @@ impl ResolvedPropertyType {
             ResolvedPropertyType::Aliased(items) => items.first().unwrap(),
         }
     }
+}
+
+struct TypeModule {
+    name: Ident,
+    content: TokenStream,
+}
+
+struct TypesModuleResult {
+    type_modules: Vec<TypeModule>,
+    field_enums: TokenStream,
 }
 
 impl SchemaDefinitions {
@@ -469,7 +609,7 @@ impl SchemaDefinitions {
         let mut resolved_props: IndexMap<Str, IndexSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
-            if basic_type_to_rust(&type_id).is_some() {
+            if basic_type_to_rust(type_id).is_some() {
                 continue;
             }
 
@@ -593,14 +733,10 @@ impl SchemaDefinitions {
         class_name
     }
 
-    fn types_module(&self) -> (Vec<(Ident, TokenStream)>, TokenStream) {
+    fn types_module(&self) -> TypesModuleResult {
         let resolved = self.resolve_properties();
 
-        let mut all_field_enums: IndexMap<
-            String,
-            Vec<(TokenStream, TokenStream, Vec<TokenStream>)>,
-        > = IndexMap::new();
-
+        let mut field_enums = FieldEnums::new();
         let mut types = Vec::new();
 
         for class in resolved {
@@ -610,109 +746,16 @@ impl SchemaDefinitions {
             let class_comments = class_item.doc_comment();
             let class_module_name = class_item.snake_case_ident();
 
-            let field_defs = class.property_defs(self, &class_item);
+            let field_defs = class.property_defs(self, class_item);
 
-            let range_enums = class.properties.iter().filter_map(|item| {
-                let property = self.properties.get(item.first()).unwrap();
+            let range_enums = class
+                .properties
+                .iter()
+                .filter_map(|item| self.range_enum_property(&mut field_enums, &class_name, item));
 
-                let property_comment = property.doc_comment();
-                let range_includes = property.range_includes.as_ref().unwrap();
-
-                match range_includes {
-                    ItemRef::Single(_) => None,
-                    ItemRef::List(item_ids) => {
-                        let enum_name =
-                            field_enum_name(&class_name.to_string(), property.label.value());
-
-                        let variant_defs: Vec<_> = item_ids
-                            .into_iter()
-                            .sorted_by_key(|item| item.item_id.clone())
-                            .map(|item| {
-                                let item = self.types.get(&item.item_id).unwrap();
-
-                                let variant_name = self.name_ident(&item.id).unwrap();
-                                let variant_type = match basic_type_to_rust(&item.id.item_id) {
-                                    Some(basic_type) => basic_type,
-                                    None => quote! { #variant_name },
-                                };
-
-                                let variant_comment = item.doc_comment();
-
-                                (variant_comment, variant_name, variant_type)
-                            })
-                            .collect();
-
-                        let all_the_same =
-                            all_equal(variant_defs.iter().map(|(_, _, typ)| typ.to_string()));
-
-                        if all_the_same {
-                            let (_, _, variant_type) = variant_defs.first().unwrap().clone();
-
-                            let variant_comments = variant_defs
-                                .into_iter()
-                                .map(|(variant_comment, _, _)| variant_comment);
-
-                            Some(quote! {
-                                #property_comment
-                                #(#variant_comments)*
-                                pub type #enum_name = #variant_type;
-                            })
-                        } else {
-                            let mut type_to_names: IndexMap<
-                                String,
-                                Vec<(TokenStream, TokenStream, TokenStream)>,
-                            > = IndexMap::new();
-
-                            for (comment, name, ty) in variant_defs {
-                                let typ = ty.to_string();
-                                if let Some(vec) = type_to_names.get_mut(&typ) {
-                                    vec.push((comment, name, ty));
-                                } else {
-                                    type_to_names.insert(typ, vec![(comment, name, ty)]);
-                                }
-                            }
-
-                            let variant_defs = type_to_names
-                                .into_iter()
-                                .map(|(_, variants)| {
-                                    let comments = variants.iter().map(|(c, _, _)| c);
-
-                                    let combined_name_str = variants
-                                        .iter()
-                                        .map(|(_, name, _)| name.to_string())
-                                        .collect::<Vec<_>>()
-                                        .join("Or");
-
-                                    let combined_name =
-                                        Ident::new(&combined_name_str, Span::call_site());
-
-                                    let (_, _, ty) = variants.first().unwrap();
-
-                                    quote! {
-                                        #(#comments)*
-                                        #combined_name(#ty)
-                                    }
-                                })
-                                .collect::<Vec<_>>();
-
-                            let key = variant_defs.iter().map(|x| x.to_string()).join(",");
-                            let value = (property_comment, enum_name, variant_defs);
-
-                            if let Some(enums) = all_field_enums.get_mut(&key) {
-                                enums.push(value);
-                            } else {
-                                all_field_enums.insert(key, vec![value]);
-                            }
-
-                            None
-                        }
-                    }
-                }
-            });
-
-            types.push((
-                class_module_name,
-                quote! {
+            let typ = TypeModule {
+                name: class_module_name,
+                content: quote! {
                     #(#range_enums)*
 
                     #class_comments
@@ -725,38 +768,56 @@ impl SchemaDefinitions {
                         #field_defs
                     }
                 },
-            ))
+            };
+
+            types.push(typ)
         }
 
-        let all_field_enums = all_field_enums.into_values().enumerate().map(|(i, enums)| {
-            let combined_name = format_ident!("FieldEnum{i}");
+        TypesModuleResult {
+            type_modules: types,
+            field_enums: field_enums.render(),
+        }
+    }
 
-            let (_, _, variants) = enums.first().unwrap();
+    fn range_enum_property(
+        &self,
+        field_enums: &mut FieldEnums,
+        class_name: &TokenStream,
+        item: &ResolvedPropertyType,
+    ) -> Option<TokenStream> {
+        let property = self.properties.get(item.first()).unwrap();
+        let property_comment = property.doc_comment();
+        let enum_name = field_enum_name(&class_name.to_string(), property.label.value());
 
-            let enum_types = enums.iter().map(|(comment, name, _)| {
-                quote! {
-                    #comment
-                    pub type #name = #combined_name;
-                }
+        let range_includes = property.range_includes.as_ref().unwrap();
+        let variant_defs = range_includes.variants(self)?;
+        let all_the_same = all_equal(variant_defs.iter());
+
+        if !all_the_same {
+            let type_to_variants = group_variant_by_type(variant_defs);
+
+            let variant_defs = type_to_variants
+                .into_values()
+                .map(render_variant_group)
+                .collect::<Vec<_>>();
+
+            field_enums.add_enum(Enum {
+                name: enum_name,
+                comment: property_comment,
+                variants: variant_defs,
             });
 
-            quote! {
-                #[derive(Debug, serde::Deserialize)]
-                #[cfg_attr(feature = "uniffi", derive(uniffi::Enum))]
-                #[serde(untagged)]
-                pub enum #combined_name {
-                    #(#variants),*
-                }
+            return None;
+        }
 
-                #(#enum_types)*
-            }
-        });
+        let variant_type = &variant_defs.first().unwrap().typ;
+        let variant_comments = variant_defs.iter().map(|v| &v.comment);
 
-        let all_field_enums = quote! {
-            #(#all_field_enums)*
-        };
-
-        (types, all_field_enums)
+        Some(quote! {
+            #property_comment
+            #(#variant_comments)*
+            pub type #enum_name = #variant_type;
+        })
     }
 
     fn all_types(&self) -> proc_macro2::TokenStream {
@@ -899,7 +960,10 @@ fn main() -> Result<()> {
     write_to_file(args.enums_file(), enumerations)
         .wrap_err("Failed to write enumerations module")?;
 
-    let (types, field_enums) = definitions.types_module();
+    let TypesModuleResult {
+        type_modules,
+        field_enums,
+    } = definitions.types_module();
 
     write_to_file(
         args.field_enums_file(),
@@ -913,21 +977,23 @@ fn main() -> Result<()> {
 
     let mut type_module = Vec::new();
 
-    for (typ_name, typ) in types {
+    for TypeModule { name, content } in type_modules {
+        let name_str = name.to_string();
+
         write_to_file(
-            args.type_file(&typ_name.to_string()),
+            args.type_file(&name_str),
             quote! {
                 use crate::*;
                 use serde_with::{serde_as, OneOrMany};
 
-                #typ
+                #content
             },
         )
-        .wrap_err_with(|| format!("Failed to write {typ_name} module"))?;
+        .wrap_err_with(|| format!("Failed to write {name_str} module"))?;
 
         type_module.push(quote! {
-            mod #typ_name;
-            pub use #typ_name::*;
+            mod #name;
+            pub use #name::*;
         });
     }
 
