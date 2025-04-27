@@ -291,6 +291,28 @@ impl Item {
             #[doc = #comment]
         }
     }
+
+    fn rename_annotaion(&self) -> TokenStream {
+        let property_rename = self.label.value();
+        quote! {
+            #[serde(rename = #property_rename)]
+        }
+    }
+
+    fn property_type(&self, schema: &SchemaDefinitions, class_item: &Item) -> TokenStream {
+        let range_includes = self
+            .range_includes
+            .as_ref()
+            .expect("Every property type should have a range includes key.");
+
+        let type_name = class_item.ident().to_string();
+        let property_name = self.label.value();
+
+        match range_includes {
+            ItemRef::Single(item_id) => schema.type_ident(&item_id).unwrap(),
+            ItemRef::List(_) => field_enum_name(&type_name, property_name),
+        }
+    }
 }
 
 mod constants {
@@ -318,11 +340,13 @@ fn basic_type_to_rust(basic: &str) -> Option<TokenStream> {
     }
 }
 
-fn field_enum_name(type_name: String, property_name: &str) -> Ident {
+fn field_enum_name(type_name: &str, property_name: &str) -> TokenStream {
     trace!("Generating field enum name from {type_name:?} and {property_name:?}");
     let capitalized_field_name = capitalize(Cow::Borrowed(property_name));
     let enum_name = format!("{type_name}{capitalized_field_name}FieldEnum");
-    Ident::new(&enum_name, Span::call_site())
+    let ident = Ident::new(&enum_name, Span::call_site());
+
+    quote! { #ident }
 }
 
 fn all_equal<T, I>(mut iter: I) -> bool
@@ -347,6 +371,31 @@ struct SchemaDefinitions {
 struct ResolvedType {
     type_id: Str,
     properties: IndexSet<ResolvedPropertyType>,
+}
+
+impl ResolvedType {
+    fn property_defs(&self, schema: &SchemaDefinitions, class_item: &Item) -> TokenStream {
+        let field_defs = self.properties.iter().map(|item| {
+            let property = schema.properties.get(item.first()).unwrap();
+
+            let property_name = property.snake_case_ident();
+            let property_comment = property.doc_comment();
+            let property_rename = property.rename_annotaion();
+            let property_type = property.property_type(&schema, class_item);
+
+            quote! {
+                #property_comment
+                #property_rename
+                #[serde_as(as = "OneOrMany<_>")]
+                #[serde(default)]
+                pub #property_name: Vec<#property_type>
+            }
+        });
+
+        quote! {
+            #(#field_defs),*
+        }
+    }
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
@@ -420,6 +469,10 @@ impl SchemaDefinitions {
         let mut resolved_props: IndexMap<Str, IndexSet<ResolvedPropertyType>> = IndexMap::new();
 
         for (type_id, _type_item) in &self.types {
+            if basic_type_to_rust(&type_id).is_some() {
+                continue;
+            }
+
             let mut all_props_set = IndexSet::new();
             let mut types_to_visit = vec![type_id.clone()];
             let mut visited_types = IndexSet::new();
@@ -543,53 +596,21 @@ impl SchemaDefinitions {
     fn types_module(&self) -> (Vec<(Ident, TokenStream)>, TokenStream) {
         let resolved = self.resolve_properties();
 
-        let mut all_field_enums: IndexMap<String, Vec<(TokenStream, Ident, Vec<TokenStream>)>> =
-            IndexMap::new();
+        let mut all_field_enums: IndexMap<
+            String,
+            Vec<(TokenStream, TokenStream, Vec<TokenStream>)>,
+        > = IndexMap::new();
 
         let mut types = Vec::new();
 
         for class in resolved {
-            if basic_type_to_rust(&class.type_id).is_some() {
-                continue;
-            }
-
             let class_item = self.types.get(&class.type_id).unwrap();
 
             let class_name = class_item.ident();
             let class_comments = class_item.doc_comment();
             let class_module_name = class_item.snake_case_ident();
 
-            let field_defs = class.properties.iter().map(|item| {
-                let property = self.properties.get(item.first()).unwrap();
-
-                let property_name = property.snake_case_ident();
-                let property_comment = property.doc_comment();
-
-                let property_rename = property.label.value();
-                let property_rename = quote! {
-                    #[serde(rename = #property_rename)]
-                };
-
-                let range_includes = property.range_includes.as_ref().unwrap();
-
-                let property_type = match range_includes {
-                    ItemRef::Single(item_id) => self.type_ident(item_id).unwrap(),
-                    ItemRef::List(_) => {
-                        let enum_name =
-                            field_enum_name(class_name.to_string(), property.label.value());
-
-                        quote! { #enum_name }
-                    }
-                };
-
-                quote! {
-                    #property_comment
-                    #property_rename
-                    #[serde_as(as = "OneOrMany<_>")]
-                    #[serde(default)]
-                    pub #property_name: Vec<#property_type>
-                }
-            });
+            let field_defs = class.property_defs(self, &class_item);
 
             let range_enums = class.properties.iter().filter_map(|item| {
                 let property = self.properties.get(item.first()).unwrap();
@@ -601,7 +622,7 @@ impl SchemaDefinitions {
                     ItemRef::Single(_) => None,
                     ItemRef::List(item_ids) => {
                         let enum_name =
-                            field_enum_name(class_name.to_string(), property.label.value());
+                            field_enum_name(&class_name.to_string(), property.label.value());
 
                         let variant_defs: Vec<_> = item_ids
                             .into_iter()
@@ -701,7 +722,7 @@ impl SchemaDefinitions {
                     pub struct #class_name {
                         #[serde(rename = "@context")]
                         pub context: String,
-                        #(#field_defs),*
+                        #field_defs
                     }
                 },
             ))
