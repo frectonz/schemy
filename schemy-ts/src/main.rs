@@ -781,6 +781,8 @@ impl Args {
 }
 
 fn main() -> Result<()> {
+    color_eyre::install()?;
+
     let mut logger = pretty_env_logger::formatted_timed_builder();
     if let Ok(s) = ::std::env::var("RUST_LOG") {
         logger.parse_filters(&s);
